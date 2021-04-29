@@ -843,3 +843,27 @@ void ACC::dumpData(unsigned int boardMask)
 	usbcheck=usb->sendData(command);
  	if(usbcheck==false){errorcode.push_back(0x21001801);}
 }
+
+/*ID 26: Read ACC buffer for Info frame*/
+vector<unsigned short> ACC::readAccBuffer()
+{
+	unsigned int command = 0x00020000;	 
+	vector<unsigned short> buffer;
+	int counter = 0;
+	
+	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21002601);}
+	buffer = usb->safeReadData(SAFE_BUFFERSIZE);
+	
+	while(counter<5)
+	{
+		if(buffer.size()!=32)
+		{
+			counter++;
+			errorcode.push_back(0x21002602);
+		}else
+		{
+			return buffer;	
+		}
+	}
+	return {};
+}
