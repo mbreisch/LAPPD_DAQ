@@ -41,6 +41,7 @@ public:
 		}
 		return errorcode;
 	}
+	vector<unsigned short> readAccBuffer();
 
 	/*------------------------------------------------------------------------------------*/
 	/*-------------------------Local set functions for board setup------------------------*/
