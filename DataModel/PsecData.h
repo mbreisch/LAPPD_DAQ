@@ -21,7 +21,7 @@ class PsecData{
   bool Receive(zmq::socket_t* sock);
   vector<string> timevec;
   map<int, vector<unsigned short>> ReceiveData;
-  vector<unsigned short> errorcodes;
+  vector<unsigned int> errorcodes;
 
   int BoardIndex;
   unsigned int VersionNumber = 0x0001;
