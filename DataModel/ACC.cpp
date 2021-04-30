@@ -417,7 +417,7 @@ int ACC::readAcdcBuffers()
 			{
 				boardsReadyForRead.push_back(k);
 			}else if(lastAccBuffer.at(16+k)!=0 && lastAccBuffer.at(16+k)!=7795) {
-				std::cout << "Board " << k << " has buffer " << lastAccBuffer.at(16+k);
+				std::cout << "Board " << k << " has buffer " << lastAccBuffer.at(16+k) << std::endl;
 			}
 		}
 
@@ -459,7 +459,7 @@ int ACC::readAcdcBuffers()
 		}*/
 
 		maxCounter++;
-		if(maxCounter>50)
+		if(maxCounter>500)
 		{
 			errorcode.push_back(0x21001401);
 			return 404;
