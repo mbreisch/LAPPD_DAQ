@@ -43,7 +43,7 @@ bool ACC_Stream::Execute(){
     StreamMap[it->first].errorcodes = m_data->psec.errorcodes;
     StreamMap[it->first].FailedReadCounter = m_data->psec.FailedReadCounter;
     StreamMap[it->first].Send(sock);
-    //StreamMap[it->first].Print();
+    StreamMap[it->first].Print();
   }
   StreamMap.clear();
   m_data->psec.errorcodes.clear();
