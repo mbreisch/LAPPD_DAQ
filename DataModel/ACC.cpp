@@ -850,12 +850,11 @@ vector<unsigned short> ACC::readAccBuffer()
 	unsigned int command = 0x00020000;	 
 	vector<unsigned short> buffer;
 	int counter = 0;
-	
-	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21002601);}
-	buffer = usb->safeReadData(SAFE_BUFFERSIZE);
-	
 	while(counter<5)
-	{
+	{	
+		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21002601);}
+		buffer = usb->safeReadData(SAFE_BUFFERSIZE);
+		
 		if(buffer.size()!=32)
 		{
 			counter++;
