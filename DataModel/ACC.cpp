@@ -416,8 +416,6 @@ int ACC::readAcdcBuffers()
 			if(lastAccBuffer.at(16+k)==7795)
 			{
 				boardsReadyForRead.push_back(k);
-			}else if(lastAccBuffer.at(16+k)!=0 && lastAccBuffer.at(16+k)!=7795) {
-				std::cout << "Board " << k << " has buffer " << lastAccBuffer.at(16+k) << std::endl;
 			}
 		}
 
