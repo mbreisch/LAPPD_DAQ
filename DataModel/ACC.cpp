@@ -787,7 +787,7 @@ bool ACC::emptyUsbLine()
 	while(true)
 	{
 		usb->safeReadData(SAFE_BUFFERSIZE);
-		usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21000701);}
+		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21000701);}
 		send_counter++;
 		tempbuff = usb->safeReadData(SAFE_BUFFERSIZE);
 
