@@ -111,6 +111,7 @@ bool PsecData::Print(){
 	}else
 	{
 		printf("Errorcodes found: %li\n", errorcodes.size());
+		printf("Errorcode[0]: 0x%08x\n", errorcodes[0]);
 	}
 	std::cout << "----------------------------------------------------------" << std::endl;
 	
