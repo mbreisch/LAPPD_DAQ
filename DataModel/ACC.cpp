@@ -847,7 +847,7 @@ void ACC::dumpData(unsigned int boardMask)
 /*ID 26: Read ACC buffer for Info frame*/
 vector<unsigned short> ACC::readAccBuffer()
 {
-	unsigned int command = 0x00020000;	 
+	unsigned int command = 0x00200000;	 
 	vector<unsigned short> buffer;
 	int counter = 0;
 	while(counter<5)
