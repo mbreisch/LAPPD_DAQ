@@ -53,20 +53,16 @@ public:
 	void setPsecChannelMask(vector<unsigned int> in){SELF_psec_chip_mask = in;} 
 	void setValidationStart(unsigned int in){validation_start=in;}
 	void setValidationWindow(unsigned int in){validation_window=in;} 
-	void setTriggermode(int in){trigMode = in;} 
-	void setDetectionMode(int in, int source) 
-	{
-		if(source==2){ACC_detection_mode = in;}
-		else if(source==3){ACDC_detection_mode = in;}
-		else if(source==4){SELF_detection_mode = in;}
-	}	
+	void setTriggermode(int in){trigMode = in;} 	
 	void setSign(int in, int source) 
 	{
-		if(source==0){ACC_sign = in;}
-		else if(source==1){ACDC_sign = in;}
-		else if(source==2){SELF_sign = in;}
+		if(source==2){ACC_sign = in;}
+		else if(source==3){ACDC_sign = in;}
+		else if(source==4){SELF_sign = in;}
 	}
-
+	void setPPSRatio(unsigned int in){PPSRatio = in;} 
+	void setPPSBeamMultiplexer(int in){PPSBeamMultiplexer = in;} 
+	
 	/*------------------------------------------------------------------------------------*/
 	/*-------------------------Local set functions for board setup------------------------*/
 	/*ID 7: Function to completly empty the USB line until the correct response is received*/
@@ -78,7 +74,7 @@ public:
 	/*ID 10: Clear all ACDC class instances*/
 	void clearAcdcs(); 
 	/*ID:11 Queries the ACC for information about connected ACDC boards*/
-	vector<int> whichAcdcsConnected(); 
+	int whichAcdcsConnected(); 
 	/*ID 12: Set up the software trigger*/
 	void setSoftwareTrigger(unsigned int boardMask); 
 	/*ID 13: Fires the software trigger*/
@@ -105,7 +101,9 @@ public:
 	void usbWakeup(); 
 	/*ID 24: Special function to check connected ACDCs for their firmware version*/ 
 	void versionCheck();
-
+	//:::
+	void resetACDC(); //resets the acdc boards
+	void resetACC(); //resets the acdc boards 
 	/*------------------------------------------------------------------------------------*/
 	/*--------------------------------Public gloabl variables-----------------------------*/
 	vector<unsigned int> errorcode;
@@ -119,18 +117,17 @@ private:
 
 	/*------------------------------------------------------------------------------------*/
 	/*-----------------------------Neccessary global variables----------------------------*/
-	int ACC_detection_mode; //var: ACC detection mode (level or edge)
 	int ACC_sign; //var: ACC sign (normal or inverted)
-	int ACDC_detection_mode; //var: ACDC detection mode (level or edge)
 	int ACDC_sign; //var: ACDC sign (normal or inverted)
-	int SELF_detection_mode; //var: self trigger detection mode (level or edge)
 	int SELF_sign; //var: self trigger sign (normal or inverted)
 	int SELF_coincidence_onoff; //var: flag to enable self trigger coincidence
 	int trigMode; //var: decides the triggermode
+	int PPSBeamMultiplexer;
 	unsigned int SELF_number_channel_coincidence; //var: number of channels required in coincidence for the self trigger
 	unsigned int SELF_threshold; //var: threshold for the selftrigger
 	unsigned int validation_start; //var: validation window for some triggermodes
 	unsigned int validation_window; //var: validation window for some triggermodes
+	unsigned int PPSRatio;
 	vector<unsigned short> lastAccBuffer; //most recently received ACC buffer
 	vector<int> alignedAcdcIndices; //number relative to ACC index (RJ45 port) corresponds to the connected ACDC boards
 	vector<unsigned int> SELF_psec_channel_mask; //var: PSEC channels active for self trigger
