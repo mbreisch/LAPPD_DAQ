@@ -191,21 +191,15 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 			break;
 		case 2: //SMA trigger ACC 
 			setHardwareTrigSrc(trigMode,boardMask);
-			command = 0x00B30000;
-			command = (command | (boardMask << 24)) | ACC_sign;
+			command = 0x00310000;
+			command = command | ACC_sign;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001721);}	
-			command = 0x00B31000;
-			command = (command | (boardMask << 24)) | ACC_detection_mode;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001722);}	
 			break;
 		case 3: //SMA trigger ACDC 
 			setHardwareTrigSrc(trigMode,boardMask);
 			command = 0x00B20000;
 			command = (command | (boardMask << 24)) | ACDC_sign;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001731);}	
-			command = 0x00B21000;
-			command = (command | (boardMask << 24)) | ACDC_detection_mode;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001732);}	
 			break;
 		case 4: //Self trigger
 			setHardwareTrigSrc(trigMode,boardMask);
@@ -214,17 +208,15 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 			break;				
 		case 5: //Self trigger with SMA validation on ACC
  			setHardwareTrigSrc(trigMode,boardMask);
-			command = 0x00B30000;
-			command = (command | (boardMask << 24)) | ACC_sign;
+			command = 0x00310000;
+			command = command | ACC_sign;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001751);}	
-			command = 0x00B31000;
-			command = (command | (boardMask << 24)) | ACC_detection_mode;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001752);}	
-			command = 0x00B40000;
-			command = (command | (boardMask << 24)) | validation_start;
+
+			command = 0x00320000;
+			command = command | validation_start;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001753);}	
-			command = 0x00B48000;
-			command = (command | (boardMask << 24)) | validation_window;
+			command = 0x00330000;
+			command = command | validation_window;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001754);}	
 			goto selfsetup;
 			break;
@@ -233,58 +225,44 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 			command = 0x00B20000;
 			command = (command | (boardMask << 24)) | ACDC_sign;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001761);}	
-			command = 0x00B21000;
-			command = (command | (boardMask << 24)) | ACDC_detection_mode;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001762);}	
-			command = 0x00B40000;
-			command = (command | (boardMask << 24)) | validation_start;
+	
+			command = 0x00320000;
+			command = command | validation_start;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001763);}	
-			command = 0x00B48000;
-			command = (command | (boardMask << 24)) | validation_window;
+			command = 0x00330000;
+			command = command | validation_window;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001764);}	
 			goto selfsetup;
 			break;
 		case 7:
 			setHardwareTrigSrc(trigMode,boardMask);
-			command = 0x00B40000;
-			command = (command | (boardMask << 24)) | validation_start;
+			command = 0x00320000;
+			command = command | validation_start;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001771);}	
-			command = 0x00B48000;
-			command = (command | (boardMask << 24)) | validation_window;
+			command = 0x00330000;
+			command = command | validation_window;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001772);}	
 			command = 0x00B20000;
 			command = (command | (boardMask << 24)) | ACDC_sign;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001773);}	
-			command = 0x00B21000;
-			command = (command | (boardMask << 24)) | ACDC_detection_mode;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001774);}	
-			command = 0x00B30000;
-			command = (command | (boardMask << 24)) | ACC_sign;
+			command = 0x00310000;
+			command = command | ACC_sign;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001775);}	
-			command = 0x00B31000;
-			command = (command | (boardMask << 24)) | ACC_detection_mode;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001776);}	
 			break;
 		case 8:
 			setHardwareTrigSrc(trigMode,boardMask);
-			command = 0x00B40000;
-			command = (command | (boardMask << 24)) | validation_start;
+			command = 0x00320000;
+			command = command | validation_start;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001781);}	
-			command = 0x00B48000;
-			command = (command | (boardMask << 24)) | validation_window;
+			command = 0x00330000;
+			command = command | validation_window;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001782);}	
 			command = 0x00B20000;
 			command = (command | (boardMask << 24)) | ACDC_sign;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001783);}	
-			command = 0x00B21000;
-			command = (command | (boardMask << 24)) | ACDC_detection_mode;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001784);}	
-			command = 0x00B30000;
-			command = (command | (boardMask << 24)) | ACC_sign;
+			command = 0x00310000;
+			command = command | ACC_sign;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001785);}	
-			command = 0x00B31000;
-			command = (command | (boardMask << 24)) | ACC_detection_mode;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001786);}	
 			break;
 		case 9: 
 			setHardwareTrigSrc(trigMode,boardMask);
@@ -305,10 +283,7 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 			}
 			command = 0x00B16000;
 			command = (command | (boardMask << 24)) | SELF_sign;
-			usbcheck=usb->sendData(command);	if(usbcheck==false){errorcode.push_back(0x11001704);}		
-			command = 0x00B17000;
-			command = (command | (boardMask << 24)) | SELF_detection_mode;
-			usbcheck=usb->sendData(command);	if(usbcheck==false){errorcode.push_back(0x11001705);}		
+			usbcheck=usb->sendData(command);	if(usbcheck==false){errorcode.push_back(0x11001704);}			
 			command = 0x00B15000;
 			command = (command | (boardMask << 24)) | SELF_number_channel_coincidence;
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001706);}	
