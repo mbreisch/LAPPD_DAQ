@@ -376,6 +376,9 @@ void ACC::toggleCal(int onoff, unsigned int channelmask, unsigned int boardMask)
 	{
 		//channelmas is default 0x7FFF
 		command = (command | (boardMask << 24)) | channelmask;
+	}else if(onoff == 0)
+	{
+		command = (command | (boardMask << 24));
 	}
 	usbcheck=usb->sendData(command);
 	if(usbcheck==false){errorcode.push_back(0x21002001);}
