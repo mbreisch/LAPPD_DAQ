@@ -500,6 +500,32 @@ int ACC::readAcdcBuffers()
 			}
 		}
 	}
+	
+	command = 0xFFB54000;
+	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001406);}	
+	command = 0xFFD00000;
+	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001407);}	
+
+	for(int i = 0; i < MAX_NUM_BOARDS; i++)
+	{
+		command = 0x00210000;
+		command = command | i;
+		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001408);}	
+		lastAccBuffer = usb->safeReadData(32);
+		if(lastAccBuffer.size()>0)
+		{
+			if(lastAccBuffer.at(1)=0xbbbb)
+			{
+				map_acdcIF[i] = lastAccBuffer;
+			}else
+			{
+				errorcode.push_back(0x31001409);
+			}
+		}else
+		{
+			map_acdcIF[i] = {0};
+		}
+	}
 	return 0;
 }
 
@@ -649,6 +675,32 @@ int ACC::listenForAcdcData(int trigMode)
 			{
 				map_raw[bi] = acdc_buffer;
 			}
+		}
+	}
+	
+	command = 0xFFB54000;
+	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001506);}	
+	command = 0xFFD00000;
+	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001507);}	
+
+	for(int i = 0; i < MAX_NUM_BOARDS; i++)
+	{
+		command = 0x00210000;
+		command = command | i;
+		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001508);}	
+		lastAccBuffer = usb->safeReadData(32);
+		if(lastAccBuffer.size()>0)
+		{
+			if(lastAccBuffer.at(1)=0xbbbb)
+			{
+				map_acdcIF[i] = lastAccBuffer;
+			}else
+			{
+				errorcode.push_back(0x31001509);
+			}
+		}else
+		{
+			map_acdcIF[i] = {0};
 		}
 	}
 	return 0;
@@ -852,7 +904,7 @@ void ACC::dumpData(unsigned int boardMask)
 }
 
 /*ID 26: Read ACC buffer for Info frame*/
-vector<unsigned short> ACC::readAccBuffer()
+vector<unsigned short> ACC::getACCInfoFrame()
 {
 	unsigned int command = 0x00200000;	 
 	vector<unsigned short> buffer;
@@ -868,8 +920,26 @@ vector<unsigned short> ACC::readAccBuffer()
 			errorcode.push_back(0x21002602);
 		}else
 		{
+			map_accIF = buffer;
 			return buffer;	
 		}
 	}
 	return {};
 }
+
+/*ID 27: Resets the ACDCs*/
+void ACC::resetACDC()
+{
+		unsigned int command = 0xFFFF0000;
+		usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21002701);}
+		usleep(1000000);
+}
+
+/*ID 28: Resets the ACCs*/
+void ACC::resetACC()
+{
+		unsigned int command = 0x00000000;
+		usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21002801);}
+		usleep(1000000);
+}
+
