@@ -73,7 +73,19 @@ int ACC::createAcdcs()
 	}
 
 	//Check for connected ACDC boards
-	whichAcdcsConnected(); 
+	int retval = whichAcdcsConnected(); 
+	if(retval==-1)
+	{
+		std::cout << "Trying to reset ACDC boards" << std::endl;
+		unsigned int command = 0xFFFF0000;
+		usb->sendData(command);
+		usleep(1000000);
+		int retval = whichAcdcsConnected();
+		if(retval==-1)
+		{
+			errorcode.push_back(0x31000904);
+		}
+	}
 
 	//if there are no ACDCs, return 0
 	if(alignedAcdcIndices.size() == 0)
@@ -105,6 +117,7 @@ int ACC::createAcdcs()
 /*ID:11 Queries the ACC for information about connected ACDC boards*/
 vector<int> ACC::whichAcdcsConnected()
 {
+	int retval;
 	unsigned int command;
 	vector<int> connectedBoards;
 
@@ -140,14 +153,21 @@ vector<int> ACC::whichAcdcsConnected()
 	unsigned short alignment_packet = lastAccBuffer.at(7); 
 	for(int i = 0; i < MAX_NUM_BOARDS; i++)
 	{
-		if(lastAccBuffer.at(16+i) != 32){
-			cout << "Board "<< i << " not found with 32 words. ";
+		if(lastAccBuffer.at(16+i) == 32)
+		{
+			cout << "Board "<< i << " with 32 words after ACC buffer read, ";
+			cout << "Board "<< i << " connected" << endl;
+		}else if(lastAccBuffer.at(16+i) != 32 && lastAccBuffer.at(16+i) != 0)
+		{
+			cout << "Board "<< i << " not with 32 words after ACC buffer read, ";
+			cout << "Size " << lastAccBuffer.at(16+i)  << endl;
+			retval = -1;
+			continue;
+		}else if(lastAccBuffer.at(16+i) != 32)
+		{
+			cout << "Board "<< i << " not with 32 words after ACC buffer read ";
 			cout << "Size " << lastAccBuffer.at(16+i)  << endl;
 			continue;
-		}else
-		{
-			cout << "Board "<< i << " found with 32 words. ";
-			cout << "Board " << i << " connected" << endl;
 		}
 
 		//both (1<<i) should be true if aligned & synced respectively
@@ -157,10 +177,13 @@ vector<int> ACC::whichAcdcsConnected()
 			connectedBoards.push_back(i);
 		}
 	}
-
+	if(connectedBoards.size()==0 || retval==-1)
+	{
+		return -1;
+	}
 	//this allows no vector clearing to be needed
 	alignedAcdcIndices = connectedBoards;
-	cout << "Connected Boards: " << connectedBoards.size() << endl;
+	cout << "Connected Boards: " << alignedAcdcIndices.size() << endl;
 	return connectedBoards;
 }
 
