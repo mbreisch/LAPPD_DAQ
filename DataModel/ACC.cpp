@@ -506,13 +506,13 @@ int ACC::readAcdcBuffers()
 	command = 0xFFD00000;
 	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001407);}	
 
-	for(int i = 0; i < MAX_NUM_BOARDS; i++)
+	for(int i: boardsReadyForRead)
 	{
 		command = 0x00210000;
 		command = command | i;
 		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001408);}	
 		lastAccBuffer = usb->safeReadData(32);
-		if(lastAccBuffer.size()>0)
+		if(lastAccBuffer.size()==32)
 		{
 			if(lastAccBuffer.at(1)=0xbbbb)
 			{
@@ -523,6 +523,7 @@ int ACC::readAcdcBuffers()
 			}
 		}else
 		{
+			errorcode.push_back(0x21001410);
 			map_acdcIF[i] = {0};
 		}
 	}
@@ -683,7 +684,7 @@ int ACC::listenForAcdcData(int trigMode)
 	command = 0xFFD00000;
 	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001507);}	
 
-	for(int i = 0; i < MAX_NUM_BOARDS; i++)
+	for(int i: boardsReadyForRead)
 	{
 		command = 0x00210000;
 		command = command | i;
@@ -700,6 +701,7 @@ int ACC::listenForAcdcData(int trigMode)
 			}
 		}else
 		{
+			errorcode.push_back(0x21001510);
 			map_acdcIF[i] = {0};
 		}
 	}
