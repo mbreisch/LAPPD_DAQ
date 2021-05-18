@@ -115,7 +115,7 @@ int ACC::createAcdcs()
 }
 
 /*ID:11 Queries the ACC for information about connected ACDC boards*/
-vector<int> ACC::whichAcdcsConnected()
+int ACC::whichAcdcsConnected()
 {
 	int retval;
 	unsigned int command;
@@ -147,7 +147,7 @@ vector<int> ACC::whichAcdcsConnected()
 	if(lastAccBuffer.size() != 32) 
 	{
 		errorcode.push_back(0x21001105);
-		return connectedBoards;
+		return 0;
 	}
 
 	unsigned short alignment_packet = lastAccBuffer.at(7); 
@@ -184,7 +184,7 @@ vector<int> ACC::whichAcdcsConnected()
 	//this allows no vector clearing to be needed
 	alignedAcdcIndices = connectedBoards;
 	cout << "Connected Boards: " << alignedAcdcIndices.size() << endl;
-	return connectedBoards;
+	return 1;
 }
 
 /*ID 17: Main init function that controls generalk setup as well as trigger settings*/
