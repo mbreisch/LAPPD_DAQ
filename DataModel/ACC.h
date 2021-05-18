@@ -32,6 +32,13 @@ public:
 	int getTriggermode(){return trigMode;} 
 	/*ID Nan: Returns the raw data map*/
 	map<int, vector<unsigned short>> returnRaw(){return map_raw;}
+	/*ID Nan: Returns the acdc info frame map*/
+	map<int, vector<unsigned short>> returnACDCIF(){return map_acdcIF;} 
+	/*ID Nan: Returns the acc info frame map*/
+	vector<unsigned short> returnACCIF(){return map_accIF;} 
+	/*ID Nan: Returns the ACC info frame*/
+	vector<unsigned short> getACCInfoFrame();
+	/*ID Nan: Error management*/
 	void clearErrors(){errorcode.clear();}
 	vector<unsigned int> returnErrors()
 	{
@@ -41,7 +48,6 @@ public:
 		}
 		return errorcode;
 	}
-	vector<unsigned short> readAccBuffer();
 
 	/*------------------------------------------------------------------------------------*/
 	/*-------------------------Local set functions for board setup------------------------*/
@@ -133,7 +139,10 @@ private:
 	vector<unsigned int> SELF_psec_channel_mask; //var: PSEC channels active for self trigger
 	vector<unsigned int> SELF_psec_chip_mask; //var: PSEC chips actove for self trigger
 	map<int, vector<unsigned short>> map_raw;
+	map<int, vector<unsigned short>> map_acdcIF;
+	vector<unsigned short> map_accIF;
 	bool usbcheck;
+	
 	static void got_signal(int);
 };
 
