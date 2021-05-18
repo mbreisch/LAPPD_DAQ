@@ -201,7 +201,7 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 	}
 
 	// Toogels the calibration mode on if requested
-	toggleCal(calibMode,0x7FFF);
+	toggleCal(calibMode, 0x7FFF, boardMask);
 
 	// Set trigger conditions
 	switch(trigMode)
