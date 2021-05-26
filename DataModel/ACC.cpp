@@ -117,7 +117,7 @@ int ACC::createAcdcs()
 /*ID:11 Queries the ACC for information about connected ACDC boards*/
 int ACC::whichAcdcsConnected()
 {
-	int retval;
+	int retval=0;
 	unsigned int command;
 	vector<int> connectedBoards;
 
@@ -392,6 +392,7 @@ void ACC::toggleCal(int onoff, unsigned int channelmask, unsigned int boardMask)
 int ACC::readAcdcBuffers()
 {
 	vector<int> boardsReadyForRead;
+	map<int,int> readoutSize;
 	unsigned int command;
 	int maxCounter=0;
 	bool clearCheck;
@@ -402,7 +403,7 @@ int ACC::readAcdcBuffers()
 	while(true)
 	{
 		boardsReadyForRead.clear();
-
+		readoutSize.clear();
 		//Request the ACC info frame to check buffers
 		command = 0x00200000;
 		usbcheck=usb->sendData(command);
@@ -415,7 +416,7 @@ int ACC::readAcdcBuffers()
 				errorcode.push_back(0x31001405);
 			}
 		}
-		lastAccBuffer = usb->safeReadData(32);
+		lastAccBuffer = usb->safeReadData(ACCFRAME);
 		if(lastAccBuffer.size()==0)
 		{
 			continue;
@@ -423,9 +424,17 @@ int ACC::readAcdcBuffers()
 
 		for(int k=0; k<MAX_NUM_BOARDS; k++)
 		{
-			if(lastAccBuffer.at(16+k)==7795)
+			if(lastAccBuffer.at(14) & (1 << k))
 			{
-				boardsReadyForRead.push_back(k);
+				if(lastAccBuffer.at(16+k)==PSECFRAME)
+				{
+					boardsReadyForRead.push_back(k);
+					readoutSize[k] = PSECFRAME;
+				}else if(lastAccBuffer.at(16+k)==PPSFRAME)
+				{
+					boardsReadyForRead.push_back(k);
+					readoutSize[k] = PPSFRAME;
+				}
 			}
 		}
 
@@ -482,12 +491,12 @@ int ACC::readAcdcBuffers()
 		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x31001403);}	
 
 		//Tranfser the data to a receive vector
-		vector<unsigned short> acdc_buffer = usb->safeReadData(7795);
+		vector<unsigned short> acdc_buffer = usb->safeReadData(readoutSize[bi]);
 
 		//Handles buffers =/= 7795 words
-		if(acdc_buffer.size() != 7795)
+		if((int)acdc_buffer.size() != readoutSize[bi])
 		{
-			cout << "Couldn't read 7795 words as expected! Tryingto fix it! Size was: " << acdc_buffer.size() << endl;
+			cout << "Couldn't read " << readoutSize[bi] << " words as expected! Tryingto fix it! Size was: " << acdc_buffer.size() << endl;
 			errorcode.push_back(0x31001404);
 			return (bi+1);
 		}
@@ -514,8 +523,8 @@ int ACC::readAcdcBuffers()
 		command = 0x00210000;
 		command = command | i;
 		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001408);}	
-		lastAccBuffer = usb->safeReadData(32);
-		if(lastAccBuffer.size()==32)
+		lastAccBuffer = usb->safeReadData(ACDCFRAME);
+		if(lastAccBuffer.size()==ACDCFRAME)
 		{
 			if(lastAccBuffer.at(1)=0xbbbb)
 			{
@@ -537,6 +546,7 @@ int ACC::readAcdcBuffers()
 int ACC::listenForAcdcData(int trigMode)
 {
 	vector<int> boardsReadyForRead;
+	map<int,int> readoutSize;
 	unsigned int command; 
 	bool clearCheck;
 
@@ -563,13 +573,13 @@ int ACC::listenForAcdcData(int trigMode)
 	//duration variables
 	auto start = chrono::steady_clock::now(); //start of the current event listening. 
 	auto now = chrono::steady_clock::now(); //just for initialization 
-	auto timeoutDuration = chrono::seconds(5); // will exit and reinitialize
+	auto timeoutDuration = chrono::seconds(100); // will exit and reinitialize
 
 	while(true)
 	{ 
 		//Clear the boards read vector
 		boardsReadyForRead.clear(); 
-
+		readoutSize.clear();
 		//Time the listen fuction
 		now = chrono::steady_clock::now();
 		if(chrono::duration_cast<chrono::seconds>(now - start) > timeoutDuration)
@@ -596,7 +606,7 @@ int ACC::listenForAcdcData(int trigMode)
 				errorcode.push_back(0x31001505);
 			}
 		}
-		lastAccBuffer = usb->safeReadData(32);
+		lastAccBuffer = usb->safeReadData(ACCFRAME);
 		if(lastAccBuffer.size()==0)
 		{
 			continue;
@@ -606,9 +616,17 @@ int ACC::listenForAcdcData(int trigMode)
 		//go through all boards on the acc info frame and if 7795 words were transfered note that board
 		for(int k=0; k<MAX_NUM_BOARDS; k++)
 		{
-			if(lastAccBuffer.at(16+k)==7795)
+			if(lastAccBuffer.at(14) & (1 << k))
 			{
-				boardsReadyForRead.push_back(k);
+				if(lastAccBuffer.at(16+k)==PSECFRAME)
+				{
+					boardsReadyForRead.push_back(k);
+					readoutSize[k] = PSECFRAME;
+				}else if(lastAccBuffer.at(16+k)==PPSFRAME)
+				{
+					boardsReadyForRead.push_back(k);
+					readoutSize[k] = PPSFRAME;
+				}
 			}
 		}
 
@@ -660,12 +678,12 @@ int ACC::listenForAcdcData(int trigMode)
 		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x31001503);}	
 
 		//Tranfser the data to a receive vector
-		vector<unsigned short> acdc_buffer = usb->safeReadData(7795);
+		vector<unsigned short> acdc_buffer = usb->safeReadData(readoutSize[bi]);
 
 		//Handles buffers =/= 7795 words
-		if(acdc_buffer.size() != 7795)
+		if(acdc_buffer.size() != readoutSize[bi])
 		{
-			cout << "Couldn't read 7795 words as expected! Tryingto fix it! Size was: " << acdc_buffer.size() << endl;
+			cout << "Couldn't read " << readoutSize[bi] << " words as expected! Tryingto fix it! Size was: " << acdc_buffer.size() << endl;
 			errorcode.push_back(0x31001504);
 			return (bi+1);
 		}
@@ -692,8 +710,8 @@ int ACC::listenForAcdcData(int trigMode)
 		command = 0x00210000;
 		command = command | i;
 		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001508);}	
-		lastAccBuffer = usb->safeReadData(32);
-		if(lastAccBuffer.size()>0)
+		lastAccBuffer = usb->safeReadData(ACDCFRAME);
+		if(lastAccBuffer.size()==ACDCFRAME)
 		{
 			if(lastAccBuffer.at(1)=0xbbbb)
 			{
@@ -720,8 +738,7 @@ bool ACC::setPedestals(unsigned int boardmask, unsigned int chipmask, unsigned i
 {
 	unsigned int command = 0x00A20000;
 	command = (command | (boardmask << 24)) | (chipmask << 12) | adc;
-	usbcheck=usb->sendData(command);	
-    if(usbcheck==false){errorcode.push_back(0x21001901);}
+	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001901);}
 	return true;
 }
 
@@ -762,7 +779,7 @@ void ACC::connectedBoards()
 		//32 words represent a connected ACDC
 		for(int i = 0; i < MAX_NUM_BOARDS; i++)
 		{
-			if(lastAccBuffer.at(16+i) != 32){
+			if(lastAccBuffer.at(16+i) == 32){
 				cout << "Board "<< i << " not found with 32 words. ";
 				cout << "Size was " << lastAccBuffer.at(16+i)  << endl;
 			}else if(lastAccBuffer.at(16+i) != 32)
@@ -777,8 +794,30 @@ void ACC::connectedBoards()
 /*ID 24: Special function to check connected ACDCs for their firmware version*/ 
 void ACC::versionCheck()
 {
+	unsigned int command;
+	
+	//Request ACC info frame
+	command = 0x00200000; 
+	usb->sendData(command);
+	
+	lastAccBuffer = usb->safeReadData(SAFE_BUFFERSIZE);
+	if(lastAccBuffer.size()==ACCFRAME)
+	{
+		if(lastAccBuffer.at(1)=0xaaaa)
+		{
+			std::cout << "ACC got the firmware version: " << std::hex << lastAccBuffer.at(2) << std::dec;
+			std::cout << " from " << std::hex << lastAccBuffer.at(4) << std::dec << "/" << std::hex << lastAccBuffer.at(3) << std::dec << std::endl;
+		}else
+		{
+			std::cout << "ACC got the wrong info frame" << std::endl;
+		}
+	}else
+	{
+		std::cout << "ACC got the no info frame" << std::endl;
+	}
+
 	//Disables Psec communication
-	unsigned int command = 0xFFB54000; 
+	command = 0xFFB54000; 
 	usb->sendData(command);
 
 	//Give the firmware time to disable
@@ -798,7 +837,7 @@ void ACC::versionCheck()
 		usb->sendData(command);
 
 		lastAccBuffer = usb->safeReadData(SAFE_BUFFERSIZE);
-		if(lastAccBuffer.size()>0)
+		if(lastAccBuffer.size()==ACDCFRAME)
 		{
 			if(lastAccBuffer.at(1)=0xbbbb)
 			{
@@ -856,7 +895,7 @@ bool ACC::emptyUsbLine()
 		tempbuff = usb->safeReadData(SAFE_BUFFERSIZE);
 
 		//if it is exactly an ACC buffer size, success. 
-		if(tempbuff.size() == 32)
+		if(tempbuff.size() == ACCFRAME)
 		{
 			return true;
 		}
@@ -864,7 +903,7 @@ bool ACC::emptyUsbLine()
 		{
 			usbWakeup();
 			tempbuff = usb->safeReadData(SAFE_BUFFERSIZE);
-			if(tempbuff.size() == 32){
+			if(tempbuff.size() == ACCFRAME){
 				return true;
 			}else{
 				errorcode.push_back(0x31000702);
@@ -919,7 +958,7 @@ vector<unsigned short> ACC::getACCInfoFrame()
 		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21002601);}
 		buffer = usb->safeReadData(SAFE_BUFFERSIZE);
 		
-		if(buffer.size()!=32)
+		if(buffer.size()!=ACCFRAME)
 		{
 			counter++;
 			errorcode.push_back(0x21002602);
