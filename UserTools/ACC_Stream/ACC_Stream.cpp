@@ -36,17 +36,20 @@ bool ACC_Stream::Execute(){
 
   for(std::map<int, vector<unsigned short>>::iterator it=m_data->psec.ReceiveData.begin(); it!=m_data->psec.ReceiveData.end(); ++it)
   {
-  	StreamMap[it->first] = *pdata;
-  	StreamMap[it->first].BoardIndex = it->first;
-	  StreamMap[it->first].RawWaveform = it->second;
-    StreamMap[it->first].AccInfoFrame = m_data->psec.AccInfoFrame;
-    StreamMap[it->first].errorcodes = m_data->psec.errorcodes;
-    StreamMap[it->first].FailedReadCounter = m_data->psec.FailedReadCounter;
-    StreamMap[it->first].Send(sock);
-    StreamMap[it->first].Print();
+	StreamMap[it->first] = *pdata;
+	StreamMap[it->first].BoardIndex = it->first;
+	StreamMap[it->first].RawWaveform = it->second;
+	StreamMap[it->first].AccInfoFrame = m_data->psec.AccInfoFrame;
+	StreamMap[it->first].AcdcInfoFrame = m_data->psec.map_acdcIF[it->first];
+	StreamMap[it->first].errorcodes = m_data->psec.errorcodes;
+	StreamMap[it->first].FailedReadCounter = m_data->psec.FailedReadCounter;
+	StreamMap[it->first].Send(sock);
+	StreamMap[it->first].Print();
   }
   StreamMap.clear();
   m_data->psec.errorcodes.clear();
+  m_data->psec.map_acdcIF.clear();
+	
   return true;
 }
 
