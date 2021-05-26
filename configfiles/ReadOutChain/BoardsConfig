@@ -55,3 +55,7 @@ Raw_Mode 1 #returns a map with <int, vector<unsigned short>> | the int is the bo
 Pedestal_channel 3000 #pedestal value to be set 
 Pedestal_channel_mask 0x1F #5 bit representin psec chips
 
+#PPS settings
+PPS_Ratio 0x0001
+PPS_Mux 1
+
