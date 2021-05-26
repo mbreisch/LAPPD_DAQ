@@ -434,6 +434,7 @@ int ACC::readAcdcBuffers()
 		//old trigger
 		if(boardsReadyForRead==alignedAcdcIndices)
 		{
+			map_accIF = lastAccBuffer;
 			break;
 		}
 
@@ -464,6 +465,7 @@ int ACC::readAcdcBuffers()
 			}
 			if(control==true)
 			{
+				map_accIF = lastAccBuffer;
 				break;
 			}
 		}*/
@@ -626,6 +628,7 @@ int ACC::listenForAcdcData(int trigMode)
 		//old trigger
 		if(boardsReadyForRead==alignedAcdcIndices)
 		{
+			map_accIF = lastAccBuffer;
 			break;
 		}
 
@@ -656,6 +659,7 @@ int ACC::listenForAcdcData(int trigMode)
 			}
 			if(control==true)
 			{
+				map_accIF = lastAccBuffer;
 				break;
 			}
 		}*/
