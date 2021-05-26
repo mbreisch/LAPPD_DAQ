@@ -19,7 +19,11 @@ class PsecData{
 
   bool Send(zmq::socket_t* sock);
   bool Receive(zmq::socket_t* sock);
+ 
+  //Timing vector for speedtests
   vector<string> timevec;
+ 
+  //Received data from the ACC class
   map<int, vector<unsigned short>> ReceiveData;
   vector<unsigned int> errorcodes;
 
