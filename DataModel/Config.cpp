@@ -200,11 +200,8 @@ bool Config::SetDefaults(){
   triggermode=1;
 
   //triggersettings
-  ACC_Mode=0;
   ACC_Sign=0;
-  ACDC_Mode=0;
   ACDC_Sign=0;
-  SELF_Mode=0;
   SELF_Sign=0;
   SELF_Enable_Coincidence=0;
   SELF_Coincidence_Number=0;
