@@ -51,7 +51,7 @@ bool ACC_Receive::Execute(){
   if((items [0].revents & ZMQ_POLLIN)) 
   {
       m_data->conf.Receive(sock);
-      //m_data->conf.Print();
+      m_data->conf.Print();
   }
 
   return true;
