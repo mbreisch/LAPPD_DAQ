@@ -495,7 +495,10 @@ int ACC::readAcdcBuffers()
 			errorcode.push_back(0x31001404);
 			return (bi+1);
 		}
-
+		if(acdc_buffer[0] != 0x1234)
+		{
+			acdc_buffer.clear();
+		}
 		//save this buffer a private member of ACDC
 		//by looping through our acdc vector
 		//and checking each index 
@@ -683,6 +686,10 @@ int ACC::listenForAcdcData(int trigMode)
 			cout << "Couldn't read " << readoutSize[bi] << " words as expected! Tryingto fix it! Size was: " << acdc_buffer.size() << endl;
 			errorcode.push_back(0x31001504);
 			return (bi+1);
+		}
+		if(acdc_buffer[0] != 0x1234)
+		{
+			acdc_buffer.clear();
 		}
 
 		//save this buffer a private member of ACDC
