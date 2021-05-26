@@ -243,7 +243,7 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001754);}	
 			command = 0x00350000;
 			command = command | PPSBeamMultiplexer;
-			usbcheck=usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}	
+			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001756);}	
 			goto selfsetup;
 			break;
 		case 6: //Self trigger with SMA validation on ACDC
@@ -291,7 +291,7 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001785);}	
 			command = 0x00350000;
 			command = command | PPSBeamMultiplexer;
-			usbcheck=usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}	
+			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001786);}	
 			break;
 		case 9: 
 			setHardwareTrigSrc(trigMode,boardMask);
@@ -325,7 +325,7 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 	}
 	command = 0x00340000;
 	command = command | PPSRatio;
-	usbcheck=usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}	
+	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001709);}	
 	return 0;
 }
 
