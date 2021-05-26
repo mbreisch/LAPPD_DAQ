@@ -144,7 +144,7 @@ int ACC::whichAcdcsConnected()
 	lastAccBuffer = usb->safeReadData(SAFE_BUFFERSIZE);
 
 	//Check if buffer size is 32 words
-	if(lastAccBuffer.size() != 32) 
+	if(lastAccBuffer.size() != ACCFRAME) 
 	{
 		errorcode.push_back(0x21001105);
 		return 0;
@@ -153,17 +153,17 @@ int ACC::whichAcdcsConnected()
 	unsigned short alignment_packet = lastAccBuffer.at(7); 
 	for(int i = 0; i < MAX_NUM_BOARDS; i++)
 	{
-		if(lastAccBuffer.at(16+i) == 32)
+		if(lastAccBuffer.at(16+i) == ACDCFRAME && (lastAccBuffer.at(14) & (1 << i)))
 		{
 			cout << "Board "<< i << " with 32 words after ACC buffer read, ";
 			cout << "Board "<< i << " connected" << endl;
-		}else if(lastAccBuffer.at(16+i) != 32 && lastAccBuffer.at(16+i) != 0)
+		}else if(lastAccBuffer.at(16+i) != ACDCFRAME && lastAccBuffer.at(16+i) != 0)
 		{
 			cout << "Board "<< i << " not with 32 words after ACC buffer read, ";
 			cout << "Size " << lastAccBuffer.at(16+i)  << endl;
 			retval = -1;
 			continue;
-		}else if(lastAccBuffer.at(16+i) != 32)
+		}else if(lastAccBuffer.at(16+i) != ACDCFRAME)
 		{
 			cout << "Board "<< i << " not with 32 words after ACC buffer read ";
 			cout << "Size " << lastAccBuffer.at(16+i)  << endl;
@@ -334,13 +334,6 @@ void ACC::setSoftwareTrigger(unsigned int boardMask)
 {	
 	unsigned int command;
 
-	//Prepare Software trigger
-	command = 0x00300000; //Turn trigger to OFF on the ACC
-	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001201);}
-	command = 0x00B00000; //Turn the trigger OFF on all ACDCs
-	command = (command | (boardMask << 24));
-	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001202);}
-
 	//Set the trigger
 	command = 0x00B00001; //Sets the trigger of all ACDC boards to 1 = Software trigger
 	command = (command | (boardMask << 24));
@@ -496,7 +489,7 @@ int ACC::readAcdcBuffers()
 		//Handles buffers =/= 7795 words
 		if((int)acdc_buffer.size() != readoutSize[bi])
 		{
-			cout << "Couldn't read " << readoutSize[bi] << " words as expected! Tryingto fix it! Size was: " << acdc_buffer.size() << endl;
+			cout << "Couldn't read " << readoutSize[bi] << " words as expected! Trying to fix it! Size was: " << acdc_buffer.size() << endl;
 			errorcode.push_back(0x31001404);
 			return (bi+1);
 		}
@@ -681,7 +674,7 @@ int ACC::listenForAcdcData(int trigMode)
 		vector<unsigned short> acdc_buffer = usb->safeReadData(readoutSize[bi]);
 
 		//Handles buffers =/= 7795 words
-		if(acdc_buffer.size() != readoutSize[bi])
+		if((int)acdc_buffer.size() != readoutSize[bi])
 		{
 			cout << "Couldn't read " << readoutSize[bi] << " words as expected! Tryingto fix it! Size was: " << acdc_buffer.size() << endl;
 			errorcode.push_back(0x31001504);
