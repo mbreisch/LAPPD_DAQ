@@ -40,7 +40,7 @@ bool ACC_Stream::Execute(){
 	StreamMap[it->first].BoardIndex = it->first;
 	StreamMap[it->first].RawWaveform = it->second;
 	StreamMap[it->first].AccInfoFrame = m_data->psec.AccInfoFrame;
-	StreamMap[it->first].AcdcInfoFrame = m_data->psec.map_acdcIF[it->first];
+	//StreamMap[it->first].AcdcInfoFrame = m_data->psec.map_acdcIF[it->first];
 	StreamMap[it->first].errorcodes = m_data->psec.errorcodes;
 	StreamMap[it->first].FailedReadCounter = m_data->psec.FailedReadCounter;
 	StreamMap[it->first].Send(sock);
