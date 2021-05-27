@@ -510,7 +510,7 @@ int ACC::readAcdcBuffers()
 			}
 		}
 	}
-	
+	/*
 	command = 0xFFB54000;
 	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001406);}	
 	command = 0xFFD00000;
@@ -536,7 +536,7 @@ int ACC::readAcdcBuffers()
 			errorcode.push_back(0x21001410);
 			map_acdcIF[i] = {0};
 		}
-	}
+	}*/
 	return 0;
 }
 
@@ -703,7 +703,7 @@ int ACC::listenForAcdcData(int trigMode)
 			}
 		}
 	}
-	
+	/*
 	command = 0xFFB54000;
 	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001506);}	
 	command = 0xFFD00000;
@@ -729,7 +729,7 @@ int ACC::listenForAcdcData(int trigMode)
 			errorcode.push_back(0x21001510);
 			map_acdcIF[i] = {0};
 		}
-	}
+	}*/
 	return 0;
 }
 
