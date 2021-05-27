@@ -32,7 +32,7 @@ bool ACC_DataRead::Execute(){
 	}else
 	{
 		m_data->psec.AccInfoFrame = m_data->acc->returnACCIF();
-		m_data->psec.map_acdcIF = m_data->acc->returnACDCIF();
+		//m_data->psec.map_acdcIF = m_data->acc->returnACDCIF();
 		m_data->psec.ReceiveData = m_data->acc->returnRaw();
 	}
 	m_data->psec.errorcodes = m_data->acc->returnErrors();
