@@ -48,7 +48,7 @@ bool ACC_Stream::Execute(){
   }
   StreamMap.clear();
   m_data->psec.errorcodes.clear();
-  m_data->psec.map_acdcIF.clear();
+  //m_data->psec.map_acdcIF.clear();
 	
   return true;
 }
