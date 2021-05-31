@@ -3,7 +3,7 @@
 SlowControlMonitor::SlowControlMonitor(){}
 
 bool SlowControlMonitor::Send_Mon(zmq::socket_t* sock){
-	std::string tmp="LAPPDMonData";
+	std::string tmp="SlowControlMonitor";
 	zmq::message_t msg0(tmp.length()+1);
 	snprintf((char*) msg0.data(), tmp.length()+1, "%s", tmp.c_str());
 
