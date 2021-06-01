@@ -67,6 +67,6 @@ bool ACC_Stream::Finalise(){
 
 unsigned long long getTime()
 {
-	auto dt = std::chrono::duration_cast<std::chrono::nanoseconds>(m_clock.now().time_since_epoch()).count()
-	return time;
+	auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(m_clock.now().time_since_epoch()).count()
+	return (unsigned long long)time;
 }
