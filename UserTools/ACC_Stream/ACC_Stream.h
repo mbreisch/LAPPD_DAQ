@@ -30,7 +30,11 @@ class ACC_Stream: public Tool {
   bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
   std::chrono::high_resolution_clock m_clock;	
-  unsigned long long getTime();
+  unsigned long long getTime()
+  {
+      auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(m_clock.now().time_since_epoch()).count();
+      return (unsigned long long)time;
+  }
  private:
 
   zmq::socket_t* sock;
