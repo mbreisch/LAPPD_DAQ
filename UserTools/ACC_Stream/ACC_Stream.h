@@ -29,7 +29,7 @@ class ACC_Stream: public Tool {
   bool Execute(); ///< Executre function used to perform Tool perpose. 
   bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
-
+  unsigned long long getTime();
  private:
 
   zmq::socket_t* sock;
