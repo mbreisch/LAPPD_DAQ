@@ -35,6 +35,7 @@ class PsecData{
   vector<unsigned short> RawWaveform;
   //vector<unsigned short> AcdcInfoFrame;
   int FailedReadCounter=0;
+ unsigned long long Timestamp;
 
   int readRetval;
 
@@ -51,6 +52,7 @@ class PsecData{
   //ar & AcdcInfoFrame;
   ar & FailedReadCounter;
   ar & errorcodes;
+  ar & Timestamp;
  }
 
  
