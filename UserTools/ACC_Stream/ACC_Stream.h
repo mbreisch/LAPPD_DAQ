@@ -29,12 +29,13 @@ class ACC_Stream: public Tool {
   bool Execute(); ///< Executre function used to perform Tool perpose. 
   bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
+  std::chrono::high_resolution_clock m_clock;	
   unsigned long long getTime();
  private:
 
   zmq::socket_t* sock;
   boost::posix_time::ptime first;
-  std::chrono::high_resolution_clock m_clock;	
+  
 
 };
 
