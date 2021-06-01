@@ -34,7 +34,7 @@ class ACC_Stream: public Tool {
 
   zmq::socket_t* sock;
   boost::posix_time::ptime first;
-
+  std::chrono::high_resolution_clock m_clock;	
 
 };
 
