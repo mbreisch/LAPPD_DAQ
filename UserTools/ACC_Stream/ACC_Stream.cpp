@@ -33,8 +33,6 @@ bool ACC_Stream::Execute(){
   PsecData *pdata;
   pdata = new PsecData;
   std::map<int, PsecData> StreamMap;
-	
-  unsigned long long timestamp = getTime();
 
   for(std::map<int, vector<unsigned short>>::iterator it=m_data->psec.ReceiveData.begin(); it!=m_data->psec.ReceiveData.end(); ++it)
   {
@@ -42,7 +40,6 @@ bool ACC_Stream::Execute(){
 	StreamMap[it->first].BoardIndex = it->first;
 	StreamMap[it->first].RawWaveform = it->second;
 	StreamMap[it->first].AccInfoFrame = m_data->psec.AccInfoFrame;
-	StreamMap[it->first].Timestamp = timestamp;
 	//StreamMap[it->first].AcdcInfoFrame = m_data->psec.map_acdcIF[it->first];
 	StreamMap[it->first].errorcodes = m_data->psec.errorcodes;
 	StreamMap[it->first].FailedReadCounter = m_data->psec.FailedReadCounter;
