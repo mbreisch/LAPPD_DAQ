@@ -24,7 +24,7 @@ service_kick_sec 60
 Tools_File configfiles/ReadOutChain/ToolsConfig
 
 ##### Run Type #####
-Inline 12
+Inline -1
 Interactive 0
 Remote 0
 
