@@ -125,7 +125,6 @@ bool PsecData::Print(){
 	printf("Failed read attempts: %i\n", FailedReadCounter);
 	printf("Waveform size: %li\n", RawWaveform.size());
 	printf("ACC Infoframe size: %li\n", AccInfoFrame.size());
-	printf("Timestamp %ll\n", Timestamp);
 	//printf("ACDC Infoframe size: %li\n", AcdcInfoFrame.size());
 	if(errorcodes.size()==1 && errorcodes[0]==0x00000000)
 	{
