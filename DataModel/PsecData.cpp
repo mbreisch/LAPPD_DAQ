@@ -37,9 +37,6 @@ bool PsecData::Send(zmq::socket_t* sock){
 	
 	zmq::message_t msg11(sizeof FailedReadCounter);
 	std::memcpy(msg11.data(), &FailedReadCounter, sizeof FailedReadCounter);
-	
-	zmq::message_t msg12(sizeof Timestamp);
-	std::memcpy(msg12.data(), &Timestamp, sizeof Timestamp);
 
 	sock->send(msg1,ZMQ_SNDMORE);
 	sock->send(msg2,ZMQ_SNDMORE);
@@ -51,8 +48,8 @@ bool PsecData::Send(zmq::socket_t* sock){
 	//sock->send(msg8,ZMQ_SNDMORE);
 	sock->send(msg9,ZMQ_SNDMORE);
 	sock->send(msg10,ZMQ_SNDMORE);
-	sock->send(msg11,ZMQ_SNDMORE);
-	sock->send(msg12);
+	sock->send(msg11);
+
   	return true;
 }
 
@@ -112,8 +109,6 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		sock->recv(&msg);
 		FailedReadCounter=*(reinterpret_cast<int*>(msg.data()));
 		
-		sock->recv(&msg);
-		Timestamp=*(reinterpret_cast<unsigned long long*>(msg.data()));
 	}else
 	{
 		return false;
