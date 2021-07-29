@@ -512,33 +512,7 @@ int ACC::readAcdcBuffers()
 			}
 		}
 	}
-	/*
-	command = 0xFFB54000;
-	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001406);}	
-	command = 0xFFD00000;
-	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001407);}	
 
-	for(int i: boardsReadyForRead)
-	{
-		command = 0x00210000;
-		command = command | i;
-		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001408);}	
-		lastAccBuffer = usb->safeReadData(ACDCFRAME);
-		if(lastAccBuffer.size()==ACDCFRAME)
-		{
-			if(lastAccBuffer.at(1)=0xbbbb)
-			{
-				map_acdcIF[i] = lastAccBuffer;
-			}else
-			{
-				errorcode.push_back(0x31001409);
-			}
-		}else
-		{
-			errorcode.push_back(0x21001410);
-			map_acdcIF[i] = {0};
-		}
-	}*/
 	return 0;
 }
 
@@ -552,7 +526,7 @@ int ACC::listenForAcdcData(int trigMode)
 
 	//this function is simply readAcdcBuffers
 	//if the trigMode is software
-	if(trigMode == 1)
+	if(trigMode == 10)
 	{
 		int retval = readAcdcBuffers();
 		return retval;
@@ -573,7 +547,7 @@ int ACC::listenForAcdcData(int trigMode)
 	//duration variables
 	auto start = chrono::steady_clock::now(); //start of the current event listening. 
 	auto now = chrono::steady_clock::now(); //just for initialization 
-	auto timeoutDuration = chrono::seconds(100); // will exit and reinitialize
+	auto timeoutDuration = chrono::seconds(10); // will exit and reinitialize
 
 	while(true)
 	{ 
@@ -705,33 +679,7 @@ int ACC::listenForAcdcData(int trigMode)
 			}
 		}
 	}
-	/*
-	command = 0xFFB54000;
-	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001506);}	
-	command = 0xFFD00000;
-	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001507);}	
 
-	for(int i: boardsReadyForRead)
-	{
-		command = 0x00210000;
-		command = command | i;
-		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x21001508);}	
-		lastAccBuffer = usb->safeReadData(ACDCFRAME);
-		if(lastAccBuffer.size()==ACDCFRAME)
-		{
-			if(lastAccBuffer.at(1)=0xbbbb)
-			{
-				map_acdcIF[i] = lastAccBuffer;
-			}else
-			{
-				errorcode.push_back(0x31001509);
-			}
-		}else
-		{
-			errorcode.push_back(0x21001510);
-			map_acdcIF[i] = {0};
-		}
-	}*/
 	return 0;
 }
 
