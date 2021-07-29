@@ -19,6 +19,10 @@ class Config : public SerialisableObject{
   bool Receive(zmq::socket_t* sock);
   int receiveFlag = 0;
 
+  //Reset switch
+  int ResetSwitchACC = 0;
+  int ResetSwitchACDC = 0;
+ 
   //trigger
   int triggermode = 0;
 
@@ -71,6 +75,8 @@ class Config : public SerialisableObject{
  template <class Archive> void serialize(Archive& ar, const unsigned int version){
 
   ar & receiveFlag;
+  ar & ResetSwitchACC;
+  ar & ResetSwitchACDC;
   ar & triggermode;
   ar & ACC_Sign;
   ar & ACDC_Sign;
