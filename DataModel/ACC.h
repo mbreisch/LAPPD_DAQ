@@ -15,7 +15,7 @@ using namespace std;
 #define ACCFRAME 32
 #define ACDCFRAME 32
 #define PSECFRAME 7795
-#define PPSFRAME 10
+#define PPSFRAME 16
 
 class ACC
 {
