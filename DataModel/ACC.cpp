@@ -151,8 +151,10 @@ int ACC::whichAcdcsConnected()
 	}
 
 	unsigned short alignment_packet = lastAccBuffer.at(7); 
+	
 	for(int i = 0; i < MAX_NUM_BOARDS; i++)
 	{
+		/* old read for buffersizes, now no longer needed for boardfind 
 		if(lastAccBuffer.at(16+i) == ACDCFRAME && (lastAccBuffer.at(14) & (1 << i)))
 		{
 			cout << "Board "<< i << " with 32 words after ACC buffer read, ";
@@ -169,15 +171,15 @@ int ACC::whichAcdcsConnected()
 			cout << "Size " << lastAccBuffer.at(16+i)  << endl;
 			continue;
 		}
-
-		//both (1<<i) should be true if aligned & synced respectively
+		*/
+		//(1<<i) should be true if aligned & synced respectively
 		if((alignment_packet & (1 << i)))
 		{
 			//the i'th board is connected
 			connectedBoards.push_back(i);
 		}
 	}
-	if(connectedBoards.size()==0 || retval==-1)
+	if(connectedBoards.size()==0)
 	{
 		return -1;
 	}
