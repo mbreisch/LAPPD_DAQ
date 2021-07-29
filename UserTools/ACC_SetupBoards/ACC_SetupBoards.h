@@ -30,9 +30,8 @@ class ACC_SetupBoards: public Tool {
 
  private:
 
-
-
-
+ bool Setup();
+ void LoadDefaults();
 
 };
 
