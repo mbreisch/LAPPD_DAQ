@@ -20,7 +20,7 @@
 //ACC classes
 #include <ACC.h>
 #include <PsecData.h>
-#include <Config.h>
+#include <PsecConfig.h>
 
 /**
 * \class DataModel
@@ -60,7 +60,7 @@ class DataModel {
   stdUSB* usb;
   ACC* acc;
   PsecData psec;
-  Config conf;
+  PsecConfig conf;
 
 
  private:
