@@ -10,6 +10,10 @@ Port_BIND 6666
 ##Triggermode
 Triggermode 1 #...
 
+##Reset switch
+ResetSwitchACC 0
+ResetSwitchACDC 0
+
 ##ACC settings
 ACC_Mode 1 #edge(0) or level(1)
 ACC_Sign 0 #normal(0) or inverted(1)
