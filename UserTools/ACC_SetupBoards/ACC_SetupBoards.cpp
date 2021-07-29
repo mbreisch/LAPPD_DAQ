@@ -26,6 +26,15 @@ bool ACC_SetupBoards::Execute(){
 	bool setupret = false;
 	if(m_data->conf.receiveFlag==0 || m_data->conf.receiveFlag==1)
 	{
+		if(m_data->conf.ResetSwitchACC == 1)
+		{
+			m_data->acc->resetACC();
+		}
+		if(m_data->conf.ResetSwitchACDC == 1)
+		{
+			m_data->acc->resetACDC();
+		}
+		
 		setupret = Setup();
 		return setupret;
 	}
@@ -51,7 +60,10 @@ bool ACC_SetupBoards::Finalise(){
 }
 
 void ACC_SetupBoards::LoadDefaults(){
-	m_variables.Get("Triggermode",m_data->conf.triggermode);	
+	m_variables.Get("Triggermode",m_data->conf.triggermode);
+	
+	m_variables.Get("ResetSwitchACC",m_data->conf.ResetSwitchACC);
+	m_variables.Get("ResetSwitchACDC",m_data->conf.ResetSwitchACDC);
 
 	m_variables.Get("ACC_Sign",m_data->conf.ACC_Sign);
 	m_variables.Get("ACDC_Sign",m_data->conf.ACDC_Sign);
