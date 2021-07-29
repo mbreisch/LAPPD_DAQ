@@ -1,22 +1,24 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef PsecConfig_H
+#define PsecConfig_H
 
 #include "zmq.hpp"
 #include <SerialisableObject.h>
 #include <iostream>
 #include <vector>
 
-class Config : public SerialisableObject{
+class PsecConfig : public SerialisableObject{
 
  friend class boost::serialization::access;
 
  public:
 
-  Config();
+  PsecConfig();
   
   //Comms
   bool Send(zmq::socket_t* sock);
   bool Receive(zmq::socket_t* sock);
+ 
+  unsigned int VersionNumber = 0x0001;
   int receiveFlag = 0;
 
   //Reset switch
