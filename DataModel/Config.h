@@ -20,48 +20,48 @@ class Config : public SerialisableObject{
   int receiveFlag = 0;
 
   //trigger
-  int triggermode;
+  int triggermode = 0;
 
   //triggersettings
-  int ACC_Sign;
-  int ACDC_Sign;
-  int SELF_Sign;
-  int SELF_Enable_Coincidence;
-  int SELF_Coincidence_Number;
-  int SELF_threshold;
+  int ACC_Sign = 0;
+  int ACDC_Sign = 0;
+  int SELF_Sign = 0;
+  int SELF_Enable_Coincidence = 0;
+  int SELF_Coincidence_Number = 0;
+  int SELF_threshold = 0;
 
   //ACDC boards
-  unsigned int ACDC_mask;
+  unsigned int ACDC_mask  = 0x00;
 
   //PSEC chips for self trigger
-  int PSEC_Chip_Mask_0;
-  int PSEC_Chip_Mask_1;
-  int PSEC_Chip_Mask_2;
-  int PSEC_Chip_Mask_3;
-  int PSEC_Chip_Mask_4;
-  unsigned int PSEC_Channel_Mask_0;
-  unsigned int PSEC_Channel_Mask_1;
-  unsigned int PSEC_Channel_Mask_2;
-  unsigned int PSEC_Channel_Mask_3;
-  unsigned int PSEC_Channel_Mask_4;
+  int PSEC_Chip_Mask_0 = 0;
+  int PSEC_Chip_Mask_1 = 0;
+  int PSEC_Chip_Mask_2 = 0;
+  int PSEC_Chip_Mask_3 = 0;
+  int PSEC_Chip_Mask_4 = 0;
+  unsigned int PSEC_Channel_Mask_0 = 0x00;
+  unsigned int PSEC_Channel_Mask_1 = 0x00;
+  unsigned int PSEC_Channel_Mask_2 = 0x00;
+  unsigned int PSEC_Channel_Mask_3 = 0x00;
+  unsigned int PSEC_Channel_Mask_4 = 0x00;
 
   //Validation time
-  float Validation_Start;
-  float Validation_Window;
+  float Validation_Start = 0;
+  float Validation_Window = 0;
 
   //Calibration mode
-  int Calibration_Mode;
+  int Calibration_Mode = 0;
 
   //Raw mode
-  bool Raw_Mode;
+  bool Raw_Mode = false;
 
   //Pedestal set value channel
-  int Pedestal_channel;
-  unsigned int Pedestal_channel_mask;
+  int Pedestal_channel = 0;
+  unsigned int Pedestal_channel_mask = 0x00;
  
- //PPS settings
- unsigned int PPSRatio;
- int PPSBeamMultiplexer;
+  //PPS settings
+  unsigned int PPSRatio = 0x00;
+  int PPSBeamMultiplexer = 0;
 
   bool SetDefaults();
   bool Print();
