@@ -89,7 +89,7 @@ public:
 	/*ID 13: Fires the software trigger*/
 	void softwareTrigger(); 
 	/*ID 14: Software read function*/
-	int readAcdcBuffers(); 
+	//int readAcdcBuffers(); 
 	/*ID 15: Main listen fuction for data readout. Runs for 5s before retuning a negative*/
 	int listenForAcdcData(int trigMode); 
 	/*ID 16: Used to dis/enable transfer data from the PSEC chips to the buffers*/
