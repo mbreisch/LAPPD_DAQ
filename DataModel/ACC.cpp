@@ -383,7 +383,7 @@ void ACC::toggleCal(int onoff, unsigned int channelmask, unsigned int boardMask)
 /*------------------------------------------------------------------------------------*/
 /*---------------------------Read functions listening for data------------------------*/
 
-/*ID 14: Software read function*/
+/*ID 14: Software read function
 int ACC::readAcdcBuffers()
 {
 	vector<int> boardsReadyForRead;
@@ -440,7 +440,7 @@ int ACC::readAcdcBuffers()
 			break;
 		}
 
-		/*new trigger
+		//new trigger
 		std::sort(boardsReadyForRead.begin(), boardsReadyForRead.end());
 
 		bool control = false;
@@ -470,7 +470,7 @@ int ACC::readAcdcBuffers()
 				map_accIF = lastAccBuffer;
 				break;
 			}
-		}*/
+		}
 
 		maxCounter++;
 		if(maxCounter>500)
@@ -515,6 +515,7 @@ int ACC::readAcdcBuffers()
 
 	return 0;
 }
+*/
 
 /*ID 15: Main listen fuction for data readout. Runs for 5s before retuning a negative*/
 int ACC::listenForAcdcData(int trigMode)
@@ -523,14 +524,6 @@ int ACC::listenForAcdcData(int trigMode)
 	map<int,int> readoutSize;
 	unsigned int command; 
 	bool clearCheck;
-
-	//this function is simply readAcdcBuffers
-	//if the trigMode is software
-	if(trigMode == 10)
-	{
-		int retval = readAcdcBuffers();
-		return retval;
-	}
 
 	//setup a sigint capturer to safely
 	//reset the boards if a ctrl-c signal is found
