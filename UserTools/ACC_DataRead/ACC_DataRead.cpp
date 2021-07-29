@@ -35,9 +35,10 @@ bool ACC_DataRead::Execute(){
 		//m_data->psec.map_acdcIF = m_data->acc->returnACDCIF();
 		m_data->psec.ReceiveData = m_data->acc->returnRaw();
 	}
-	m_data->psec.errorcodes.push_back(m_data->acc->returnErrors());
+	vector<unsigned int> tmpERR = m_data->acc->returnErrors();
+	m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
 	m_data->acc->clearErrors();
-
+	tmpERR.clear();
 	return true;
 }
 
