@@ -84,6 +84,12 @@ bool Config::Send(zmq::socket_t* sock){
 	
   zmq::message_t msg27(sizeof PPSBeamMultiplexer);
   memcpy(msg27.data(), &PPSBeamMultiplexer, sizeof PPSBeamMultiplexer); 
+	
+  zmq::message_t msg28(sizeof ResetSwitchACC);
+  memcpy(msg28.data(), &ResetSwitchACC, sizeof ResetSwitchACC);
+	
+  zmq::message_t msg29(sizeof ResetSwitchACDC);
+  memcpy(msg29.data(), &ResetSwitchACDC, sizeof ResetSwitchACDC);	
 
   sock->send(msg1,ZMQ_SNDMORE);
   sock->send(msg2,ZMQ_SNDMORE);
@@ -111,7 +117,9 @@ bool Config::Send(zmq::socket_t* sock){
   sock->send(msg24,ZMQ_SNDMORE);
   sock->send(msg25,ZMQ_SNDMORE);
   sock->send(msg26,ZMQ_SNDMORE);
-  sock->send(msg27);
+  sock->send(msg27,ZMQ_SNDMORE);
+  sock->send(msg28,ZMQ_SNDMORE);
+  sock->send(msg29);
 	
   return true;
 }
@@ -191,7 +199,13 @@ bool Config::Receive(zmq::socket_t* sock){
   PPSRatio=*(reinterpret_cast<unsigned int*>(msg.data()));
   sock->recv(&msg);
   PPSBeamMultiplexer=*(reinterpret_cast<int*>(msg.data()));	
-
+	
+  //Reset switch
+  sock->recv(&msg);
+  ResetSwitchACC =*(reinterpret_cast<int*>(msg.data()));
+  sock->recv(&msg);
+  ResetSwitchACDC=*(reinterpret_cast<int*>(msg.data()));	
+	
   return true;
 }
 
@@ -240,6 +254,9 @@ bool Config::SetDefaults(){
   PPSRatio = 0x0001;
   PPSBeamMultiplexer = 1;
 	
+  ResetSwitchACC = 0;
+  ResetSwitchACDC = 0;
+	
   return true;
 }
 
@@ -269,5 +286,5 @@ bool Config::Print(){
   printf("PPS multiplexer: %i\n",PPSBeamMultiplexer);
   std::cout << "-------------------------------------------------" << std::endl;
 
-	return true;
+  return true;
 }
