@@ -1,8 +1,11 @@
-#include <Config.h>
+#include <PsecConfig.h>
 
-Config::Config(){}
+PsecConfig::PsecConfig(){}
 
-bool Config::Send(zmq::socket_t* sock){
+bool PsecConfig::Send(zmq::socket_t* sock){
+	
+  zmq::message_t msg0(sizeof VersionNumber);
+  memcpy(msg0.data(), &VersionNumber, sizeof VersionNumber);
 
   zmq::message_t msg1(sizeof receiveFlag);
   memcpy(msg1.data(), &receiveFlag, sizeof receiveFlag);
@@ -91,6 +94,7 @@ bool Config::Send(zmq::socket_t* sock){
   zmq::message_t msg29(sizeof ResetSwitchACDC);
   memcpy(msg29.data(), &ResetSwitchACDC, sizeof ResetSwitchACDC);	
 
+  sock->send(msg0,ZMQ_SNDMORE);
   sock->send(msg1,ZMQ_SNDMORE);
   sock->send(msg2,ZMQ_SNDMORE);
   sock->send(msg3,ZMQ_SNDMORE);
@@ -124,10 +128,14 @@ bool Config::Send(zmq::socket_t* sock){
   return true;
 }
 
-bool Config::Receive(zmq::socket_t* sock){
+bool PsecConfig::Receive(zmq::socket_t* sock){
 
   zmq::message_t msg;
   
+  //VersionNumber
+  sock->recv(&msg);
+  VersionNumber=*(reinterpret_cast<unsigned int*>(msg.data())); 
+	
   //flag
   sock->recv(&msg);
   receiveFlag=*(reinterpret_cast<int*>(msg.data())); 
@@ -209,7 +217,7 @@ bool Config::Receive(zmq::socket_t* sock){
   return true;
 }
 
-bool Config::SetDefaults(){
+bool PsecConfig::SetDefaults(){
   //trigger
   triggermode=1;
 
@@ -260,7 +268,7 @@ bool Config::SetDefaults(){
   return true;
 }
 
-bool Config::Print(){
+bool PsecConfig::Print(){
   std::cout << "------------------General settings------------------" << std::endl;
   printf("Receive flag: %i\n", receiveFlag);
   printf("ACDC boardmask: 0x%02x\n",ACDC_mask);
