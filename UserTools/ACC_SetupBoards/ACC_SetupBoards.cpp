@@ -60,6 +60,7 @@ bool ACC_SetupBoards::Finalise(){
 }
 
 void ACC_SetupBoards::LoadDefaults(){
+	m_variables.Get("receiveFlag",m_data->conf.receiveFlag);
 	m_variables.Get("Triggermode",m_data->conf.triggermode);
 	
 	m_variables.Get("ResetSwitchACC",m_data->conf.ResetSwitchACC);
