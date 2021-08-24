@@ -151,8 +151,8 @@ bool ACC_SetupBoards::Setup(){
 			psecChannelMask.push_back(tempVecPsecChannelMask[i]);
 		}
 	}
-	m_data->acc->setPsecChipMask(psecChipMask);
-	m_data->acc->setPsecChannelMask(psecChannelMask);
+	m_data->acc->setPsecChipMask(tempPsecChipMask);
+	m_data->acc->setPsecChannelMask(tempVecPsecChannelMask);
 
 	//validation window
 	unsigned int validationStart;
