@@ -78,7 +78,7 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		}
 
 		sock->recv(&msg);
-		int tmp_size=0;
+		tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
 		if(tmp_size>0)
 		{
