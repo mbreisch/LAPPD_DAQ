@@ -303,23 +303,18 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 			break;
 		selfsetup:
  			command = 0x00B10000;
-			
-			cout << "Chip: ";
-			for(int k: SELF_psec_chip_mask){cout << k << " - ";}
-			cout << endl;
-			printf("%s","Channel-Mask: ");
-			for(unsigned int k: SELF_psec_channel_mask){printf("0x%02x\t",k);}
-			printf("\n");
-			
+
 			if(SELF_psec_chip_mask.size()!=SELF_psec_channel_mask.size())
 			{
-				writeErrorLog("PSEC mask error");	
+				errorcode.push_back(0x31001709);	
 			}
 			
+			std::vector<unsigned int> CHIPMASK = {0x00000000,0x00001000,0x00002000,0x00003000,0x00004000};
 			for(int i=0; i<(int)SELF_psec_chip_mask.size(); i++)
-			{			
-				command = (command | (boardMask << 24)) | i << 12 | SELF_psec_channel_mask[i]; printf("Mask: 0x%08x\n",command);
-				usbcheck=usb->sendData(command); 	
+			{		
+				command = 0x00B10000;
+				command = (command | (boardMask << 24)) | CHIPMASK[i] | SELF_psec_channel_mask[i]; 
+				usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x31001710);}	
 			}
 			command = 0x00B16000;
 			command = (command | (boardMask << 24)) | SELF_sign;
