@@ -672,7 +672,7 @@ int ACC::listenForAcdcData(int trigMode)
 		{
 			if(a->getBoardIndex() == bi)
 			{
-				vector_raw(vector_raw.end(), acdc_buffer.begin(), acdc_buffer.end());
+				vector_raw.insert(vector_raw.end(), acdc_buffer.begin(), acdc_buffer.end());
 			}
 		}
 	}
