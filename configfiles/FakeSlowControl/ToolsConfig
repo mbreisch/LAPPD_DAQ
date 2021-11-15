@@ -1,0 +1,5 @@
+SC_Receive SC_Receive configfiles/FakeSlowControl/SC_Receive
+#SC_SetConfig SC_SetConfig configfiles/FakeSlowControl/SC_Set
+FAKE_SC_Poll FAKE_SC_Poll configfiles/FakeSlowControl/SC_Poll
+SC_Emergency SC_Emergency configfiles/FakeSlowControl/SC_Emergency
+SC_Stream SC_Stream configfiles/FakeSlowControl/SC_Stream

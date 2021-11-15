@@ -677,10 +677,11 @@ int ACC::listenForAcdcData(int trigMode)
 		{
 			if(a->getBoardIndex() == bi)
 			{
-				map_raw[bi] = acdc_buffer;
+				vector_raw(vector_raw.end(), acdc_buffer.begin(), acdc_buffer.end());
 			}
 		}
 	}
+	vector_bi = boardsReadyForRead;
 
 	return 0;
 }
@@ -817,7 +818,7 @@ void ACC::versionCheck()
 /*ID 13: Fires the software trigger*/
 void ACC::softwareTrigger()
 {
-	unsigned int command = 0x00100000;
+	unsigned int command = 0xFFB70000;
 	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x11001301);}	
 }
 
