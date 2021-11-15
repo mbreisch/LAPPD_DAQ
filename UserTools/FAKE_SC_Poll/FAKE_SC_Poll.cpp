@@ -3,7 +3,7 @@
 FAKE_SC_Poll::FAKE_SC_Poll():Tool(){}
 
 
-bool SC_FAKE_SC_Poll::Initialise(std::string configfile, DataModel &data){
+bool FAKE_SC_Poll::Initialise(std::string configfile, DataModel &data){
 
   if(configfile!="")  m_variables.Initialise(configfile);
   //m_variables.Print();
