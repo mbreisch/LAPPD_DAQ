@@ -21,6 +21,7 @@
 #include <ACC.h>
 #include <PsecData.h>
 #include <PsecConfig.h>
+#include <TempClassStore.h>
 
 /**
 * \class DataModel
@@ -61,7 +62,7 @@ class DataModel {
   ACC* acc;
   PsecData psec;
   PsecConfig conf;
-
+  TempClassStore TCS;
 
  private:
 
