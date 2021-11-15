@@ -14,6 +14,7 @@ if (tool=="SC_Poll") ret=new SC_Poll;
 if (tool=="SC_Receive") ret=new SC_Receive;
 if (tool=="SC_SetConfig") ret=new SC_SetConfig;
 if (tool=="SC_Stream") ret=new SC_Stream;
+if (tool=="FAKE_DataRead") ret=new FAKE_DataRead;
 
 return ret;
 }

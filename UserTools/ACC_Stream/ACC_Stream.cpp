@@ -30,26 +30,18 @@ bool ACC_Stream::Initialise(std::string configfile, DataModel &data){
 
 
 bool ACC_Stream::Execute(){
-  PsecData *pdata;
-  pdata = new PsecData;
-  std::map<int, PsecData> StreamMap;
 
-  for(std::map<int, vector<unsigned short>>::iterator it=m_data->psec.ReceiveData.begin(); it!=m_data->psec.ReceiveData.end(); ++it)
-  {
-	StreamMap[it->first] = *pdata;
-	StreamMap[it->first].BoardIndex = it->first;
-	StreamMap[it->first].RawWaveform = it->second;
-	StreamMap[it->first].AccInfoFrame = m_data->psec.AccInfoFrame;
-	//StreamMap[it->first].AcdcInfoFrame = m_data->psec.map_acdcIF[it->first];
-	StreamMap[it->first].errorcodes = m_data->psec.errorcodes;
-	StreamMap[it->first].FailedReadCounter = m_data->psec.FailedReadCounter;
-	StreamMap[it->first].Send(sock);
-	StreamMap[it->first].Print();
-  }
-  StreamMap.clear();
+  m_data->psec.RawWaveform = m_data->psec.ReceiveData;
+  m_data->psec.Send(sock);
+  m_data->psec.Print();
+
   m_data->psec.errorcodes.clear();
-  //m_data->psec.map_acdcIF.clear();
-	
+  m_data->psec.ReceiveData.clear();
+  m_data->psec.BoardIndex.clear();
+  m_data->psec.AccInfoFrame.clear();
+  m_data->psec.RawWaveform.clear();
+  m_data->psec.FailedReadCounter=0;
+
   return true;
 }
 
