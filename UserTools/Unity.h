@@ -9,4 +9,4 @@
 #include <SC_SetConfig.h>
 #include <SC_Stream.h>
 #include <FAKE_DataRead.h>
-
+#include <FAKE_SC_Poll.h>
