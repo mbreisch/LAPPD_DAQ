@@ -10,6 +10,8 @@ Port_BIND 6666
 ##Triggermode
 Triggermode 1 #...
 
+receiveFlag 1
+
 ##Reset switch
 ResetSwitchACC 0
 ResetSwitchACDC 0
