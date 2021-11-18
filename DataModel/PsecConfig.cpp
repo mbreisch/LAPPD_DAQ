@@ -134,7 +134,9 @@ bool PsecConfig::Receive(zmq::socket_t* sock){
   
   //VersionNumber
   sock->recv(&msg);
-  VersionNumber=*(reinterpret_cast<unsigned int*>(msg.data())); 
+  unsigned int TVersion;
+  TVersion=*(reinterpret_cast<unsigned int*>(msg.data())); 
+  if(TVersion!=VersionNumber){return false;}
 	
   //flag
   sock->recv(&msg);
