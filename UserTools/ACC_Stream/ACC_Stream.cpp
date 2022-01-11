@@ -40,7 +40,6 @@ bool ACC_Stream::Execute(){
   m_data->psec.BoardIndex.clear();
   m_data->psec.AccInfoFrame.clear();
   m_data->psec.RawWaveform.clear();
-  m_data->psec.FailedReadCounter=0;
 
   return true;
 }
