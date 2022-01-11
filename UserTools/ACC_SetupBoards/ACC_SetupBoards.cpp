@@ -141,29 +141,19 @@ bool ACC_SetupBoards::Setup(){
 	//psec masks combine
 	std::vector<int> tempPsecChipMask = {m_data->conf.PSEC_Chip_Mask_0,m_data->conf.PSEC_Chip_Mask_1,m_data->conf.PSEC_Chip_Mask_2,m_data->conf.PSEC_Chip_Mask_3,m_data->conf.PSEC_Chip_Mask_4};
 	std::vector<unsigned int> tempVecPsecChannelMask = {m_data->conf.PSEC_Channel_Mask_0,m_data->conf.PSEC_Channel_Mask_1,m_data->conf.PSEC_Channel_Mask_2,m_data->conf.PSEC_Channel_Mask_3,m_data->conf.PSEC_Channel_Mask_4};
-	std::vector<unsigned int> psecChipMask;
-	std::vector<unsigned int> psecChannelMask;
-	for(int i=0; i<5; i++)
-	{
-		if(tempPsecChipMask[i]==1)
-		{
-			psecChipMask.push_back(tempPsecChipMask[i]);
-			psecChannelMask.push_back(tempVecPsecChannelMask[i]);
-		}
-	}
 	m_data->acc->setPsecChipMask(tempPsecChipMask);
 	m_data->acc->setPsecChannelMask(tempVecPsecChannelMask);
 
 	//validation window
 	unsigned int validationStart;
 	stringstream ss31;
-	ss31 << std::hex << (int)m_data->conf.Validation_Start*40;
+	ss31 << std::hex << (int)m_data->conf.Validation_Start/25;
 	validationStart = std::stoul(ss31.str(),nullptr,16);
 	m_data->acc->setValidationStart(validationStart);		
 
 	unsigned int validationWindow;
 	stringstream ss32;
-	ss32 << std::hex << (int)m_data->conf.Validation_Window*40;
+	ss32 << std::hex << (int)m_data->conf.Validation_Window/25;
 	validationWindow = std::stoul(ss32.str(),nullptr,16);
 	m_data->acc->setValidationWindow(validationWindow);
 
@@ -186,6 +176,14 @@ bool ACC_SetupBoards::Setup(){
 	m_data->acc->setPPSRatio(ppsratio);
 
 	m_data->acc->setPPSBeamMultiplexer(m_data->conf.PPSBeamMultiplexer);
+	
+	if(m_data->conf.SMA==0)
+	{
+		m_data->acc->setSMA_OFF();
+	}else if(m_data->conf.SMA==1)
+	{
+		m_data->acc->setSMA_ON();
+	}
 
 	int retval;
 	retval = m_data->acc->initializeForDataReadout(m_data->conf.triggermode, m_data->conf.ACDC_mask, m_data->conf.Calibration_Mode);
