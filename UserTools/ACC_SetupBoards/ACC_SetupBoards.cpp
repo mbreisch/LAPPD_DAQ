@@ -176,14 +176,6 @@ bool ACC_SetupBoards::Setup(){
 	m_data->acc->setPPSRatio(ppsratio);
 
 	m_data->acc->setPPSBeamMultiplexer(m_data->conf.PPSBeamMultiplexer);
-	
-	if(m_data->conf.SMA==0)
-	{
-		m_data->acc->setSMA_OFF();
-	}else if(m_data->conf.SMA==1)
-	{
-		m_data->acc->setSMA_ON();
-	}
 
 	int retval;
 	retval = m_data->acc->initializeForDataReadout(m_data->conf.triggermode, m_data->conf.ACDC_mask, m_data->conf.Calibration_Mode);
