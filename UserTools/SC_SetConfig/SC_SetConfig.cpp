@@ -68,7 +68,7 @@ bool SC_SetConfig::Execute(){
     m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
     m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	  
-    m_data->SCMonitor.recieveFlag==1
+    m_data->SCMonitor.recieveFlag==1;
   }
 	
   if(m_data->SCMonitor.recieveFlag==1)
