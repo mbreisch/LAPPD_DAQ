@@ -939,3 +939,23 @@ void ACC::resetACC()
 		usleep(1000000);
 }
 
+/*---------------------------------New commands--------------------------------------*/
+void ACC::setSMA_ON()
+{
+	unsigned int command = 0xFF900001;
+	usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}
+	usleep(1000000);
+	command = 0xFF910001;
+	usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}
+	usleep(1000000);
+}
+
+void ACC::setSMA_OFF()
+{
+	unsigned int command = 0xFF900000;
+	usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}
+	usleep(1000000);
+	command = 0xFF910000;
+	usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}
+	usleep(1000000);
+}
