@@ -943,19 +943,19 @@ void ACC::resetACC()
 void ACC::setSMA_ON()
 {
 	unsigned int command = 0xFF900001;
-	usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}
+	usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xFFFFFFFF);}
 	usleep(1000000);
 	command = 0xFF910001;
-	usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}
+	usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xFFFFFFFF);}
 	usleep(1000000);
 }
 
 void ACC::setSMA_OFF()
 {
 	unsigned int command = 0xFF900000;
-	usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}
+	usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xFFFFFFFF);}
 	usleep(1000000);
 	command = 0xFF910000;
-	usb->sendData(command); if(usbcheck==false){writeErrorLog("Send Error");}
+	usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xFFFFFFFF);}
 	usleep(1000000);
 }
