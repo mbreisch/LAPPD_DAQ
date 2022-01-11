@@ -119,6 +119,9 @@ public:
 	vector<unsigned int> errorcode;
 	unsigned int returncode = 0x00000000;
 
+	void setSMA_ON();
+	void setSMA_OFF();
+	
 private:
 	/*------------------------------------------------------------------------------------*/
 	/*---------------------------------Load neccessary classes----------------------------*/
