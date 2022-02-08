@@ -34,6 +34,10 @@ bool ACC_DataRead::Execute(){
 		m_data->psec.AccInfoFrame = m_data->acc->returnACCIF();
 		m_data->psec.ReceiveData = m_data->acc->returnRaw();
 		m_data->psec.BoardIndex = m_data->acc->returnBoardIndices();
+		if(m_data->psec.ReceiveData.size()%7795==0 || m_data->psec.ReceiveData.size()%16==0)
+		{
+			m_data->acc->clearData();
+		}
 	}
 	vector<unsigned int> tmpERR = m_data->acc->returnErrors();
 	m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
