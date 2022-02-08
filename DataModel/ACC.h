@@ -44,6 +44,7 @@ public:
 	vector<unsigned short> getACCInfoFrame();
 	/*ID Nan: Error management*/
 	void clearErrors(){errorcode.clear();}
+	void clearData(){vector_raw.clear(); vector_bi.clear();}
 	vector<unsigned int> returnErrors()
 	{
 		if(errorcode.size()==0)
