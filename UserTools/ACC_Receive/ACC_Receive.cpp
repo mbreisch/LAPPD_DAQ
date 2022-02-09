@@ -43,7 +43,7 @@ bool ACC_Receive::Execute(){
     timer = -1;
   }else
   {
-    timer = 0;
+    timer = 1;
   }
 
   zmq::poll(&items[0], 1, timer);
