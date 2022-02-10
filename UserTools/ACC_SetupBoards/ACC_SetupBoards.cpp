@@ -24,7 +24,7 @@ bool ACC_SetupBoards::Initialise(std::string configfile, DataModel &data){
 bool ACC_SetupBoards::Execute(){
 	
 	bool setupret = false;
-	if(m_data->conf.receiveFlag==0 || m_data->conf.receiveFlag==1)
+	if(m_data->conf.receiveFlag==1)
 	{
 		if(m_data->conf.ResetSwitchACC == 1)
 		{
