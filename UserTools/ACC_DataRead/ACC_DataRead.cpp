@@ -23,7 +23,7 @@ bool ACC_DataRead::Execute(){
 	{
 		m_data->acc->softwareTrigger();
 	}
-	if(m_data->conf.receiveFlag==0){return true;)
+	if(m_data->conf.receiveFlag==0){return true;}
 
 	m_data->psec.readRetval = m_data->acc->listenForAcdcData(m_data->conf.triggermode);
 	if(m_data->psec.readRetval != 0)
