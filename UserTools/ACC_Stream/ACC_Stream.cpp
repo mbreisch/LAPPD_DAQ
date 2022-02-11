@@ -30,7 +30,7 @@ bool ACC_Stream::Initialise(std::string configfile, DataModel &data){
 
 
 bool ACC_Stream::Execute(){
-  if(m_data->conf.receiveFlag==0){return true;) 
+  if(m_data->conf.receiveFlag==0){return true;}
 
   m_data->psec.RawWaveform = m_data->psec.ReceiveData;
   m_data->psec.Send(sock);
