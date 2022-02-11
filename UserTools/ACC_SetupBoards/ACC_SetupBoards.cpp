@@ -22,7 +22,7 @@ bool ACC_SetupBoards::Initialise(std::string configfile, DataModel &data){
 
 
 bool ACC_SetupBoards::Execute(){
-	if(m_data->conf.receiveFlag==0){return true;)
+	if(m_data->conf.receiveFlag==0){return true;}
 	bool setupret = false;
 	if(m_data->conf.receiveFlag==1)
 	{
