@@ -70,7 +70,7 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		sock->recv(&msg);
 		int tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		if(tmp_size>0)
+		if(tmp_size>=0)
 		{
 			sock->recv(&msg);
 			BoardIndex.resize(msg.size()/sizeof(int));
@@ -80,7 +80,7 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		sock->recv(&msg);
 		tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		if(tmp_size>0)
+		if(tmp_size>=0)
 		{
 			sock->recv(&msg);
 			RawWaveform.resize(msg.size()/sizeof(unsigned short));
@@ -90,7 +90,7 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		sock->recv(&msg);
 		tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		if(tmp_size>0)
+		if(tmp_size>=0)
 		{
 			sock->recv(&msg);
 			AccInfoFrame.resize(msg.size()/sizeof(unsigned short));
@@ -110,7 +110,7 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		sock->recv(&msg);
 		tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		if(tmp_size>0)
+		if(tmp_size>=0)
 		{
 			sock->recv(&msg);
 			errorcodes.resize(msg.size()/sizeof(unsigned int));
