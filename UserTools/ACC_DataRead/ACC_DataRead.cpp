@@ -30,6 +30,7 @@ bool ACC_DataRead::Execute(){
 	{
 		m_data->psec.FailedReadCounter = m_data->psec.FailedReadCounter + 1;
 		m_data->psec.ReceiveData.clear();
+		m_data->acc->clearData();
 	}else
 	{
 		m_data->psec.AccInfoFrame = m_data->acc->returnACCIF();
