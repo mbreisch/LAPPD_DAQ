@@ -100,7 +100,10 @@ bool FAKE_DataRead::Execute(){
 	{
 		//cout << "Gave " << m_data->TCS.ReadFileError.size() << " to ERROR" << endl;
 		m_data->psec.errorcodes = m_data->TCS.ReadFileError;	
+		m_data->psec.FailedReadCounter++;
 		m_data->psec.ReceiveData.clear();
+		m_data->psec.AccInfoFrame.clear();
+		m_data->psec.BoardIndex	.clear();
 	}else
 	{
 		m_data->psec.errorcodes = {0x00000000};
