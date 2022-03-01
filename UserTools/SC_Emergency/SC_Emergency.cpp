@@ -24,11 +24,13 @@ bool SC_Emergency::Execute()
   if(retchk==false)
   {
     //report error behavior 
+    m_data->SCMonitor.errorcodes.push_back(0xEEEE0001);
   }
   retchk = HUMIDITYCHK();
   if(retchk==false)
   {
-    //report error behavior 
+    //report error behavior
+    m_data->SCMonitor.errorcodes.push_back(0xEEEE0002);
   }  
 
   return true;
