@@ -1001,7 +1001,8 @@ int Canbus::SetRelay(int idx, bool state){
 		stateInt = 0;
 	}
 
-	switch(idx){
+	switch(idx)
+	{
 		case 1:
 			ch = RLY1;
 			break;
@@ -1019,11 +1020,11 @@ int Canbus::SetRelay(int idx, bool state){
 	digitalWrite(ch, stateInt);
 	usleep(1000);
 	if((digitalRead(ch)) == stateInt)
-	{
-		errorcode.push_back(0x24012302);
+	{		
 		return stateInt;
 	}else 
 	{
+		errorcode.push_back(0x24012302);
 		return -3;
 	}
 	
