@@ -15,44 +15,46 @@ bool PsecData::Send(zmq::socket_t* sock){
 
 	zmq::message_t msg2(sizeof S_BoardIndex);
 	std::memcpy(msg2.data(), &S_BoardIndex, sizeof S_BoardIndex);
-	zmq::message_t msg21(sizeof(int) * S_BoardIndex);
-	std::memcpy(msg21.data(), BoardIndex.data(), sizeof(int) * S_BoardIndex);
+	if(S_BoardIndex>0)
+	{
+		zmq::message_t msg21(sizeof(int) * S_BoardIndex);
+		std::memcpy(msg21.data(), BoardIndex.data(), sizeof(int) * S_BoardIndex);
+	}
 	
 	zmq::message_t msg3(sizeof S_RawWaveform);
-	std::memcpy(msg3.data(), &S_RawWaveform, sizeof S_RawWaveform);
-	zmq::message_t msg4(sizeof(unsigned short) * S_RawWaveform);
-	std::memcpy(msg4.data(), RawWaveform.data(), sizeof(unsigned short) * S_RawWaveform);
+	std::memcpy(msg3.data(), &S_RawWaveform, sizeof S_RawWaveform);	
+	if(S_RawWaveform>0)
+	{	
+		zmq::message_t msg4(sizeof(unsigned short) * S_RawWaveform);
+		std::memcpy(msg4.data(), RawWaveform.data(), sizeof(unsigned short) * S_RawWaveform);
+	}
 	
 	zmq::message_t msg5(sizeof S_AccInfoFrame);
 	std::memcpy(msg5.data(), &S_AccInfoFrame, sizeof S_AccInfoFrame);
-	zmq::message_t msg6(sizeof(unsigned short) * S_AccInfoFrame);
-	std::memcpy(msg6.data(), AccInfoFrame.data(), sizeof(unsigned short) * S_AccInfoFrame);
-	
-	//zmq::message_t msg7(sizeof S_AcdcInfoFrame);
-	//std::memcpy(msg7.data(), &S_AcdcInfoFrame, sizeof S_AcdcInfoFrame);
-	//zmq::message_t msg8(sizeof(unsigned short) * S_AcdcInfoFrame);
-	//std::memcpy(msg8.data(), AcdcInfoFrame.data(), sizeof(unsigned short) * S_AcdcInfoFrame);
+	if(S_AccInfoFrame>0)
+	{
+		zmq::message_t msg6(sizeof(unsigned short) * S_AccInfoFrame);
+		std::memcpy(msg6.data(), AccInfoFrame.data(), sizeof(unsigned short) * S_AccInfoFrame);
+	}
 
-	zmq::message_t msg9(sizeof S_errorcodes);
-	std::memcpy(msg9.data(), &S_errorcodes, sizeof S_errorcodes);
-	zmq::message_t msg10(sizeof(unsigned int) * S_errorcodes);
-	std::memcpy(msg10.data(), errorcodes.data(), sizeof(unsigned int) * S_errorcodes);
+	zmq::message_t msg7(sizeof S_errorcodes);
+	std::memcpy(msg7.data(), &S_errorcodes, sizeof S_errorcodes);
+	zmq::message_t msg8(sizeof(unsigned int) * S_errorcodes);
+	std::memcpy(msg8.data(), errorcodes.data(), sizeof(unsigned int) * S_errorcodes);
 	
-	zmq::message_t msg11(sizeof FailedReadCounter);
-	std::memcpy(msg11.data(), &FailedReadCounter, sizeof FailedReadCounter);
+	zmq::message_t msg9(sizeof FailedReadCounter);
+	std::memcpy(msg9.data(), &FailedReadCounter, sizeof FailedReadCounter);
 
 	sock->send(msg1,ZMQ_SNDMORE);
 	sock->send(msg2,ZMQ_SNDMORE);
-	sock->send(msg21,ZMQ_SNDMORE);
+	if(S_BoardIndex>0){sock->send(msg21,ZMQ_SNDMORE);}
 	sock->send(msg3,ZMQ_SNDMORE);
-	sock->send(msg4,ZMQ_SNDMORE);
+	if(S_RawWaveform>0){sock->send(msg4,ZMQ_SNDMORE);}
 	sock->send(msg5,ZMQ_SNDMORE);
-	sock->send(msg6,ZMQ_SNDMORE);
-	//sock->send(msg7,ZMQ_SNDMORE);
-	//sock->send(msg8,ZMQ_SNDMORE);
-	sock->send(msg9,ZMQ_SNDMORE);
-	sock->send(msg10,ZMQ_SNDMORE);
-	sock->send(msg11);
+	if(S_AccInfoFrame>0){sock->send(msg6,ZMQ_SNDMORE);}
+	sock->send(msg7,ZMQ_SNDMORE);
+	sock->send(msg8,ZMQ_SNDMORE);
+	sock->send(msg9);
 
   	return true;
 }
@@ -70,7 +72,7 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		sock->recv(&msg);
 		int tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		if(tmp_size>=0)
+		if(tmp_size>0)
 		{
 			sock->recv(&msg);
 			BoardIndex.resize(msg.size()/sizeof(int));
@@ -80,7 +82,7 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		sock->recv(&msg);
 		tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		if(tmp_size>=0)
+		if(tmp_size>0)
 		{
 			sock->recv(&msg);
 			RawWaveform.resize(msg.size()/sizeof(unsigned short));
@@ -90,27 +92,17 @@ bool PsecData::Receive(zmq::socket_t* sock){
 		sock->recv(&msg);
 		tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		if(tmp_size>=0)
+		if(tmp_size>0)
 		{
 			sock->recv(&msg);
 			AccInfoFrame.resize(msg.size()/sizeof(unsigned short));
 			std::memcpy(&AccInfoFrame[0], msg.data(), msg.size());
 		}
-		
-		//sock->recv(&msg);
-		//tmp_size=0;
-		//tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		//if(tmp_size>0)
-		//{
-		//	sock->recv(&msg);
-		//	AcdcInfoFrame.resize(msg.size()/sizeof(unsigned short));
-		//	std::memcpy(&AcdcInfoFrame[0], msg.data(), msg.size());
-		//}
 
 		sock->recv(&msg);
 		tmp_size=0;
 		tmp_size=*(reinterpret_cast<int*>(msg.data()));
-		if(tmp_size>=0)
+		if(tmp_size>0)
 		{
 			sock->recv(&msg);
 			errorcodes.resize(msg.size()/sizeof(unsigned int));
