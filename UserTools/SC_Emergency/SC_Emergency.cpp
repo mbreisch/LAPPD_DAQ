@@ -58,7 +58,7 @@ bool SC_Emergency::TEMPCHK(){
     return true;
   }else if(m_data->SCMonitor.temperature_mon >= m_data->SCMonitor.LIMIT_temperature_high)
   {
-    int tries = 0
+    int tries = 0;
     int max_tries = 50;
     //Instant shutdown
     while(retval!=0 && retval!=1 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
@@ -89,7 +89,7 @@ bool SC_Emergency::HUMIDITYCHK(){
     return true;
   }else if(m_data->SCMonitor.humidity_mon >= m_data->SCMonitor.LIMIT_humidity_high)
   {
-    int tries = 0
+    int tries = 0;
     int max_tries = 50;
     //Instant shutdown
     while(retval!=0 && retval!=1 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
