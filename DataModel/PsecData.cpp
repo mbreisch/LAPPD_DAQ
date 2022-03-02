@@ -15,27 +15,18 @@ bool PsecData::Send(zmq::socket_t* sock){
 
 	zmq::message_t msg2(sizeof S_BoardIndex);
 	std::memcpy(msg2.data(), &S_BoardIndex, sizeof S_BoardIndex);
-	if(S_BoardIndex>0)
-	{
-		zmq::message_t msg21(sizeof(int) * S_BoardIndex);
-		std::memcpy(msg21.data(), BoardIndex.data(), sizeof(int) * S_BoardIndex);
-	}
+	zmq::message_t msg21(sizeof(int) * S_BoardIndex);
+	std::memcpy(msg21.data(), BoardIndex.data(), sizeof(int) * S_BoardIndex);
 	
 	zmq::message_t msg3(sizeof S_RawWaveform);
-	std::memcpy(msg3.data(), &S_RawWaveform, sizeof S_RawWaveform);	
-	if(S_RawWaveform>0)
-	{	
-		zmq::message_t msg4(sizeof(unsigned short) * S_RawWaveform);
-		std::memcpy(msg4.data(), RawWaveform.data(), sizeof(unsigned short) * S_RawWaveform);
-	}
+	std::memcpy(msg3.data(), &S_RawWaveform, sizeof S_RawWaveform);		
+	zmq::message_t msg4(sizeof(unsigned short) * S_RawWaveform);
+	std::memcpy(msg4.data(), RawWaveform.data(), sizeof(unsigned short) * S_RawWaveform);
 	
 	zmq::message_t msg5(sizeof S_AccInfoFrame);
 	std::memcpy(msg5.data(), &S_AccInfoFrame, sizeof S_AccInfoFrame);
-	if(S_AccInfoFrame>0)
-	{
-		zmq::message_t msg6(sizeof(unsigned short) * S_AccInfoFrame);
-		std::memcpy(msg6.data(), AccInfoFrame.data(), sizeof(unsigned short) * S_AccInfoFrame);
-	}
+	zmq::message_t msg6(sizeof(unsigned short) * S_AccInfoFrame);
+	std::memcpy(msg6.data(), AccInfoFrame.data(), sizeof(unsigned short) * S_AccInfoFrame);
 
 	zmq::message_t msg7(sizeof S_errorcodes);
 	std::memcpy(msg7.data(), &S_errorcodes, sizeof S_errorcodes);
