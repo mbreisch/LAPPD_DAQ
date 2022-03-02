@@ -18,7 +18,7 @@ bool SC_Poll::Initialise(std::string configfile, DataModel &data){
 
 
 bool SC_Poll::Execute(){
-
+  if(m_data->SCMonitor.recieveFlag==0){return true;}
   //LV
   int LVstate = m_data->CB->GetLV_ONOFF();
   m_data->SCMonitor.LV_mon = LVstate;
