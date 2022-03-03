@@ -50,7 +50,6 @@ bool SC_Stream::Execute(){
   m_data->SCMonitor.Print();
   m_data->SCMonitor.errorcodes.clear();
   
-  usleep(1000000);
   return true;
 }
 
