@@ -35,7 +35,8 @@ class SlowControlMonitor : public SerialisableObject{
   int HV_mon=-1;
   bool HV_state_set;
   float HV_volts=-1;
-
+  float HV_return_mon =-1;
+ 
   //LV
   int LV_mon=-1;
   bool LV_state_set;
