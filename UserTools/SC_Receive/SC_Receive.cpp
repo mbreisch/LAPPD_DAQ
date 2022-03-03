@@ -41,7 +41,7 @@ bool SC_Receive::Execute(){
     timer = -1;
   }else
   {
-    timer = 10;
+    timer = 1000;
   }
 
   zmq::poll(&items[0], 1, timer);
