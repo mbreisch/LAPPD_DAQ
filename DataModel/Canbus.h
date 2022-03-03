@@ -39,6 +39,7 @@
 #define RLY2 28
 #define RLY3 29
 #define TIMEOUT_RS 1
+#define CONVERSION 0.00518
 
 using namespace std;
 
