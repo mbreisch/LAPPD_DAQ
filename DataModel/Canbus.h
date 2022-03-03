@@ -118,6 +118,7 @@ public:
 	struct sockaddr_can addr;
 	struct canfd_frame frame;
 	float get_HV_volts = 0;
+	float ReturnedHvValue;
 	unsigned int returncode = 0x00000000;
 	vector<unsigned int> errorcode;
 
