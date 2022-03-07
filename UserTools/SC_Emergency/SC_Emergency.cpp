@@ -26,13 +26,13 @@ bool SC_Emergency::Execute()
   if(retchk==false)
   {
     //report error behavior 
-    m_data->SCMonitor.errorcodes.push_back(0xEEEE0001);
+    m_data->SCMonitor.errorcodes.push_back(0xCC01EE01);
   }
   retchk = HUMIDITYCHK();
   if(retchk==false)
   {
     //report error behavior
-    m_data->SCMonitor.errorcodes.push_back(0xEEEE0002);
+    m_data->SCMonitor.errorcodes.push_back(0xCC02EE01);
   }  
 
   return true;
@@ -61,9 +61,15 @@ bool SC_Emergency::TEMPCHK(){
     int tries = 0;
     int max_tries = 50;
     //Instant shutdown
-    while(retval!=0 && retval!=1 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
-    while(retval!=0 && retval!=1 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
-    while(retval!=0 && retval!=1 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
+    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
+    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
+    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
+    
+    if(tries>max_tries && retval!=0)
+    {
+       m_data->SCMonitor.FLAG_temperature = 3;
+       m_data->SCMonitor.errorcodes.push_back(0xCC03EE01);
+    }
     
     m_data->SCMonitor.FLAG_temperature = 2;
     
