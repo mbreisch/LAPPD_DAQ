@@ -65,7 +65,7 @@ bool SC_Emergency::TEMPCHK(){
     while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
     while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
     
-    if(tries>max_tries && retval!=0)
+    if(tries>=max_tries && retval!=0)
     {
        m_data->SCMonitor.FLAG_temperature = 3;
        m_data->SCMonitor.errorcodes.push_back(0xCC03EE01);
@@ -98,9 +98,15 @@ bool SC_Emergency::HUMIDITYCHK(){
     int tries = 0;
     int max_tries = 50;
     //Instant shutdown
-    while(retval!=0 && retval!=1 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
-    while(retval!=0 && retval!=1 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
-    while(retval!=0 && retval!=1 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
+    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
+    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
+    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
+    
+    if(tries>=max_tries && retval!=0)
+    {
+       m_data->SCMonitor.FLAG_temperature = 3;
+       m_data->SCMonitor.errorcodes.push_back(0xCC04EE01);
+    }
     
     m_data->SCMonitor.FLAG_humidity = 2;
     
