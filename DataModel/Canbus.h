@@ -176,7 +176,7 @@ public:
 
 		if (len<4)
 		{
-			errorcode.push_back(0x34000301);
+			errorcode.push_back(0xCA03EE01);
 			return 0;
 		}
 		if (t_frame[3] == CANID_DELIM)
@@ -186,7 +186,7 @@ public:
 			{
 		  		if((temp = asc2nib(t_frame[i])) > 0x0F)
 		  		{
-		  			errorcode.push_back(0x24000302);
+		  			errorcode.push_back(0xCA03EE02);
 		    		return 0;
 		  		}
 		  		cf->can_id |= (temp << (2-i)*4);
@@ -198,7 +198,7 @@ public:
 			{
 		  		if((temp = asc2nib(t_frame[i])) > 0x0F)
 		  		{
-		  			errorcode.push_back(0x24000303);
+		  			errorcode.push_back(0xCA03EE03);
 				    return 0;
 				}
 		  		cf->can_id |= (temp << (7-i)*4);
@@ -209,7 +209,7 @@ public:
 			}
 		} else 
 		{
-			errorcode.push_back(0x24000304);
+			errorcode.push_back(0xCA03EE04);
 			return 0;
 		}
 
@@ -249,13 +249,13 @@ public:
 			}
 			if((temp = asc2nib(t_frame[idx++])) > 0x0F)
 			{
-				errorcode.push_back(0x24000305);
+				errorcode.push_back(0xCA03EE05);
 		  		return 0;
 			}
 			cf->data[i] = (temp << 4);
 			if((temp = asc2nib(t_frame[idx++])) > 0x0F)
 			{
-				errorcode.push_back(0x24000306);
+				errorcode.push_back(0xCA03EE06);
 		  		return 0;
 			}
 			cf->data[i] |= temp;
