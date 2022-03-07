@@ -9,7 +9,7 @@ bool Canbus::Connect()
 	//Create a socket
 	if ((s = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0)
 	{
-	    errorcode.push_back(0x34010701);
+	    errorcode.push_back(0xCA07EE01);
 	    return false;
 	}
 	
@@ -23,7 +23,7 @@ bool Canbus::Connect()
 	
   	if (bind(s, (struct sockaddr *)&addr, sizeof(addr)) < 0)
 	{
-		errorcode.push_back(0x34010702);
+		errorcode.push_back(0xCA07EE02);
 		return false;
 	}
 	
@@ -46,13 +46,13 @@ int Canbus::SendMessage(unsigned int id, unsigned long long msg){
 	retval = createCanFrame(id,msg,&frame);
 	if(!retval)
 	{
-		errorcode.push_back(0x24010901);
+		errorcode.push_back(0xCA09EE01);
 		return -11;
 	}
 
 	if ((s = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0)
 	{
-		errorcode.push_back(0x34010902);
+		errorcode.push_back(0xCA09EE02);
 		return -12;
 	}
 	
@@ -60,7 +60,7 @@ int Canbus::SendMessage(unsigned int id, unsigned long long msg){
 	ifr.ifr_ifindex = if_nametoindex(ifr.ifr_name);
 	if (!ifr.ifr_ifindex)
 	{
-		errorcode.push_back(0x24010903);
+		errorcode.push_back(0xCA09EE03);
 		return -12;
 	}
 	
@@ -74,21 +74,21 @@ int Canbus::SendMessage(unsigned int id, unsigned long long msg){
 		/* check if frame fits into the CAN netdevice */
 		if (ioctl(s, SIOCGIFMTU, &ifr) < 0)
 		{
-		  errorcode.push_back(0x14010904);
+		  errorcode.push_back(0xCA09EE04);
 		  return -21;
 		}
 		mtu = ifr.ifr_mtu;
 
 		if (mtu != CANFD_MTU)
 		{
-		  errorcode.push_back(0x14010905);
+		  errorcode.push_back(0xCA09EE05);
 		  return -21;
 		}
 
 		/* interface is ok - try to switch the socket into CAN FD mode */
 		if (setsockopt(s, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &enable_canfd, sizeof(enable_canfd)))
 		{
-		  errorcode.push_back(0x14010906);
+		  errorcode.push_back(0xCA09EE06);
 		  return 1;
 		}
 
@@ -97,12 +97,12 @@ int Canbus::SendMessage(unsigned int id, unsigned long long msg){
 	setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, NULL, 0);	
 	if (bind(s, (struct sockaddr *)&addr, sizeof(addr)) < 0)
 	{
-		errorcode.push_back(0x34010907);
+		errorcode.push_back(0xCA09EE07);
 		return -1;
 	}
 	
 	if ((nbytes = write(s, &frame, retval)) != retval) {
-		errorcode.push_back(0x34010908);
+		errorcode.push_back(0xCA09EE08);
 		return -2;
 	}
 	
@@ -119,7 +119,7 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 	//Connect to the socket
 	if(!Connect())
 	{
-		errorcode.push_back(0x34011001);	
+		errorcode.push_back(0xCA10EE01);	
 		return empty;	
 	}
 	
@@ -149,13 +149,13 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 			//Send the message again
 			if((retval=SendMessage(id,msg))!=0)
 			{
-				errorcode.push_back(0x34011003);
+				errorcode.push_back(0xCA10EE02);
 				return empty;
 			}
 			//Reconnect for read
 			if(!Connect())
 			{
-				errorcode.push_back(0x34011004);
+				errorcode.push_back(0xCA10EE03);
 				return empty;	
 			}
 		}
@@ -173,7 +173,7 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 		//Depending on the retval do things:
 		if (retval == -1)
 		{
-			errorcode.push_back(0x34011002);
+			errorcode.push_back(0xCA10EE04);
 		}else if(retval)
 		{
 			nbytes = read(s, &frame, sizeof(struct canfd_frame));
@@ -225,7 +225,7 @@ float Canbus::GetPhotodiode()
 	retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24011501);
+		errorcode.push_back(0xCA15EE01);
 		return retval;	
 	}
 
@@ -275,7 +275,7 @@ float Canbus::GetTriggerDac0(float VREF)
 	retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24011901);
+		errorcode.push_back(0xCA19EE01);
 		return retval;	
 	}
 
@@ -328,7 +328,7 @@ float Canbus::GetTriggerDac1(float VREF)
 	retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24012001);
+		errorcode.push_back(0xCA20EE01);
 		return retval;	
 	}
 
@@ -396,7 +396,7 @@ int Canbus::SetTriggerDac0(float threshold, float VREF)
 	retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24012101);
+		errorcode.push_back(0xCA21EE01);
 		return retval;	
 	}
 
@@ -472,7 +472,7 @@ int Canbus::SetTriggerDac1(float threshold, float VREF)
 	retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24012201);
+		errorcode.push_back(0xCA22EE01);
 		return retval;	
 	}
 
@@ -532,7 +532,7 @@ vector<float> Canbus::GetTemp()
 	int retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24011801);
+		errorcode.push_back(0xCA18EE01);
 		return {(float)retval,(float)retval};	
 	}
 
@@ -605,7 +605,7 @@ int Canbus::SetHV_ONOFF(bool state){
 	retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24011601);
+		errorcode.push_back(0xCA16EE01);
 		return retval;	
 	}
 	
@@ -674,7 +674,7 @@ int Canbus::SetHV_voltage(float volts){
 	if(volts > HV_MAX)
 	{
 		volts = HV_MAX;
-		errorcode.push_back(0x14011701);
+		errorcode.push_back(0xCA17EE01);
 		//std::cout << "Max voltage set" << std::endl;
 	}
 
@@ -724,7 +724,7 @@ int Canbus::SetHV_voltage(float volts){
 		int retval = SendMessage(id,msg);
 		if(retval!=0)
 		{
-			errorcode.push_back(0x24011702);
+			errorcode.push_back(0xCA17EE02);
 			return retval;	
 		}
 		usleep(1000);
@@ -741,7 +741,7 @@ int Canbus::GetHV_ONOFF(){
 	int retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24012501);
+		errorcode.push_back(0xCA25EE01);
 		return retval;	
 	}
 
@@ -819,7 +819,7 @@ int Canbus::SetLV(bool state){
 	retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24011201);
+		errorcode.push_back(0xCA12EE01);
 		return retval;	
 	}
 
@@ -882,7 +882,7 @@ int Canbus::GetLV_ONOFF(){
 	int retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24011301);
+		errorcode.push_back(0xCA13EE01);
 		return retval;	
 	}
 
@@ -939,7 +939,7 @@ vector<float> Canbus::GetLV_voltage(){
 	int retval = SendMessage(id,msg);
 	if(retval!=0)
 	{
-		errorcode.push_back(0x24011401);
+		errorcode.push_back(0xCA14EE01);
 		return {(float)retval,(float)retval,(float)retval};	
 	}
 
@@ -1024,7 +1024,7 @@ int Canbus::SetRelay(int idx, bool state){
 			ch = RLY3;
 			break;
 		default :
-			errorcode.push_back(0x24012301);
+			errorcode.push_back(0xCA23EE01);
 			return -2;
 	}
 	
@@ -1035,7 +1035,7 @@ int Canbus::SetRelay(int idx, bool state){
 		return stateInt;
 	}else 
 	{
-		errorcode.push_back(0x24012302);
+		errorcode.push_back(0xCA23EE02);
 		return -3;
 	}
 	
@@ -1062,7 +1062,7 @@ bool Canbus::GetRelayState(int idx){
 			ch = RLY3;
 			break;
 		default :
-			errorcode.push_back(0x24012401);
+			errorcode.push_back(0xCA24EE01);
 			return retval;
 	}
 	retval = digitalRead(ch);
