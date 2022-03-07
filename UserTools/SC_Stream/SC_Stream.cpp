@@ -47,7 +47,7 @@ bool SC_Stream::Execute(){
     last=boost::posix_time::second_clock::local_time();
   }
 
-  m_data->SCMonitor.Print();
+  //m_data->SCMonitor.Print();
   m_data->SCMonitor.errorcodes.clear();
   
   return true;
