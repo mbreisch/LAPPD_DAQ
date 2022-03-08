@@ -794,7 +794,6 @@ int Canbus::GetHV_ONOFF(){
 	{
 		//fprintf(stderr, "No response from LVHV after HV check\n");
 		return -6;	
-	}return -6;	
 	}
 
 	return HV_state;
