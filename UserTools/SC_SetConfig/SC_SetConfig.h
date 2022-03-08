@@ -33,7 +33,7 @@ class SC_SetConfig: public Tool {
  private:
 
  bool flag;
-
+ int retval;
 
 
 };
