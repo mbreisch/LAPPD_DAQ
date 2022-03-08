@@ -27,6 +27,8 @@ class SC_SetConfig: public Tool {
   bool Execute(); ///< Executre function used to perform Tool perpose. 
   bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
+  bool Setup();
+  bool Update();
 
  private:
 
