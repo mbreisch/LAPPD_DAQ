@@ -28,7 +28,6 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 
 
 bool SC_SetConfig::Execute(){
-	int retval;
 	//check LV/HV state_set 
 	if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
 	
