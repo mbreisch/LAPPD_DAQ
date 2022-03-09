@@ -314,24 +314,24 @@ int ACC::initializeForDataReadout(int trigMode, unsigned int boardMask, int cali
 			{		
 				command = 0x00B10000;
 				command = (command | (boardMask << 24)) | CHIPMASK[i] | SELF_psec_channel_mask[i]; 
-				usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE22);}	
+				usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE23);}	
 			}
 			command = 0x00B16000;
 			command = (command | (boardMask << 24)) | SELF_sign;
-			usbcheck=usb->sendData(command);	if(usbcheck==false){errorcode.push_back(0xAC17EE23);}			
+			usbcheck=usb->sendData(command);	if(usbcheck==false){errorcode.push_back(0xAC17EE24);}			
 			command = 0x00B15000;
 			command = (command | (boardMask << 24)) | SELF_number_channel_coincidence;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE24);}	
+			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE25);}	
 			command = 0x00B18000;
 			command = (command | (boardMask << 24)) | SELF_coincidence_onoff;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE25);}	
+			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE26);}	
 			command = 0x00A60000;
 			command = (command | (boardMask << 24)) | (0x1F << 12) | SELF_threshold;
-			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE26);}	
+			usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE27);}	
 	}
 	command = 0x00340000;
 	command = command | PPSRatio;
-	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE27);}	
+	usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0xAC17EE28);}	
 	return 0;
 }
 
