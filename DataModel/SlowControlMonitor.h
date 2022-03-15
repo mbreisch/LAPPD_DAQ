@@ -94,7 +94,7 @@ class SlowControlMonitor : public SerialisableObject{
   ar & recieveFlag;
   ar & humidity_mon;
   ar & temperature_mon;
-  ar & temperature_thermistor
+  ar & temperature_thermistor;
   ar & HV_mon;
   ar & HV_state_set;
   ar & HV_volts;
