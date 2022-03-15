@@ -37,7 +37,11 @@ bool SC_SetConfig::Execute(){
 	
 	if(m_data->SCMonitor.recieveFlag==3){Update();} //Used to update HV volts set, triggerboards threshold
 	
-	if(m_data->SCMonitor.recieveFlag==4){return true;} //Used as skip for setting new emergency thresholds
+	if(m_data->SCMonitor.recieveFlag==4) //Used as skip for setting new emergency thresholds
+	{
+		m_data->SCMonitor.recieveFlag=2;
+		return true;
+	} 
 	
 	return true;
 
