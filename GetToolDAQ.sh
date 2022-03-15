@@ -1,7 +1,7 @@
 #!/bin/bash
 
-init=0
-tooldaq=0
+init=1
+tooldaq=1
 boostflag=1
 zmq=1
 final=1
@@ -95,8 +95,11 @@ cd ToolDAQ
 
 if [ $tooldaq -eq 1 ]
 then
-#unzip ../ToolDAQFramework.zip -d .
-	git clone https://github.com/ToolDAQ/ToolDAQFramework.git --branch v2.2.0
+	unzip ../ToolDAQFramework.zip -d .
+	cd ToolDAQFramework
+	make clean 
+	cd ..
+	#git clone https://github.com/ToolDAQ/ToolDAQFramework.git --branch v2.2.0
 fi
 
 if [ $zmq -eq 1 ]
