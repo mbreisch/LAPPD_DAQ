@@ -57,13 +57,11 @@ class SlowControlMonitor : public SerialisableObject{
   float LIMIT_temperature_high = 0;
   float LIMIT_humidity_high = 0;  
   float LIMIT_Thermistor_temperature_low = 0;
-  float LIMIT_Thermistor_humidity_low = 0;
-  float LIMIT_Thermistor_temperature_high = 0;
-  float LIMIT_Thermistor_humidity_high = 0;   
+  float LIMIT_Thermistor_temperature_high = 0; 
   int FLAG_temperature = 0;
   int FLAG_humidity = 0;
   int FLAG_temperature_Thermistor = 0;
-  int FLAG_humidity_Thermistor = 0;
+
  
   //relay
   bool relayCh1;
@@ -96,7 +94,7 @@ class SlowControlMonitor : public SerialisableObject{
   ar & recieveFlag;
   ar & humidity_mon;
   ar & temperature_mon;
-  temperature_thermistor
+  ar & temperature_thermistor
   ar & HV_mon;
   ar & HV_state_set;
   ar & HV_volts;
@@ -110,13 +108,10 @@ class SlowControlMonitor : public SerialisableObject{
   ar & LIMIT_temperature_high;
   ar & LIMIT_humidity_high;  
   ar & LIMIT_Thermistor_temperature_low;
-  ar & LIMIT_Thermistor_humidity_low;
-  ar & LIMIT_Thermistor_temperature_high;
-  ar & LIMIT_Thermistor_humidity_high;   
+  ar & LIMIT_Thermistor_temperature_high; 
   ar & FLAG_temperature;
   ar & FLAG_humidity;
   ar & FLAG_temperature_Thermistor;
-  ar & FLAG_humidity_Thermistor;
   ar & Trig1_threshold;
   ar & Trig1_mon;
   ar & Trig0_threshold;
