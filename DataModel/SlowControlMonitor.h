@@ -26,11 +26,15 @@ class SlowControlMonitor : public SerialisableObject{
   bool RelayControl(zmq::socket_t* sock);
   int recieveFlag = 0;
   std::string ident_string;
+ 
+  //Version number
+  unsigned int VersionNumber = 0x0003;
   
   //RHT
-  float humidity_mon;
-  float temperature_mon;
-  
+  float humidity_mon=-444;
+  float temperature_mon=-444;
+  float temperature_thermistor=-444; 
+ 
   //HV
   int HV_mon=-1;
   bool HV_state_set;
@@ -40,18 +44,27 @@ class SlowControlMonitor : public SerialisableObject{
   //LV
   int LV_mon=-1;
   bool LV_state_set;
-  float v33;
-  float v25;
-  float v12;
+  float v33=-444;
+  float v25=-444;
+  float v12=-444;
+ 
+  //Saltbridge
+  int saltbridge = -1;
 
   //Emergency variables
   float LIMIT_temperature_low = 0;
   float LIMIT_humidity_low = 0;
   float LIMIT_temperature_high = 0;
   float LIMIT_humidity_high = 0;  
+  float LIMIT_Thermistor_temperature_low = 0;
+  float LIMIT_Thermistor_humidity_low = 0;
+  float LIMIT_Thermistor_temperature_high = 0;
+  float LIMIT_Thermistor_humidity_high = 0;   
   int FLAG_temperature = 0;
   int FLAG_humidity = 0;
-
+  int FLAG_temperature_Thermistor = 0;
+  int FLAG_humidity_Thermistor = 0;
+ 
   //relay
   bool relayCh1;
   bool relayCh2;
@@ -83,6 +96,7 @@ class SlowControlMonitor : public SerialisableObject{
   ar & recieveFlag;
   ar & humidity_mon;
   ar & temperature_mon;
+  temperature_thermistor
   ar & HV_mon;
   ar & HV_state_set;
   ar & HV_volts;
@@ -95,8 +109,14 @@ class SlowControlMonitor : public SerialisableObject{
   ar & LIMIT_humidity_low;
   ar & LIMIT_temperature_high;
   ar & LIMIT_humidity_high;  
+  ar & LIMIT_Thermistor_temperature_low;
+  ar & LIMIT_Thermistor_humidity_low;
+  ar & LIMIT_Thermistor_temperature_high;
+  ar & LIMIT_Thermistor_humidity_high;   
   ar & FLAG_temperature;
   ar & FLAG_humidity;
+  ar & FLAG_temperature_Thermistor;
+  ar & FLAG_humidity_Thermistor;
   ar & Trig1_threshold;
   ar & Trig1_mon;
   ar & Trig0_threshold;
