@@ -1074,3 +1074,13 @@ bool Canbus::GetRelayState(int idx){
 	}
 	return retval;
 }
+
+/*ID 25: Get the Saltbridge state*/
+int Canbus::GetSaltbridge(){
+	return -444;
+}
+
+/*ID 26: Get the thermistor value*/
+float Canbus::GetThermistor(){
+	return -444;
+}
