@@ -93,6 +93,8 @@ public:
 	/*--------Temperature and humidity functions--------*/
 	/*ID 18: Get the temperature and humidity values*/
 	vector<float> GetTemp(); 
+	/*ID 26: Get the temperature from the thermistor*/
+	float GetThermistor(); 
 
 	/*--------------Triggerboard functions--------------*/
 	/*ID 19: Get the triggerboard DAC 0 value */
@@ -109,6 +111,10 @@ public:
 	int SetRelay(int idx, bool state);
 	/*ID 24: Get the relay state*/
 	bool GetRelayState(int idx);
+	
+	/*----------------Saltbridge functions---------------*/
+	/*ID 25: Get the saltbridge state*/
+	int GetSaltbridge();
 
 	/*-----------------Global variables-----------------*/
 	int s;
