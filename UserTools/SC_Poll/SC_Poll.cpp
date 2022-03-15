@@ -35,7 +35,7 @@ bool SC_Poll::Execute(){
   vector<float> RHT = m_data->CB->GetTemp();
   m_data->SCMonitor.temperature_mon = RHT[0];
   m_data->SCMonitor.humidity_mon = RHT[1];
-  //m_data->SCMonitor.temperature_thermistor = m_data->CB->GetThermistor();
+  m_data->SCMonitor.temperature_thermistor = m_data->CB->GetThermistor();
 
   //DAC0
   m_data->SCMonitor.Trig0_mon = m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref);
@@ -52,7 +52,7 @@ bool SC_Poll::Execute(){
   m_data->SCMonitor.light = m_data->CB->GetPhotodiode();
 
   //Saltbridge
-  //m_data->SCMonitor.saltbridge = m_data->CB->GetSaltbridge();
+  m_data->SCMonitor.saltbridge = m_data->CB->GetSaltbridge();
 
   //Errors
   m_data->SCMonitor.errorcodes = m_data->CB->returnErrors();
