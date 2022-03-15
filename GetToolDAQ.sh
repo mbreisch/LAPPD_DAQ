@@ -1,7 +1,7 @@
 #!/bin/bash
 
-init=1
-tooldaq=1
+init=0
+tooldaq=0
 boostflag=1
 zmq=1
 final=1
