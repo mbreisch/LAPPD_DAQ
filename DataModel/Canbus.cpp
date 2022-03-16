@@ -1086,7 +1086,28 @@ float Canbus::GetThermistor(){
 	string errmsg, target, serial;
 	YTemperature *tsensor;
 	
-	//Get 
+	// Setup the API to use local USB devices
+	if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
+	{
+		cerr << "RegisterHub error: " << errmsg << endl;
+		return -111;
+	}
 	
+	//Get target device and sensor
+	target ="THRMSTR2-123456";
+	tsensor = YTemperature::FindTemperature(target + ".temperature1");
+	serial = tsensor->get_module()->get_serialNumber();
+	
+	YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature1");
+	
+	if (!t1->isOnline()) 
+	{
+		cout << "Module not connected (check identification and USB cable)";
+		return -222;
+	}
+	
+	return  (float) t1->get_currentValue();
+	
+	YAPI::FreeAPI();
 	return -444;
 }
