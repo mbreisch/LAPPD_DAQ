@@ -119,7 +119,7 @@ public:
 	
 	/*----------------Saltbridge functions---------------*/
 	/*ID 25: Get the saltbridge state*/
-	int GetSaltbridge();
+	float GetSaltbridge();
 
 	/*-----------------Global variables-----------------*/
 	int s;
