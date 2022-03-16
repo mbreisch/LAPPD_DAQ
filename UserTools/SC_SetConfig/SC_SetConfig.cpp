@@ -88,7 +88,7 @@ bool SC_SetConfig::Setup(){
 	}  
 
 	//------------------------------------HV Prep
-	retval = m_data->CB->SetLV(0);
+	retval = m_data->CB->SetLV(false);
 	if(retval!=0 && retval!=1)
 	{
 		//std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;
