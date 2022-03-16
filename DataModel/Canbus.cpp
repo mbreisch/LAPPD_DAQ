@@ -1082,7 +1082,7 @@ int Canbus::GetSaltbridge(){
 
 /*ID 26: Get the thermistor value*/
 float Canbus::GetThermistor(){
-	//init
+/*	//init
 	string errmsg, target, serial;
 	YTemperature *tsensor;
 	
@@ -1116,5 +1116,5 @@ float Canbus::GetThermistor(){
 	}
 	YAPI::FreeAPI();
 
-	return  (float) t->get_currentRawValue();
+	return  (float) t->get_currentRawValue();*/
 }
