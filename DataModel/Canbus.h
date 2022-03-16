@@ -28,6 +28,8 @@
 
 #include "yocto_api.h"
 #include "yocto_temperature.h"
+#include "yocto_genericsensor.h"
+
 
 #define CANID_DELIM '#'
 #define CAN_DLC 8
