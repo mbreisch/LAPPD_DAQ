@@ -1082,5 +1082,11 @@ int Canbus::GetSaltbridge(){
 
 /*ID 26: Get the thermistor value*/
 float Canbus::GetThermistor(){
+	//init
+	string errmsg, target, serial;
+	YTemperature *tsensor;
+	
+	//Get 
+	
 	return -444;
 }
