@@ -1,5 +1,6 @@
 #!/bin/bash
 
+mkdir -p ToolDAQ
 cd ToolDAQ
 
 mkdir YOCTO
