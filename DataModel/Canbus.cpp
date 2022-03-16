@@ -1076,7 +1076,7 @@ bool Canbus::GetRelayState(int idx){
 }
 
 /*ID 25: Get the Saltbridge state*/
-int Canbus::GetSaltbridge(){
+float Canbus::GetSaltbridge(){
 	return -444;
 }
 
