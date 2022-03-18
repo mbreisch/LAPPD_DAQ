@@ -122,6 +122,7 @@ public:
 	float GetSaltbridge();
 
 	/*-----------------Global variables-----------------*/
+	string thermistorID;
 	int s;
 	int nbytes;
 	int required_mtu;
