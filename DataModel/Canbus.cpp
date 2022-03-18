@@ -1077,14 +1077,9 @@ bool Canbus::GetRelayState(int idx){
 
 /*ID 25: Get the Saltbridge state*/
 float Canbus::GetSaltbridge(){
-	return -444;
-}
-
-/*ID 26: Get the thermistor value*/
-float Canbus::GetThermistor(){
-/*	//init
+	//init
 	string errmsg, target, serial;
-	YTemperature *tsensor;
+	YGenericSensor *tsensor;
 	
 	// Setup the API to use local USB devices
 	if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
@@ -1094,27 +1089,59 @@ float Canbus::GetThermistor(){
 	}
 	
 	//Get target device and sensor
-	target ="THRMSTR2-123456";
-	YTemperature *t;
-	for(i=1; i<4; i++)
+	target = thermistorID;
+	
+	tsensor = YGenericSensor::FirstGenericSensor();
+	if (!tsensor->isOnline())
 	{
-		tsensor = YTemperature::FindTemperature(target + ".temperature" + to_string(i));
-		serial = tsensor->get_module()->get_serialNumber();
-		t = YTemperature::FindTemperature(serial + ".temperature" + to_string(i));
-		if (!t->isOnline()) 
+		return -333;	
+	}else
+	{
+		tsensor = tsensor->nextGenericSensor();	
+		while(tsensor == NULL)
 		{
-			if(i==3)
-			{
-				cout << "Module not connected (check identification and USB cable)";
-				return -222;
-			}
-			continue;
-		}else
-		{
-			break;
+			tsensor = tsensor->nextGenericSensor();	
 		}
 	}
+		 
+	float Resistance = tsensor->get_currentRawValue();
+	string Unit = tsensor->get_unit();
+	
 	YAPI::FreeAPI();
+	
+	cout << "Unit for saltbridge is " << Unit << endl;
 
-	return  (float) t->get_currentRawValue();*/
+	return Resistance;
+}
+
+/*ID 26: Get the thermistor value*/
+float Canbus::GetThermistor(){
+	//init
+	string errmsg, target, serial;
+	YGenericSensor *tsensor;
+	
+	// Setup the API to use local USB devices
+	if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
+	{
+		cerr << "RegisterHub error: " << errmsg << endl;
+		return -111;
+	}
+	
+	//Get target device and sensor
+	target = thermistorID;
+	
+	tsensor = YGenericSensor::FirstGenericSensor();
+	if (!tsensor->isOnline())
+	{
+		return -333;	
+	}
+		 
+	float Temperature = tsensor->get_currentRawValue();
+	string Unit = tsensor->get_unit();
+	
+	YAPI::FreeAPI();
+	
+	cout << "Unit for thermistor is " << Unit << endl;
+
+	return Temperature;
 }
