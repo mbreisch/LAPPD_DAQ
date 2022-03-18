@@ -1077,7 +1077,7 @@ bool Canbus::GetRelayState(int idx){
 
 /*ID 25: Get the Saltbridge state*/
 float Canbus::GetSaltbridge(){
-	//init
+/*	//init
 	string errmsg, target, serial;
 	YGenericSensor *tsensor;
 	
@@ -1111,12 +1111,12 @@ float Canbus::GetSaltbridge(){
 	
 	cout << "Unit for saltbridge is " << Unit << endl;
 
-	return Resistance;
+	return Resistance;*/
 }
 
 /*ID 26: Get the thermistor value*/
 float Canbus::GetThermistor(){
-	//init
+/*	//init
 	string errmsg, target, serial;
 	YGenericSensor *tsensor;
 	
@@ -1143,5 +1143,5 @@ float Canbus::GetThermistor(){
 	
 	cout << "Unit for thermistor is " << Unit << endl;
 
-	return Temperature;
+	return Temperature;*/
 }
