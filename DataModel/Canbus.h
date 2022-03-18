@@ -26,9 +26,9 @@
 #include <linux/can/error.h>
 #include <wiringPi.h>
 
-#include "yocto_api.h"
-#include "yocto_temperature.h"
-#include "yocto_genericsensor.h"
+//#include "yocto_api.h"
+//#include "yocto_temperature.h"
+//#include "yocto_genericsensor.h"
 
 
 #define CANID_DELIM '#'
