@@ -20,6 +20,10 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 		infile >> m_data->CB->get_HV_volts;
 		infile.close();
 	}
+	
+	string ThermistorID;
+	m_variables.Get("ThermistorID",ThermistorID)
+	m_data->CB.thermistorID = ThermistorID;
 
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 
