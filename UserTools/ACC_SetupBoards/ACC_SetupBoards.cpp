@@ -48,7 +48,7 @@ bool ACC_SetupBoards::Execute(){
 		{
 			unsigned int shift = (1<<(m_data->psec.readRetval-1));
 			printf("Necessary dump of board 0x%02x\n", shift);
-			m_data->acc->dumpData(shift);
+			m_data->acc->dumpData(0xFF);
 		}
 	}
 	return true;
