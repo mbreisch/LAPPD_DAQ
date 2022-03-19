@@ -23,7 +23,7 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 	
 	string ThermistorID;
 	m_variables.Get("ThermistorID",ThermistorID);
-	m_data->CB.thermistorID = ThermistorID;
+	m_data->CB->SetThermistorID(ThermistorID);
 
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 
