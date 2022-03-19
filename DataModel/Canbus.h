@@ -122,6 +122,7 @@ public:
 	float GetSaltbridge();
 
 	/*-----------------Global variables-----------------*/
+	void SetThermistorID(string in){thermistorID = in;}
 	string thermistorID;
 	int s;
 	int nbytes;
