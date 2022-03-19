@@ -27,6 +27,8 @@ class SC_Emergency: public Tool {
   bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
   bool TEMPCHK();
+  bool TEMPCHK_Thermistor();
+  bool SALTBRIDGECHK();
   bool HUMIDITYCHK();
 
  private:
