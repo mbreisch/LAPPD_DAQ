@@ -1076,72 +1076,97 @@ bool Canbus::GetRelayState(int idx){
 }
 
 /*ID 25: Get the Saltbridge state*/
-float Canbus::GetSaltbridge(){
+float Canbus::GetSaltbridge()
+{
 	//init
 	string errmsg, target, serial;
-	YGenericSensor *tsensor;
+	YTemperature *tsensor;
+	float Resistance;
+	
+	//std::cout << "Trying to connect to USB" << std::endl;
 	
 	// Setup the API to use local USB devices
 	if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
 	{
-		cerr << "RegisterHub error: " << errmsg << endl;
+		//cerr << "RegisterHub error: " << errmsg << endl;
+		errorcode.push_back(0xCA25EE01);
 		return -111;
 	}
 	
+	//std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
 	//Get target device and sensor
-	target = thermistorID;
+	target =thermistor_id;
 	
-	tsensor = YGenericSensor::FirstGenericSensor();
-	if (!tsensor->isOnline())
-	{
-		return -333;	
+	tsensor = YTemperature::FindTemperature(target + ".temperature4");
+	serial = tsensor->get_module()->get_serialNumber();
+	
+	//tsensor = YGenericSensor::FindGenericSensor(target + ".genericsensor1");
+	//serial = tsensor->get_module()->get_serialNumber();	
+	
+	//cout << "serial " << serial << endl;
+	
+	YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature4");
+
+	if(t1->isOnline()){
+		Resistance = t1->get_signalValue();
+		//cout << "R for saltbridge is " << Resistance << endl;
+		string Unit = t1->get_signalUnit();
+		//cout << "Unit for saltbridge is " << Unit << endl;
 	}else
 	{
-		tsensor = tsensor->nextGenericSensor();	
-		while(tsensor == NULL)
-		{
-			tsensor = tsensor->nextGenericSensor();	
-		}
+		errorcode.push_back(0xCA25EE02);
+		return -333;
 	}
-		 
-	float Resistance = tsensor->get_currentRawValue();
-	string Unit = tsensor->get_unit();
 	
 	YAPI::FreeAPI();
 	
-	cout << "Unit for saltbridge is " << Unit << endl;
-
 	return Resistance;
 }
 
 /*ID 26: Get the thermistor value*/
-float Canbus::GetThermistor(){
+float Canbus::GetThermistor()
+{
 	//init
 	string errmsg, target, serial;
-	YGenericSensor *tsensor;
+	YTemperature *tsensor;
+	float Temperature;
+	
+	//std::cout << "Trying to connect to USB" << std::endl;
 	
 	// Setup the API to use local USB devices
 	if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
 	{
-		cerr << "RegisterHub error: " << errmsg << endl;
+		//cerr << "RegisterHub error: " << errmsg << endl;
+		errorcode.push_back(0xCA26EE02);
 		return -111;
 	}
 	
+	//std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
 	//Get target device and sensor
-	target = thermistorID;
+	target =thermistor_id;
 	
-	tsensor = YGenericSensor::FirstGenericSensor();
-	if (!tsensor->isOnline())
+	tsensor = YTemperature::FindTemperature(target + ".temperature1");
+	serial = tsensor->get_module()->get_serialNumber();
+	
+	//tsensor = YGenericSensor::FindGenericSensor(target + ".genericsensor1");
+	//serial = tsensor->get_module()->get_serialNumber();	
+	
+	//cout << "serial " << serial << endl;
+	
+	YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature1");
+
+	if(t1->isOnline()){
+		Temperature = t1->get_signalValue();
+		//cout << "R for thermistor is " << Temperature << endl;
+		string Unit = t1->get_signalUnit();
+		//cout << "Unit for thermistor is " << Unit << endl;
+	}else
 	{
-		return -333;	
+		errorcode.push_back(0xCA26EE02);
+		return -333;
 	}
-		 
-	float Temperature = tsensor->get_currentRawValue();
-	string Unit = tsensor->get_unit();
 	
 	YAPI::FreeAPI();
 	
-	cout << "Unit for thermistor is " << Unit << endl;
-
 	return Temperature;
 }
