@@ -1095,7 +1095,7 @@ float Canbus::GetSaltbridge()
 	
 	//std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
 	//Get target device and sensor
-	target =thermistor_id;
+	target =thermistorID;
 	
 	tsensor = YTemperature::FindTemperature(target + ".temperature4");
 	serial = tsensor->get_module()->get_serialNumber();
@@ -1143,7 +1143,7 @@ float Canbus::GetThermistor()
 	
 	//std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
 	//Get target device and sensor
-	target =thermistor_id;
+	target =thermistorID;
 	
 	tsensor = YTemperature::FindTemperature(target + ".temperature1");
 	serial = tsensor->get_module()->get_serialNumber();
