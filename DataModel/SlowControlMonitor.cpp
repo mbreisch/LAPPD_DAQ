@@ -38,6 +38,8 @@ bool SlowControlMonitor::Send_Mon(zmq::socket_t* sock){
 	std::memcpy(msgFH.data(), &FLAG_humidity, sizeof FLAG_humidity);
 	zmq::message_t msgFTT(sizeof FLAG_temperature_Thermistor );
 	std::memcpy(msgFTT.data(), &FLAG_temperature_Thermistor , sizeof FLAG_temperature_Thermistor );
+	zmq::message_t msgFS(sizeof FLAG_saltbridge );
+	std::memcpy(msgFS.data(), &FLAG_saltbridge , sizeof FLAG_saltbridge );
 
 	//Relay send
 	zmq::message_t msgR1(sizeof relayCh1_mon);
@@ -85,6 +87,7 @@ bool SlowControlMonitor::Send_Mon(zmq::socket_t* sock){
 	sock->send(msgFT,ZMQ_SNDMORE);
 	sock->send(msgFH,ZMQ_SNDMORE);
 	sock->send(msgFTT,ZMQ_SNDMORE);
+	sock->send(msgFS,ZMQ_SNDMORE);
 	sock->send(msgR1,ZMQ_SNDMORE);
 	sock->send(msgR2,ZMQ_SNDMORE);
 	sock->send(msgR3,ZMQ_SNDMORE);
@@ -144,6 +147,8 @@ bool SlowControlMonitor::Receive_Mon(zmq::socket_t* sock){
 	FLAG_humidity=*(reinterpret_cast<int*>(msg.data())); 
 	sock->recv(&msg);
 	FLAG_temperature_Thermistor=*(reinterpret_cast<int*>(msg.data())); 
+	sock->recv(&msg);
+	FLAG_saltbridge=*(reinterpret_cast<int*>(msg.data())); 
 
 	//Relay
 	sock->recv(&msg);
