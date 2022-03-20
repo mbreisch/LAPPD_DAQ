@@ -360,6 +360,8 @@ bool SlowControlMonitor::Print(){
 	std::cout << "LV voltages are V(3.3)= " << v33 << "V, V(2.5)= " << v25 << "V, V(1.2)= " << v12 << "V" << std::endl;	
 	std::cout << "Temperature warning flag is " << std::boolalpha << FLAG_temperature << std::endl;
 	std::cout << "Humidity warning flag is " << std::boolalpha << FLAG_humidity << std::endl;
+	std::cout << "Temperature 2 warning flag is " << std::boolalpha << FLAG_temperature_Thermistor << std::endl;
+	std::cout << "Saltbridge warning flag is " << std::boolalpha << FLAG_saltbridge << std::endl;
 	std::cout << "Relay 1 is " << std::boolalpha << relayCh1_mon << std::endl;
 	std::cout << "Relay 2 is " << std::boolalpha << relayCh2_mon << std::endl;
 	std::cout << "Relay 3 is " << std::boolalpha << relayCh3_mon << std::endl;
