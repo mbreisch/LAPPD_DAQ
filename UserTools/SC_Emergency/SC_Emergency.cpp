@@ -180,16 +180,16 @@ bool SC_Emergency::SALTBRIDGECHK(){
     
     if(tries>=max_tries && retval!=0)
     {
-       m_data->SCMonitor.FLAG_humidity = 3;
+       m_data->SCMonitor.FLAG_saltbridge = 3;
        m_data->SCMonitor.errorcodes.push_back(0xCC06EE01);
     }
     
-    m_data->SCMonitor.FLAG_humidity = 2;
+    m_data->SCMonitor.FLAG_saltbridge = 2;
     
     return true; 
   }else
   {
-     m_data->SCMonitor.FLAG_humidity = 0;
+     m_data->SCMonitor.FLAG_saltbridge = 0;
     return true;
   }
 }  
