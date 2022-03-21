@@ -276,7 +276,7 @@ bool SlowControlMonitor::Receive_Config(zmq::socket_t* sock){
 	if(VersionNumber != tVersion)
 	{
 		std::cout << "Wrong version number! Please check immediately!" << std::endl;
-		//return false;
+		return false;
 	}
 
 	//Receive flag
