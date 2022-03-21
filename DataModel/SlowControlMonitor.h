@@ -113,6 +113,7 @@ class SlowControlMonitor : public SerialisableObject{
   ar & FLAG_temperature;
   ar & FLAG_humidity;
   ar & FLAG_temperature_Thermistor;
+  ar & FLAG_saltbridge;
   ar & Trig1_threshold;
   ar & Trig1_mon;
   ar & Trig0_threshold;
@@ -125,6 +126,7 @@ class SlowControlMonitor : public SerialisableObject{
   ar & relayCh2_mon;
   ar & relayCh3_mon;
   ar & light;
+  ar & saltbridge;
   ar & errorcodes;
  }
  
