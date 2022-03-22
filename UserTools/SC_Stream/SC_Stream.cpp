@@ -10,15 +10,15 @@ bool SC_Stream::Initialise(std::string configfile, DataModel &data){
 
   m_data= &data;
   
-  std::string ip="";
+  //std::string ip="";
   std::string port="0";
-  if(!m_variables.Get("IP",ip)) ip="127.0.0.1";
+  //  if(!m_variables.Get("IP",ip)) ip="127.0.0.1";
   if(!m_variables.Get("Port",port)) port="3333";
   m_port = stoi(port);
 
   sock=new zmq::socket_t(*(m_data->context), ZMQ_PUB);
-  std::string connection="tcp://"+ip+":"+port;
-  sock->connect(connection.c_str());
+  std::string connection="tcp://*:"+port;
+  sock->bind(connection.c_str());
   
   long time_sec=0;
 
@@ -28,7 +28,7 @@ bool SC_Stream::Initialise(std::string configfile, DataModel &data){
   last=boost::posix_time::second_clock::local_time();
 
   m_util=new Utilities(m_data->context);
-  if (!m_util->AddService("SlowControlMonitor",m_port,false)) return false;
+  if (!m_util->AddService("MonitorData",m_port,false)) return false;
   
   return true;
 }
@@ -59,7 +59,7 @@ bool SC_Stream::Finalise(){
   delete sock;
   sock=0; 
 
-  bool ret= m_util->RemoveService("SlowControlMonitor");
+  bool ret= m_util->RemoveService("MonitorData");
   
   delete m_util;
   m_util=0;
