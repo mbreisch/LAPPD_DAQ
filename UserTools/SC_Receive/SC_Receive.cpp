@@ -15,10 +15,10 @@ bool SC_Receive::Initialise(std::string configfile, DataModel &data){
   std::string ip="";
   std::string port="0";
 	
-  if(!m_variables.Get("IP",ip)) ip="0.0.0.0";
+  //  if(!m_variables.Get("IP",ip)) ip="0.0.0.0";
   if(!m_variables.Get("Port",port)) port="4444";
 
-  std::string connection="tcp://"+ip+":"+port;
+  std::string connection="tcp://*:"+port;
   
   sock=new zmq::socket_t(*(m_data->context), ZMQ_DEALER);
 
@@ -38,7 +38,7 @@ bool SC_Receive::Execute(){
   int timer;
   if(m_data->SCMonitor.recieveFlag==0)
   {
-    timer = -1;
+    timer = 0;
   }else
   {
     timer = 1000;
