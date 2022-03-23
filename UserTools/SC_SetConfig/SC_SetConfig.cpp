@@ -73,10 +73,11 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
    //------------------------------------Relay Control
 	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
 	{
+		std::cout << "Relay 1 is " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh1  << std::endl;
 		retval = m_data->CB->SetRelay(1,m_data->SCMonitor.relayCh1);
 		if(retval!=0 && retval!=1)
 		{
-			//std::cout << " There was an error (Relay 1) with retval: " << retval << std::endl;
+			std::cout << " There was an error (Relay 1) with retval: " << retval << std::endl;
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE01);
 		}
 	}
@@ -84,10 +85,11 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
 	if(m_data->SCMonitor.relayCh2!=m_data->SCMonitor.relayCh2_mon)
 	{
+		std::cout << "Relay 2 is " << std::boolalpha << m_data->SCMonitor.relayCh2_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh2  << std::endl;
 		retval = m_data->CB->SetRelay(2,m_data->SCMonitor.relayCh2);
 		if(retval!=0 && retval!=1)
 		{
-			//std::cout << " There was an error (Relay 2) with retval: " << retval << std::endl;
+			std::cout << " There was an error (Relay 2) with retval: " << retval << std::endl;
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE02);
 		}
 	}
@@ -95,10 +97,11 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	if(m_data->SCMonitor.relayCh3!=m_data->SCMonitor.relayCh3_mon)
 	{
+		std::cout << "Relay 3 is " << std::boolalpha << m_data->SCMonitor.relayCh3_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh3  << std::endl;
 		retval = m_data->CB->SetRelay(3,m_data->SCMonitor.relayCh3);
 		if(retval!=0 && retval!=1)
 		{
-			//std::cout << " There was an error (Relay 3) with retval: " << retval << std::endl;
+			std::cout << " There was an error (Relay 3) with retval: " << retval << std::endl;
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE03);
 		}
 	}  
