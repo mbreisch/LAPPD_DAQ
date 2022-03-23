@@ -132,17 +132,16 @@ bool SC_Emergency::HUMIDITYCHK(){
 
 bool SC_Emergency::TEMPCHK_Thermistor(){
   int retval=-2;
-  if(m_data->SCMonitor.temperature_thermistor < m_data->SCMonitor.LIMIT_Thermistor_temperature_low )
+  if(m_data->SCMonitor.temperature_thermistor > m_data->SCMonitor.LIMIT_Thermistor_temperature_low )
   {
     m_data->SCMonitor.FLAG_temperature_Thermistor  = 0;
     return true;
-  }else if(m_data->SCMonitor.temperature_thermistor >= m_data->SCMonitor.LIMIT_Thermistor_temperature_low  && m_data->SCMonitor.temperature_thermistor < m_data->SCMonitor.LIMIT_Thermistor_temperature_high )
+  }else if(m_data->SCMonitor.temperature_thermistor <= m_data->SCMonitor.LIMIT_Thermistor_temperature_low  && m_data->SCMonitor.temperature_thermistor > m_data->SCMonitor.LIMIT_Thermistor_temperature_high )
   {
     //Slow shutdown
-    m_data->SCMonitor.FLAG_temperature_Thermistor  = 1;
-    
+    m_data->SCMonitor.FLAG_temperature_Thermistor  = 1;   
     return true;
-  }else if(m_data->SCMonitor.temperature_thermistor >= m_data->SCMonitor.LIMIT_Thermistor_temperature_high )
+  }else if(m_data->SCMonitor.temperature_thermistor <= m_data->SCMonitor.LIMIT_Thermistor_temperature_high )
   {
     int tries = 0;
     int max_tries = 50;
@@ -168,8 +167,16 @@ bool SC_Emergency::TEMPCHK_Thermistor(){
 
  
 bool SC_Emergency::SALTBRIDGECHK(){
-  int retval=-2;
-  if(m_data->SCMonitor.saltbridge  < 50000)
+ /* int retval=-2;
+  if(m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_low)
+  {
+    m_data->SCMonitor.FLAG_saltbridge  = 0;
+    return true;     
+  }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_low && m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_high)
+  {
+    m_data->SCMonitor.FLAG_saltbridge  = 1;
+    return true;   
+  }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_high)
   {
     int tries = 0;
     int max_tries = 50;
@@ -189,7 +196,7 @@ bool SC_Emergency::SALTBRIDGECHK(){
     return true; 
   }else
   {
-     m_data->SCMonitor.FLAG_saltbridge = 0;
-    return true;
-  }
+    return false;
+  }*/
+  return true;
 }  
