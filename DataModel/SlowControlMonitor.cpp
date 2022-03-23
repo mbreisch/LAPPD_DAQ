@@ -357,6 +357,7 @@ bool SlowControlMonitor::Print(){
 	std::cout << "temperature = " << temperature_mon << std::endl;
 	std::cout << "thermistor = " << temperature_thermistor << std::endl;
 	std::cout << "HV state should be " << std::boolalpha << HV_state_set << " and is " << std::boolalpha << HV_mon << " and is set to " << HV_volts << " V" << std::endl;
+	std::cout << "Returned HV is " << HV_return_mon << "V" << std::endl;
 	std::cout << "LV state should be " << std::boolalpha << LV_state_set << " and is " << std::boolalpha << LV_mon << std::endl;
 	std::cout << "LV voltages are V(3.3)= " << v33 << "V, V(2.5)= " << v25 << "V, V(1.2)= " << v12 << "V" << std::endl;	
 	std::cout << "Temperature warning flag is " << std::boolalpha << FLAG_temperature << std::endl;
