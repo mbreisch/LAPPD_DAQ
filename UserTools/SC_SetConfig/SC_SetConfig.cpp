@@ -61,6 +61,7 @@ bool SC_SetConfig::Finalise(){
 
 bool SC_SetConfig::Setup(){
 	//------------------------------------Relay Control
+	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
 	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
 	{
 		retval = m_data->CB->SetRelay(1,m_data->SCMonitor.relayCh1);
@@ -71,6 +72,7 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
+	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(2);
 	if(m_data->SCMonitor.relayCh2!=m_data->SCMonitor.relayCh2_mon)
 	{
 		retval = m_data->CB->SetRelay(2,m_data->SCMonitor.relayCh2);
@@ -81,6 +83,7 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
+	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(3);
 	if(m_data->SCMonitor.relayCh3!=m_data->SCMonitor.relayCh3_mon)
 	{
 		retval = m_data->CB->SetRelay(3,m_data->SCMonitor.relayCh3);
