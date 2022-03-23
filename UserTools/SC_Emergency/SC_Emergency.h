@@ -30,6 +30,7 @@ class SC_Emergency: public Tool {
   bool TEMPCHK_Thermistor();
   bool SALTBRIDGECHK();
   bool HUMIDITYCHK();
+  bool HardShutdown(int relay, int errortype);
 
  private:
 
