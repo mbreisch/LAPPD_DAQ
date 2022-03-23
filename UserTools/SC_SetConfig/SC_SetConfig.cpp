@@ -12,7 +12,7 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 	m_log= m_data->Log;
 
 	m_data->CB= new Canbus();
-	m_data->CB->Connect(); 
+	//m_data->CB->Connect(); 
 
 	std::fstream infile("./configfiles/SlowControl/LastHV.txt", std::ios_base::in);
 	if(infile.is_open())
