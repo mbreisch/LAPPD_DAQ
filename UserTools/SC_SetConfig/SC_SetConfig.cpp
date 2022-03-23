@@ -12,7 +12,7 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 	m_log= m_data->Log;
 
 	m_data->CB= new Canbus();
-	m_data->CB->Connect(); 
+	//	m_data->CB->Connect(); 
 
 	std::fstream infile("./configfiles/SlowControl/LastHV.txt", std::ios_base::in);
 	if(infile.is_open())
@@ -33,20 +33,21 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 
 bool SC_SetConfig::Execute(){
 	//check LV/HV state_set 
-	if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
-	
-	if(m_data->SCMonitor.recieveFlag==1){Setup();} //Normal Setup condition
-	
+  std::cout<<"in set config"<<std::endl;
+  if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
+   std::cout<<"d1"<<std::endl;
+  if(m_data->SCMonitor.recieveFlag==1){Setup();} //Normal Setup condition
+	  std::cout<<"d2"<<std::endl;
 	if(m_data->SCMonitor.recieveFlag==2){return true;} //After setup continous run mode
-	
+	  std::cout<<"d3"<<std::endl;
 	if(m_data->SCMonitor.recieveFlag==3){Update();} //Used to update HV volts set, triggerboards threshold
-	
+	  std::cout<<"d4"<<std::endl;
 	if(m_data->SCMonitor.recieveFlag==4) //Used as skip for setting new emergency thresholds
 	{
 		m_data->SCMonitor.recieveFlag=2;
 		return true;
 	} 
-	
+	  std::cout<<"d5"<<std::endl;
 	return true;
 
 }
@@ -60,7 +61,15 @@ bool SC_SetConfig::Finalise(){
 
 
 bool SC_SetConfig::Setup(){
-	//------------------------------------Relay Control
+  std::cout<<"in setup"<<std::endl;
+  
+
+m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
+m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
+m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
+   
+ std::cout<<"Relay Control"<<std::endl;
+   //------------------------------------Relay Control
 	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
 	{
 		retval = m_data->CB->SetRelay(1,m_data->SCMonitor.relayCh1);
@@ -90,14 +99,21 @@ bool SC_SetConfig::Setup(){
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE03);
 		}
 	}  
-
+ std::cout<<"Relay Control end"<<std::endl;
+  std::cout<<"HV Prep"<<std::endl;
 	//------------------------------------HV Prep
 	retval = m_data->CB->SetLV(false);
+	std::cout<<"p1"<<std::endl;
 	if(retval!=0 && retval!=1)
-	{
-		//std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;
-		m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
-	}
+	  {
+	    std::cout<<"p2"<<std::endl;
+	    std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;
+	    m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
+	    std::cout<<"p3"<<std::endl;
+	  }
+	std::cout<<"p4"<<std::endl;
+	  std::cout<<"HV Prep end"<<std::endl;
+	   std::cout<<"HV control"<<std::endl;
 	//------------------------------------HV Control
 	bool tempHVmon;
 	int tCB_HV = m_data->CB->GetHV_ONOFF();
@@ -146,6 +162,9 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
+     std::cout<<"HV control end "<<std::endl;
+
+          std::cout<<"LV control"<<std::endl;
 	//------------------------------------LV Control
 	bool tempLVmon;
 	int tCB_LV = m_data->CB->GetLV_ONOFF();
@@ -168,7 +187,9 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
+     std::cout<<"LV control end"<<std::endl;
 
+      std::cout<<"Triggerboard Control"<<std::endl;
 	//------------------------------------Triggerboard Control
 	float tempval;
 	if(m_data->SCMonitor.Trig0_threshold!=m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref))
@@ -209,6 +230,8 @@ bool SC_SetConfig::Setup(){
 		}
 	} 
 
+  std::cout<<"Triggerboard Control end"<<std::endl;
+	
 	m_data->SCMonitor.recieveFlag=2;
 	
 	return true;	

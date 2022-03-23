@@ -1,7 +1,7 @@
 #ToolChain dynamic setup file
 
 ##### Runtime Paramiters #####
-verbose 0
+verbose 9
 error_level 0 # 0= do not exit, 1= exit on unhandeled errors only, 2= exit on unhandeled errors and handeled errors
 attempt_recover 1
 remote_port 24004
@@ -16,9 +16,9 @@ log_port 24010
 ###### Service discovery #####
 service_discovery_address 239.192.1.1
 service_discovery_port 5000
-service_name main_service2
+service_name LAPPD_Monitor_Service
 service_publish_sec 5
-service_kick_sec 60
+service_kick_sec -1
 
 ##### Tools To Add #####
 Tools_File configfiles/SlowControl/ToolsConfig

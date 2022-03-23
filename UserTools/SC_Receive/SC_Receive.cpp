@@ -28,7 +28,9 @@ bool SC_Receive::Initialise(std::string configfile, DataModel &data){
   items[0].fd = 0;
   items[0].events = ZMQ_POLLIN;
   items[0].revents =0;
-  
+
+  m_data->SCMonitor.recieveFlag=1;
+ 
   return true;
 }
 
@@ -36,6 +38,7 @@ bool SC_Receive::Initialise(std::string configfile, DataModel &data){
 bool SC_Receive::Execute(){
 
   int timer;
+  
   if(m_data->SCMonitor.recieveFlag==0)
   {
     timer = 0;

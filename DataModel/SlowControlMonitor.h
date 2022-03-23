@@ -24,7 +24,9 @@ class SlowControlMonitor : public SerialisableObject{
   bool Send_Config(zmq::socket_t* sock);
   bool Receive_Config(zmq::socket_t* sock);
   bool RelayControl(zmq::socket_t* sock);
-  int recieveFlag = 0;
+  //int recieveFlag = 0;
+ int recieveFlag = 1;
+  
   std::string ident_string;
  
   //Version number
@@ -37,13 +39,16 @@ class SlowControlMonitor : public SerialisableObject{
  
   //HV
   int HV_mon=-1;
-  bool HV_state_set;
-  float HV_volts=-1;
+  //  bool HV_state_set;
+  bool HV_state_set=true;
+  //  float HV_volts=-1;
+   float HV_volts=0;
   float HV_return_mon =-1;
  
   //LV
   int LV_mon=-1;
-  bool LV_state_set;
+  // bool LV_state_set;
+  bool LV_state_set=true;
   float v33=-444;
   float v25=-444;
   float v12=-444;
@@ -51,32 +56,46 @@ class SlowControlMonitor : public SerialisableObject{
   //Saltbridge
   float saltbridge = -1;
 
-  //Emergency variables
+  /* //Emergency variables
   float LIMIT_temperature_low = 0;
   float LIMIT_humidity_low = 0;
   float LIMIT_temperature_high = 0;
   float LIMIT_humidity_high = 0;  
   float LIMIT_Thermistor_temperature_low = 0;
   float LIMIT_Thermistor_temperature_high = 0; 
+  */
   int FLAG_temperature = 0;
   int FLAG_humidity = 0;
   int FLAG_temperature_Thermistor = 0;
-  int FLAG_saltbridge = 0; 
-
+  int FLAG_saltbridge = 0;
+  
+float LIMIT_temperature_low = 10;
+  float LIMIT_humidity_low = 00;
+  float LIMIT_temperature_high = 60;
+  float LIMIT_humidity_high = 60;
+  float LIMIT_Thermistor_temperature_low = 20000;
+  float LIMIT_Thermistor_temperature_high = 5000;
+ 
  
   //relay
-  bool relayCh1;
-  bool relayCh2;
-  bool relayCh3;
+//  bool relayCh1;
+//  bool relayCh2;
+  // bool relayCh3;
+   bool relayCh1=true;
+  bool relayCh2=true;
+  bool relayCh3=true;
   bool relayCh1_mon;
   bool relayCh2_mon;
   bool relayCh3_mon;
 
   //Triggerboard
-  float TrigVref;
-  float Trig1_threshold;
+  //  float TrigVref;
+   float TrigVref=2.981;
+  //  float Trig1_threshold;
+   float Trig1_threshold=1.23;
   float Trig1_mon=-1;
-  float Trig0_threshold;
+  //  float Trig0_threshold;
+    float Trig0_threshold=1.223;
   float Trig0_mon=-1;
  
   //Light level
