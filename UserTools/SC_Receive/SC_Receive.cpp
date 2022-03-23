@@ -29,6 +29,7 @@ bool SC_Receive::Initialise(std::string configfile, DataModel &data){
   items[0].events = ZMQ_POLLIN;
   items[0].revents =0;
 
+  //Remember to remove???
   m_data->SCMonitor.recieveFlag=1;
  
   return true;
