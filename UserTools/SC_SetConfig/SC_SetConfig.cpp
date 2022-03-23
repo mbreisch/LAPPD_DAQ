@@ -12,7 +12,7 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 	m_log= m_data->Log;
 
 	m_data->CB= new Canbus();
-	//	m_data->CB->Connect(); 
+	//m_data->CB->Connect(); 
 
 	std::fstream infile("./configfiles/SlowControl/LastHV.txt", std::ios_base::in);
 	if(infile.is_open())
@@ -61,13 +61,14 @@ bool SC_SetConfig::Finalise(){
 
 
 bool SC_SetConfig::Setup(){
+
   std::cout<<"in setup"<<std::endl;
   
 
 m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
 m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
 m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
-   
+  
  std::cout<<"Relay Control"<<std::endl;
    //------------------------------------Relay Control
 	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
@@ -80,6 +81,7 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 		}
 	}
 
+	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
 	if(m_data->SCMonitor.relayCh2!=m_data->SCMonitor.relayCh2_mon)
 	{
 		retval = m_data->CB->SetRelay(2,m_data->SCMonitor.relayCh2);
@@ -90,6 +92,7 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 		}
 	}
 
+	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	if(m_data->SCMonitor.relayCh3!=m_data->SCMonitor.relayCh3_mon)
 	{
 		retval = m_data->CB->SetRelay(3,m_data->SCMonitor.relayCh3);
