@@ -376,6 +376,10 @@ bool SlowControlMonitor::Print(){
 	}else
 	{
 		printf("Errorcodes found: %li\n", errorcodes.size());
+		for(unsigned int k: errorcodes)
+		{
+			printf("0x%08x\n",k);	
+		}
 	}
 	
 	return true;
