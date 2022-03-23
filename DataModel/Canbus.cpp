@@ -1001,7 +1001,7 @@ int Canbus::SetRelay(int idx, bool state){
 	pinMode(RLY2, OUTPUT);
 	pinMode(RLY3, OUTPUT);
 	int ch;
-	int status=-1;
+	int status=-4;
 	int stateInt;
 	
 	if(state==true)
@@ -1048,7 +1048,7 @@ bool Canbus::GetRelayState(int idx){
 	pinMode(RLY2, OUTPUT);
 	pinMode(RLY3, OUTPUT);
 	int ch;
-	int retval = 0;
+	int retval = -3;
 
 	switch(idx){
 		case 1:
