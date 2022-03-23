@@ -24,7 +24,7 @@ service_kick_sec 60
 Tools_File configfiles/FakeSlowControl/ToolsConfig
 
 ##### Run Type #####
-Inline -1
+Inline 5
 Interactive 0
 Remote 0
 
