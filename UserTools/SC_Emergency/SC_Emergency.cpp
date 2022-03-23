@@ -66,26 +66,24 @@ bool SC_Emergency::TEMPCHK(){
   {
     //Slow shutdown
     m_data->SCMonitor.FLAG_temperature = 1;
-    
     return true;
   }else if(m_data->SCMonitor.temperature_mon >= m_data->SCMonitor.LIMIT_temperature_high)
   {
-    int tries = 0;
-    int max_tries = 50;
-    //Instant shutdown
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
+    bool ret;
+    bool safety=true;
     
-    if(tries>=max_tries && retval!=0)
-    {
-       m_data->SCMonitor.FLAG_temperature = 3;
-       m_data->SCMonitor.errorcodes.push_back(0xCC03EE01);
-    }
+    ret = HardShutdown(1,1);
+    if(ret==false){safety=false;}
+    ret = HardShutdown(2,1);
+    if(ret==false){safety=false;}
+    ret = HardShutdown(3,1);
+    if(ret==false){safety=false;}
     
     m_data->SCMonitor.FLAG_temperature = 2;
     
-    return true; 
+    if(safety==false){m_data->SCMonitor.FLAG_temperature = 3;}
+    
+    return safety; 
   }else
   {
     return false;
@@ -107,22 +105,21 @@ bool SC_Emergency::HUMIDITYCHK(){
     return true;
   }else if(m_data->SCMonitor.humidity_mon >= m_data->SCMonitor.LIMIT_humidity_high)
   {
-    int tries = 0;
-    int max_tries = 50;
-    //Instant shutdown
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
+    bool ret;
+    bool safety=true;
     
-    if(tries>=max_tries && retval!=0)
-    {
-       m_data->SCMonitor.FLAG_humidity = 3;
-       m_data->SCMonitor.errorcodes.push_back(0xCC04EE01);
-    }
+    ret = HardShutdown(1,2);
+    if(ret==false){safety=false;}
+    ret = HardShutdown(2,2);
+    if(ret==false){safety=false;}
+    ret = HardShutdown(3,2);
+    if(ret==false){safety=false;}
     
     m_data->SCMonitor.FLAG_humidity = 2;
     
-    return true; 
+    if(safety==false){m_data->SCMonitor.FLAG_humidity = 3;}
+    
+    return safety; 
   }else
   {
     return false;
@@ -143,22 +140,21 @@ bool SC_Emergency::TEMPCHK_Thermistor(){
     return true;
   }else if(m_data->SCMonitor.temperature_thermistor <= m_data->SCMonitor.LIMIT_Thermistor_temperature_high )
   {
-    int tries = 0;
-    int max_tries = 50;
-    //Instant shutdown
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
+    bool ret;
+    bool safety=true;
     
-    if(tries>=max_tries && retval!=0)
-    {
-       m_data->SCMonitor.FLAG_temperature_Thermistor  = 3;
-       m_data->SCMonitor.errorcodes.push_back(0xCC05EE01);
-    }
+    ret = HardShutdown(1,3);
+    if(ret==false){safety=false;}
+    ret = HardShutdown(2,3);
+    if(ret==false){safety=false;}
+    ret = HardShutdown(3,3);
+    if(ret==false){safety=false;}
     
-    m_data->SCMonitor.FLAG_temperature_Thermistor  = 2;
+    m_data->SCMonitor.FLAG_temperature_Thermistor = 2;
     
-    return true; 
+    if(safety==false){m_data->SCMonitor.FLAG_temperature_Thermistor = 3;}
+    
+    return safety; 
   }else
   {
     return false;
@@ -178,25 +174,49 @@ bool SC_Emergency::SALTBRIDGECHK(){
     return true;   
   }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_high)
   {
-    int tries = 0;
-    int max_tries = 50;
-    //Instant shutdown
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(1,false); tries++;}
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(2,false); tries++;}
-    while(retval!=0 && tries<max_tries) {retval = m_data->CB->SetRelay(3,false); tries++;}
+    bool ret;
+    bool safety=true;
     
-    if(tries>=max_tries && retval!=0)
-    {
-       m_data->SCMonitor.FLAG_saltbridge = 3;
-       m_data->SCMonitor.errorcodes.push_back(0xCC06EE01);
-    }
+    ret = HardShutdown(1,4);
+    if(ret==false){safety=false;}
+    ret = HardShutdown(2,4);
+    if(ret==false){safety=false;}
+    ret = HardShutdown(3,4);
+    if(ret==false){safety=false;}
     
     m_data->SCMonitor.FLAG_saltbridge = 2;
     
-    return true; 
+    if(safety==false){m_data->SCMonitor.FLAG_saltbridge = 3;}
+    
+    return safety; 
   }else
   {
     return false;
   }*/
   return true;
 }  
+
+bool SC_Emergency::HardShutdown(int relay, int errortype)
+{
+    int tries = 0;
+    int retval = -2;
+    int max_tries = 50;
+    //Instant shutdown
+    while(retval!=0 && tries<max_tries)
+    {
+      retval = m_data->CB->SetRelay(relay,false); 
+      tries++;
+    }
+
+    if(tries>=max_tries)
+    {
+      m_data->SCMonitor.errorcodes.push_back((0xCC05EE00 | errortype));
+      return false;
+    }
+  
+    return true;
+}
+    
+  
+  
+  
