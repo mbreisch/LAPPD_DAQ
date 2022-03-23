@@ -208,7 +208,7 @@ bool SC_Emergency::HardShutdown(int relay, int errortype)
       tries++;
     }
 
-    if(tries>=max_tries)
+    if(tries>=max_tries && retval!=0)
     {
       m_data->SCMonitor.errorcodes.push_back((0xCC05EE00 | errortype));
       return false;
