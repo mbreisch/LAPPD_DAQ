@@ -83,6 +83,7 @@ bool SlowControlMonitor::Send_Mon(zmq::socket_t* sock){
 	sock->send(msgTemp1,ZMQ_SNDMORE);
 	sock->send(msgTemp2,ZMQ_SNDMORE);
 	sock->send(msgHVstate,ZMQ_SNDMORE);
+	sock->send(msgHV,ZMQ_SNDMORE);
 	sock->send(msgLVstate,ZMQ_SNDMORE);
 	sock->send(msgFT,ZMQ_SNDMORE);
 	sock->send(msgFH,ZMQ_SNDMORE);
