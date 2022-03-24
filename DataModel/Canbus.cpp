@@ -155,14 +155,14 @@ std::cout << "Rec 2" << std::endl;
 				errorcode.push_back(0xCA10EE02);
 				return empty;
 			}
-			std::cout << "Rec c2" << std::endl;
+			//std::cout << "Rec c2" << std::endl;
 			//Reconnect for read
 			if(!Connect())
 			{
 				errorcode.push_back(0xCA10EE03);
 				return empty;	
 			}
-			std::cout << "Rec c3" << std::endl;
+			//std::cout << "Rec c3" << std::endl;
 			chk = true;
 		}
 		
@@ -175,7 +175,7 @@ std::cout << "Rec 2" << std::endl;
 		
 		//Monitor the 's' socket, for a time tv  
 		retval = select(s+1, &rfds, NULL, NULL, &tv);
-std::cout << "Rec 3 - " << retval << std::endl;
+//std::cout << "Rec 3 - " << retval << std::endl;
 		//Depending on the retval do things:
 		if (retval == -1)
 		{
@@ -186,13 +186,13 @@ std::cout << "Rec 3 - " << retval << std::endl;
 			std::cout << "Rec 3.2" << std::endl;
 			nbytes = read(s, &frame, sizeof(struct canfd_frame));
 		}
-std::cout << "Rec 4" << std::endl;
+//std::cout << "Rec 4" << std::endl;
 		if(nbytes<=0)
 		{
 			counter++;
 			continue;
 		}
-std::cout << "Rec 5" << std::endl;
+//std::cout << "Rec 5" << std::endl;
 		sprintf(rec_id,"%03X%c",frame.can_id,'#');
 		rec_id[4] = '\0';
 		strcpy(rec_message,rec_id);
@@ -203,10 +203,10 @@ std::cout << "Rec 5" << std::endl;
 			strcat(rec_message,rec_temp);
 		}
 		unsigned int pID = parseResponseID(rec_message);
-std::cout << "Rec 6" << std::endl;
+//std::cout << "Rec 6" << std::endl;
 		if(id == pID)
 		{
-			std::cout << "Rec 6.1" << std::endl;
+			//std::cout << "Rec 6.1" << std::endl;
 			memset(rec_id, 0, sizeof rec_id);
 			memset(rec_temp, 0, sizeof rec_temp);
 			memset(rec_message, 0, sizeof rec_message);
