@@ -185,6 +185,10 @@ std::cout << "Rec 3 - " << retval << std::endl;
 		{
 			std::cout << "Rec 3.2" << std::endl;
 			nbytes = read(s, &frame, sizeof(struct canfd_frame));
+		}else if(retval==0)
+		{
+			std::cout << "Rec 3.3" << std::endl;
+			nbytes = read(s, &frame, sizeof(struct canfd_frame));
 		}
 std::cout << "Rec 4" << std::endl;
 		if(nbytes<=0)
