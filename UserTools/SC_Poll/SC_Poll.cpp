@@ -76,6 +76,11 @@ bool SC_Poll::Finalise(){
     tempHV = m_data->CB->ReturnedHvValue;
   }
 
+    m_data->CB->get_HV_volts = tempHV;
+    std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+    outfile << m_data->CB->get_HV_volts;
+    outfile.close();
+
   while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
   while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
   while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
