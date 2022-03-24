@@ -42,7 +42,7 @@ class SlowControlMonitor : public SerialisableObject{
   //  bool HV_state_set;
   bool HV_state_set=false;
   //  float HV_volts=-1;
-   float HV_volts=0;
+  float HV_volts=0;
   float HV_return_mon =-1;
  
   //LV
@@ -69,12 +69,12 @@ class SlowControlMonitor : public SerialisableObject{
   int FLAG_temperature_Thermistor = 0;
   int FLAG_saltbridge = 0;
   
-float LIMIT_temperature_low = 10;
-  float LIMIT_humidity_low = 00;
-  float LIMIT_temperature_high = 60;
-  float LIMIT_humidity_high = 60;
-  float LIMIT_Thermistor_temperature_low = 20000;
-  float LIMIT_Thermistor_temperature_high = 5000;
+  float LIMIT_temperature_low = 50;
+  float LIMIT_humidity_low = 15;
+  float LIMIT_temperature_high = 58;
+  float LIMIT_humidity_high = 20;
+  float LIMIT_Thermistor_temperature_low = 7000;
+  float LIMIT_Thermistor_temperature_high = 5800;
  
  
   //relay
