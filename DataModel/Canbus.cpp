@@ -138,11 +138,13 @@ std::cout << "Rec 1" << std::endl;
 	nbytes=0;
 std::cout << "Rec 2" << std::endl;	
 	//Start a listen loop
+	bool chk = false;
 	while(true)
 	{
 		//If enough attempts at a read were made re-send the message
 		if(counter==100)
 		{
+			if(chk==true){return -22;}
 			std::cout << "Rec counter" << std::endl;
 			//Preperation
 			Disconnect();
@@ -161,6 +163,7 @@ std::cout << "Rec 2" << std::endl;
 				return empty;	
 			}
 			std::cout << "Rec c3" << std::endl;
+			chk = true;
 		}
 		
 		//Get the select ready
@@ -176,9 +179,11 @@ std::cout << "Rec 3" << std::endl;
 		//Depending on the retval do things:
 		if (retval == -1)
 		{
+			std::cout << "Rec 3.1" << std::endl;
 			errorcode.push_back(0xCA10EE04);
 		}else if(retval)
 		{
+			std::cout << "Rec 3.2" << std::endl;
 			nbytes = read(s, &frame, sizeof(struct canfd_frame));
 		}
 std::cout << "Rec 4" << std::endl;
