@@ -683,7 +683,7 @@ int Canbus::SetHV_voltage(float volts){
 
 	if(volts > HV_MAX)
 	{
-		volts = HV_MAX;
+		volts = 0;
 		errorcode.push_back(0xCA17EE01);
 		//std::cout << "Max voltage set" << std::endl;
 	}
