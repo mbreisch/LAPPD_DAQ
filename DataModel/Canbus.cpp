@@ -815,13 +815,16 @@ int Canbus::SetLV(bool state){
 		retval = 0;
 	}
 
+	std::cout << "CB in 1" << std::endl;
 	retval = SendMessage(id,msg);
+	std::cout << "CB in 2" << std::endl;
 	if(retval!=0)
 	{
 		errorcode.push_back(0xCA12EE01);
 		return retval;	
 	}
-
+	std::cout << "CB in 3" << std::endl;
+	
 	usleep(TIMEOUT_RS);
 	
 	char* rec_message;
