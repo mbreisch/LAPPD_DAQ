@@ -101,7 +101,7 @@ int Canbus::SendMessage(unsigned int id, unsigned long long msg){
 		return -1;
 	}
 	
-	if (nbytes=write(s, &frame, retval)) != retval) {
+	if (write(s, &frame, retval) != retval) {
 		errorcode.push_back(0xCA09EE08);
 		return -2;
 	}
