@@ -175,7 +175,7 @@ std::cout << "Rec 2" << std::endl;
 		
 		//Monitor the 's' socket, for a time tv  
 		retval = select(s+1, &rfds, NULL, NULL, &tv);
-std::cout << "Rec 3" << std::endl;
+std::cout << "Rec 3 - " << retval << std::endl;
 		//Depending on the retval do things:
 		if (retval == -1)
 		{
