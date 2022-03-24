@@ -19,6 +19,8 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <net/if.h>
+#include <sys/select.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 
 #include <linux/can.h>
