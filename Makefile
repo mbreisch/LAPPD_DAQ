@@ -18,6 +18,7 @@ YOCTOLib = -L $(ToolDAQPath)/YOCTO/Binaries/linux/armhf -lyocto -lm -lpthread
 YOCTOInclude = -I $(ToolDAQPath)/YOCTO/Sources
 
 all: lib/libStore.so lib/libLogging.so lib/libDataModel.so include/Tool.h lib/libMyTools.so lib/libServiceDiscovery.so lib/libToolChain.so main RemoteControl  NodeDaemon
+	 g++ SendConfig.cpp -o SendConfig -I include/ DataModel/SlowControlMonitor.cpp -I ToolDAQ/zeromq-4.0.7/include/ -L ToolDAQ/zeromq-4.0.7/lib/ -lzmq -L ToolDAQ/boost_1_66_0/install/lib -lboost_date_time -lboost_serialization -lboost_iostreams -I ToolDAQ/boost_1_66_0/install/include/
 
 main: src/main.cpp | lib/libMyTools.so lib/libStore.so lib/libLogging.so lib/libToolChain.so lib/libDataModel.so lib/libServiceDiscovery.so
 	@echo -e "\e[38;5;226m\n*************** Making " $@ "****************\e[0m"
