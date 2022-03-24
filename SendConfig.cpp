@@ -25,19 +25,19 @@ int main(){
   std::cin>>data.LV_state_set;
 
   //Emergency limits 
-  std::cout<<endl<<"LIMIT_temperature_low (10): ";
+  std::cout<<endl<<"LIMIT_temperature_low (50): ";
   std::cin>>data.LIMIT_temperature_low;
-  std::cout<<endl<<"LIMIT_temperature_high (60): ";
+  std::cout<<endl<<"LIMIT_temperature_high (58): ";
   std::cin>>data.LIMIT_temperature_high;
-  std::cout<<endl<<"LIMIT_humidity_low (00): ";
+  std::cout<<endl<<"LIMIT_humidity_low (15): ";
   std::cin>>data.LIMIT_humidity_low;
-  std::cout<<endl<<"LIMIT_humidity_high (60): ";
+  std::cout<<endl<<"LIMIT_humidity_high (20): ";
   std::cin>>data.LIMIT_humidity_high;
 
 
-  std::cout<<endl<<"LIMIT_Thermistor_temperature_low (20000): ";
+  std::cout<<endl<<"LIMIT_Thermistor_temperature_low (7000): ";
   std::cin>>data.LIMIT_Thermistor_temperature_low;
-  std::cout<<endl<<"LIMIT_Thermistor_temperature_high (5000): ";
+  std::cout<<endl<<"LIMIT_Thermistor_temperature_high (5800): ";
   std::cin>>data.LIMIT_Thermistor_temperature_high;
   /*
   std::cout<<endl<<"LIMIT_saltbridge_low (600000): ";
