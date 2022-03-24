@@ -171,7 +171,7 @@ std::cout << "Rec 2" << std::endl;
 		FD_SET(s, &rfds);
 		//Wait for x [s] and y [us]
 		tv.tv_sec = 0;
-		tv.tv_usec = 1000;
+		tv.tv_usec = 10000;
 		
 		//Monitor the 's' socket, for a time tv  
 		retval = select(s+1, &rfds, NULL, NULL, &tv);
