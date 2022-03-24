@@ -22,6 +22,12 @@ bool SC_Emergency::Execute()
   //if(m_data->SCMonitor.recieveFlag==0){return true;}
   
   bool retchk;
+  retchk = HVCHK();
+  if(retchk==false)
+  {
+    //report error behavior 
+    m_data->SCMonitor.errorcodes.push_back(0xCC09EE01);
+  }  
   retchk = TEMPCHK();
   if(retchk==false)
   {
@@ -55,6 +61,41 @@ bool SC_Emergency::Finalise(){
 
   return true;
 }
+
+bool SC_Emergency::HVCHK()
+{
+  int retval=-2; 
+  float tempHV;
+  if(m_data->SCMonitor.HV_return_mon > (m_data->SCMonitor.HV_volts+200) || m_data->SCMonitor.HV_return_mon < (m_data->SCMonitor.HV_volts-200))
+  {
+    m_data->SCMonitor.errorcodes.push_back(0xCC10EE01);
+    m_data->CB->SetHV_voltage(0);
+    usleep(10000);
+    int retstate = m_data->CB->GetHV_ONOFF();
+	  tempHV = m_data->CB->ReturnedHvValue;
+    if(tempHV>1)
+    {
+      bool ret;
+      bool safety=true;
+
+      ret = HardShutdown(1,5);
+      if(ret==false){safety=false;}
+      ret = HardShutdown(2,5);
+      if(ret==false){safety=false;}
+      ret = HardShutdown(3,5);
+      if(ret==false){safety=false;}
+      m_data->SCMonitor.errorcodes.push_back(0xCC10EE03);
+      return safety;
+    }else
+    {
+      return true;
+    }
+  }else
+  {
+    return true;
+  }
+}
+
 
 bool SC_Emergency::TEMPCHK(){
   int retval=-2;
