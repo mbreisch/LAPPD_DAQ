@@ -38,7 +38,7 @@
 #define DELIM "#"
 #define DATA_SEPERATOR '.'
 #define C40N_MAX 4000.0 // V
-#define HV_MAX 3276.0
+#define HV_MAX 2360
 #define DAC_VMAX 5.0
 #define DAC_VREF 2.048
 #define DV 50.0 // V
