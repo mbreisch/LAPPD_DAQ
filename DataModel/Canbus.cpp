@@ -144,7 +144,7 @@ std::cout << "Rec 2" << std::endl;
 		//If enough attempts at a read were made re-send the message
 		if(counter==100)
 		{
-			if(chk==true){return -22;}
+			if(chk==true){return empty;}
 			std::cout << "Rec counter" << std::endl;
 			//Preperation
 			Disconnect();
