@@ -63,10 +63,28 @@ bool SC_Poll::Execute(){
 
 
 bool SC_Poll::Finalise(){
+  int retval=-2;
+  m_data->CB->SetHV_voltage(0);
+  usleep(10000);
+  int retstate = m_data->CB->GetHV_ONOFF();
+  float tempHV = m_data->CB->ReturnedHvValue;
+  if(tempHV>1)
+  {
+    m_data->CB->SetHV_voltage(0);
+    usleep(10000);
+    retstate = m_data->CB->GetHV_ONOFF();
+    tempHV = m_data->CB->ReturnedHvValue;
+  }
+
+  while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
+  while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
+  while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
 
   m_data->CB->Disconnect();
   delete m_data->CB;
   m_data->CB=0;
+  
+  if(tempHV>1){return false;}
 
   return true;
 }
