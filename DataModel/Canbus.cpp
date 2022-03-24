@@ -829,15 +829,17 @@ int Canbus::SetLV(bool state){
 	
 	char* rec_message;
 	rec_message = ReceiveMessage(id,msg);
+	std::cout << "CB in 4" << std::endl;
 	if(strlen(rec_message)<=0)
 	{
+		std::cout << "CB in 4.1" << std::endl;
 		rec_message = ReceiveMessage(id,msg);
 	}
-
+	std::cout << "CB in 5" << std::endl;
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-
+	std::cout << "CB in 6" << std::endl;
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
