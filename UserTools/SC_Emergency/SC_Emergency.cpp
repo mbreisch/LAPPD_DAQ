@@ -88,6 +88,10 @@ bool SC_Emergency::HVCHK()
       return safety;
     }else
     {
+   	m_data->CB->get_HV_volts = tempHV;
+        std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+        outfile << m_data->CB->get_HV_volts;
+        outfile.close();
       return true;
     }
   }else
