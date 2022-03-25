@@ -114,7 +114,7 @@ int Canbus::SendMessage(unsigned int id, unsigned long long msg){
 char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 	
 	//Prepare an empty message for error handling
-	char *empty; empty = (char*) malloc(256);
+	char *empty;
 	
 	//Connect to the socket
 	if(!Connect())
