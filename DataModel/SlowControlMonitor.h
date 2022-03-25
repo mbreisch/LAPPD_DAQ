@@ -95,7 +95,7 @@ class SlowControlMonitor : public SerialisableObject{
  private:
  
  template <class Archive> void serialize(Archive& ar, const unsigned int version){
-  ar & VersionNumber;
+  //ar & VersionNumber;
   ar & recieveFlag;
   ar & humidity_mon;
   ar & temperature_mon;
@@ -103,7 +103,7 @@ class SlowControlMonitor : public SerialisableObject{
   ar & HV_mon;
   ar & HV_state_set;
   ar & HV_volts;
-  ar & HV_return_mon;
+  //ar & HV_return_mon;
   ar & LV_mon;
   ar & LV_state_set;
   ar & v33;
@@ -115,8 +115,8 @@ class SlowControlMonitor : public SerialisableObject{
   ar & LIMIT_humidity_high;  
   ar & LIMIT_Thermistor_temperature_low;
   ar & LIMIT_Thermistor_temperature_high;
-  ar & LIMIT_saltbridge_low;
-  ar & LIMIT_saltbridge_high;
+  //ar & LIMIT_saltbridge_low;
+  //ar & LIMIT_saltbridge_high;
   ar & FLAG_temperature;
   ar & FLAG_humidity;
   ar & FLAG_temperature_Thermistor;
