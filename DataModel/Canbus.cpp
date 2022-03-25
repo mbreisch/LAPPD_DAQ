@@ -345,11 +345,11 @@ float Canbus::GetTriggerDac1(float VREF)
 	{
 		rec_message = ReceiveMessage(id,msg);
 	}
-	free(rec_message);
+	
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-	
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
