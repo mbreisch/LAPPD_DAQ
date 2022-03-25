@@ -209,15 +209,15 @@ bool SC_Emergency::TEMPCHK_Thermistor(){
  
 bool SC_Emergency::SALTBRIDGECHK(){
   int retval=-2;
-  if(m_data->SCMonitor.saltbridge > 500000)
+  if(m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_low)
   {
     m_data->SCMonitor.FLAG_saltbridge  = 0;
     return true;     
-  }else if(m_data->SCMonitor.saltbridge <= 500000 && m_data->SCMonitor.saltbridge > 400000)
+  }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_low && m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_high)
   {
     m_data->SCMonitor.FLAG_saltbridge  = 1;
     return true;   
-  }else if(m_data->SCMonitor.saltbridge <= 400000)
+  }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_high)
   {
     bool ret;
     bool safety=true;
