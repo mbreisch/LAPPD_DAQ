@@ -33,21 +33,21 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 
 bool SC_SetConfig::Execute(){
 	//check LV/HV state_set 
-  	std::cout<<"in set config"<<std::endl;
+  	if(m_verbose>2){std::cout<<"in set config"<<std::endl;}
   	if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
-	std::cout<<"d1"<<std::endl;
+	if(m_verbose>2){std::cout<<"d1"<<std::endl;}
   	if(m_data->SCMonitor.recieveFlag==1){Setup();} //Normal Setup condition
-	std::cout<<"d2"<<std::endl;
+	if(m_verbose>2){std::cout<<"d2"<<std::endl;}
 	if(m_data->SCMonitor.recieveFlag==2){return true;} //After setup continous run mode
-	std::cout<<"d3"<<std::endl;
+	if(m_verbose>2){std::cout<<"d3"<<std::endl;}
 	if(m_data->SCMonitor.recieveFlag==3){Update();} //Used to update HV volts set, triggerboards threshold
-	std::cout<<"d4"<<std::endl;
+	if(m_verbose>2){std::cout<<"d4"<<std::endl;}
 	if(m_data->SCMonitor.recieveFlag==4) //Used as skip for setting new emergency thresholds
 	{
 		m_data->SCMonitor.recieveFlag=2;
 		return true;
 	} 
-	std::cout<<"d5"<<std::endl;
+	if(m_verbose>2){std::cout<<"d5"<<std::endl;}
 	return true;
 
 }
@@ -106,7 +106,7 @@ bool SC_SetConfig::Setup(){
 		}
 	}  
  	//std::cout<<"Relay Control end"<<std::endl;
-  	std::cout<<"HV Prep"<<std::endl;
+  	if(m_verbose>1){std::cout<<"HV Prep"<<std::endl;}
 	//------------------------------------HV Prep
 	retval = m_data->CB->SetLV(false);
 	//std::cout<<"p1"<<std::endl;
@@ -118,8 +118,7 @@ bool SC_SetConfig::Setup(){
 	    //std::cout<<"p3"<<std::endl;
 	  }
 	//std::cout<<"p4"<<std::endl;
-	std::cout<<"HV Prep end"<<std::endl;
-	std::cout<<"HV control"<<std::endl;
+	if(m_verbose>1){std::cout<<"HV control"<<std::endl;}
 	//------------------------------------HV Control
 	bool tempHVmon;
 	int tCB_HV = m_data->CB->GetHV_ONOFF();
@@ -168,9 +167,8 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
-     	std::cout<<"HV control end "<<std::endl;
+     	if(m_verbose>1){std::cout<<"LV control"<<std::endl;}
 
-        std::cout<<"LV control"<<std::endl;
 	//------------------------------------LV Control
 	bool tempLVmon;
 	int tCB_LV = m_data->CB->GetLV_ONOFF();
@@ -193,9 +191,8 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
-     std::cout<<"LV control end"<<std::endl;
 
-      std::cout<<"Triggerboard Control"<<std::endl;
+      	if(m_verbose>1){std::cout<<"Triggerboard Control"<<std::endl;}
 	//------------------------------------Triggerboard Control
 	float tempval;
 	if(m_data->SCMonitor.Trig0_threshold!=m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref))
@@ -236,7 +233,6 @@ bool SC_SetConfig::Setup(){
 		}
 	} 
 
-  	std::cout<<"Triggerboard Control end"<<std::endl;
 	
 	m_data->SCMonitor.recieveFlag=2;
 	
