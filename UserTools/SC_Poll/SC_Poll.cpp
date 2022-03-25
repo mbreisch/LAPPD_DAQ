@@ -20,9 +20,6 @@ bool SC_Poll::Initialise(std::string configfile, DataModel &data){
 bool SC_Poll::Execute(){
   if(m_data->SCMonitor.recieveFlag==0){return true;}
 
-  //Timestamp
-  unsigned long timeSinceEpochMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-  m_data->SCMonitor.timeSinceEpochMilliseconds = timeSinceEpochMilliseconds;
   
   //LV
   m_data->SCMonitor.LV_mon = m_data->CB->GetLV_ONOFF();
@@ -61,6 +58,10 @@ bool SC_Poll::Execute(){
   //Errors
   m_data->SCMonitor.errorcodes = m_data->CB->returnErrors();
   m_data->CB->clearErrors();
+  
+    //Timestamp
+  unsigned long timeSinceEpochMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+  m_data->SCMonitor.timeSinceEpochMilliseconds = timeSinceEpochMilliseconds;
 
   return true;
 }
