@@ -730,7 +730,7 @@ int Canbus::SetHV_voltage(float volts){
 			errorcode.push_back(0xCA17EE02);
 			return retval;	
 		}
-		usleep(1000);
+		usleep(3000000);
 	}
 	return retval;
 }
