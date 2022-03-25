@@ -115,14 +115,14 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 	
 	//Prepare an empty message for error handling
 	char *empty; empty = (char*) malloc(256);
-std::cout << "Rec 0" << std::endl;	
+	
 	//Connect to the socket
 	if(!Connect())
 	{
 		errorcode.push_back(0xCA10EE01);	
 		return empty;	
 	}
-std::cout << "Rec 1" << std::endl;	
+
 	//Prepare help variables for select()
 	int counter=0;
 	fd_set rfds;
@@ -136,7 +136,7 @@ std::cout << "Rec 1" << std::endl;
 	
 	//Prepare the byte counter
 	nbytes=0;
-std::cout << "Rec 2" << std::endl;	
+
 	//Start a listen loop
 	bool chk = false;
 	while(true)
@@ -145,7 +145,7 @@ std::cout << "Rec 2" << std::endl;
 		if(counter==100)
 		{
 			if(chk==true){return empty;}
-			std::cout << "Rec counter" << std::endl;
+
 			//Preperation
 			Disconnect();
 			counter=0;
@@ -155,14 +155,12 @@ std::cout << "Rec 2" << std::endl;
 				errorcode.push_back(0xCA10EE02);
 				return empty;
 			}
-			//std::cout << "Rec c2" << std::endl;
 			//Reconnect for read
 			if(!Connect())
 			{
 				errorcode.push_back(0xCA10EE03);
 				return empty;	
 			}
-			//std::cout << "Rec c3" << std::endl;
 			chk = true;
 		}
 		
@@ -175,24 +173,22 @@ std::cout << "Rec 2" << std::endl;
 		
 		//Monitor the 's' socket, for a time tv  
 		retval = select(s+1, &rfds, NULL, NULL, &tv);
-//std::cout << "Rec 3 - " << retval << std::endl;
+
 		//Depending on the retval do things:
 		if (retval == -1)
 		{
-			std::cout << "Rec 3.1" << std::endl;
 			errorcode.push_back(0xCA10EE04);
 		}else if(retval)
 		{
-			std::cout << "Rec 3.2" << std::endl;
 			nbytes = read(s, &frame, sizeof(struct canfd_frame));
 		}
-//std::cout << "Rec 4" << std::endl;
+
 		if(nbytes<=0)
 		{
 			counter++;
 			continue;
 		}
-//std::cout << "Rec 5" << std::endl;
+
 		sprintf(rec_id,"%03X%c",frame.can_id,'#');
 		rec_id[4] = '\0';
 		strcpy(rec_message,rec_id);
@@ -203,10 +199,9 @@ std::cout << "Rec 2" << std::endl;
 			strcat(rec_message,rec_temp);
 		}
 		unsigned int pID = parseResponseID(rec_message);
-//std::cout << "Rec 6" << std::endl;
+
 		if(id == pID)
 		{
-			//std::cout << "Rec 6.1" << std::endl;
 			memset(rec_id, 0, sizeof rec_id);
 			memset(rec_temp, 0, sizeof rec_temp);
 			memset(rec_message, 0, sizeof rec_message);
@@ -214,13 +209,11 @@ std::cout << "Rec 2" << std::endl;
 			nbytes=0;
 			continue;
 		}else{
-			std::cout << "Rec 6.2" << std::endl;
 			break;
 		}	
-	}
-std::cout << "Rec 7" << std::endl;	
+	}	
 	Disconnect();
-std::cout << "Rec 8" << std::endl;	
+	
 	return rec_message;
 }
 
@@ -825,31 +818,24 @@ int Canbus::SetLV(bool state){
 		retval = 0;
 	}
 
-	std::cout << "CB in 1" << std::endl;
 	retval = SendMessage(id,msg);
-	std::cout << "CB in 2" << std::endl;
 	if(retval!=0)
 	{
 		errorcode.push_back(0xCA12EE01);
 		return retval;	
 	}
-	std::cout << "CB in 3" << std::endl;
 	
 	usleep(TIMEOUT_RS);
 	
 	char* rec_message;
 	rec_message = ReceiveMessage(id,msg);
-	std::cout << "CB in 4" << std::endl;
 	if(strlen(rec_message)<=0)
 	{
-		std::cout << "CB in 4.1" << std::endl;
 		rec_message = ReceiveMessage(id,msg);
 	}
-	std::cout << "CB in 5" << std::endl;
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-	std::cout << "CB in 6" << std::endl;
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
