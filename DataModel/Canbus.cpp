@@ -153,12 +153,14 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 			if((retval=SendMessage(id,msg))!=0)
 			{
 				errorcode.push_back(0xCA10EE02);
+				free(rec_message);
 				return empty;
 			}
 			//Reconnect for read
 			if(!Connect())
 			{
 				errorcode.push_back(0xCA10EE03);
+				free(rec_message);
 				return empty;	
 			}
 			chk = true;
@@ -240,11 +242,11 @@ float Canbus::GetPhotodiode()
 	{
 		rec_message = ReceiveMessage(id,msg);
 	}
-
+	
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -294,7 +296,7 @@ float Canbus::GetTriggerDac0(float VREF)
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-	
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -343,7 +345,7 @@ float Canbus::GetTriggerDac1(float VREF)
 	{
 		rec_message = ReceiveMessage(id,msg);
 	}
-	
+	free(rec_message);
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
@@ -415,7 +417,7 @@ int Canbus::SetTriggerDac0(float threshold, float VREF)
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -491,7 +493,7 @@ int Canbus::SetTriggerDac1(float threshold, float VREF)
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -551,7 +553,7 @@ vector<float> Canbus::GetTemp()
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -624,7 +626,7 @@ int Canbus::SetHV_ONOFF(bool state){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -761,7 +763,7 @@ int Canbus::GetHV_ONOFF(){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -836,6 +838,7 @@ int Canbus::SetLV(bool state){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -898,7 +901,7 @@ int Canbus::GetLV_ONOFF(){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
@@ -955,7 +958,7 @@ vector<float> Canbus::GetLV_voltage(){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-
+	free(rec_message);
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
 	printf("%s\n", rec_message);
