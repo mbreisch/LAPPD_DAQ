@@ -39,12 +39,12 @@ int main(){
   std::cin>>data.LIMIT_Thermistor_temperature_low;
   std::cout<<endl<<"LIMIT_Thermistor_temperature_high (5800): ";
   std::cin>>data.LIMIT_Thermistor_temperature_high;
-  /*
-  std::cout<<endl<<"LIMIT_saltbridge_low (600000): ";
+  
+  std::cout<<endl<<"LIMIT_saltbridge_low (500000): ";
   std::cin>>data.LIMIT_saltbridge_low;
-  std::cout<<endl<<"LIMIT_saltbridge_high (500000): ";
+  std::cout<<endl<<"LIMIT_saltbridge_high (400000): ";
   std::cin>>data.LIMIT_saltbridge_high;
-  */
+  
   std::cout<<endl<<"Trig0_threshold (1.223): ";
   std::cin>>data.Trig0_threshold;
   std::cout<<endl<<"Trig1_threshold (1.23): ";
