@@ -69,7 +69,7 @@ bool SC_SetConfig::Setup(){
 	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
 	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
   
- 	std::cout<<"Relay Control"<<std::endl;
+ 	if(m_verbose>1){std::cout<<"Relay Control"<<std::endl;}
    	//------------------------------------Relay Control
 	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
 	{
