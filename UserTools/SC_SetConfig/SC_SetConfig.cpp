@@ -33,21 +33,21 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 
 bool SC_SetConfig::Execute(){
 	//check LV/HV state_set 
-  std::cout<<"in set config"<<std::endl;
-  if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
-   std::cout<<"d1"<<std::endl;
-  if(m_data->SCMonitor.recieveFlag==1){Setup();} //Normal Setup condition
-	  std::cout<<"d2"<<std::endl;
+  	std::cout<<"in set config"<<std::endl;
+  	if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
+	std::cout<<"d1"<<std::endl;
+  	if(m_data->SCMonitor.recieveFlag==1){Setup();} //Normal Setup condition
+	std::cout<<"d2"<<std::endl;
 	if(m_data->SCMonitor.recieveFlag==2){return true;} //After setup continous run mode
-	  std::cout<<"d3"<<std::endl;
+	std::cout<<"d3"<<std::endl;
 	if(m_data->SCMonitor.recieveFlag==3){Update();} //Used to update HV volts set, triggerboards threshold
-	  std::cout<<"d4"<<std::endl;
+	std::cout<<"d4"<<std::endl;
 	if(m_data->SCMonitor.recieveFlag==4) //Used as skip for setting new emergency thresholds
 	{
 		m_data->SCMonitor.recieveFlag=2;
 		return true;
 	} 
-	  std::cout<<"d5"<<std::endl;
+	std::cout<<"d5"<<std::endl;
 	return true;
 
 }
@@ -62,22 +62,22 @@ bool SC_SetConfig::Finalise(){
 
 bool SC_SetConfig::Setup(){
 
-  std::cout<<"in setup"<<std::endl;
-  
+ 	 //std::cout<<"in setup"<<std::endl;
+  	
 
-m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
-m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
-m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
+	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
+	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
+	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
   
- std::cout<<"Relay Control"<<std::endl;
-   //------------------------------------Relay Control
+ 	std::cout<<"Relay Control"<<std::endl;
+   	//------------------------------------Relay Control
 	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
 	{
-		std::cout << "Relay 1 is " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh1  << std::endl;
+		//std::cout << "Relay 1 is " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh1  << std::endl;
 		retval = m_data->CB->SetRelay(1,m_data->SCMonitor.relayCh1);
 		if(retval!=0 && retval!=1)
 		{
-			std::cout << " There was an error (Relay 1) with retval: " << retval << std::endl;
+			//std::cout << " There was an error (Relay 1) with retval: " << retval << std::endl;
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE01);
 		}
 	}
@@ -85,11 +85,11 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
 	if(m_data->SCMonitor.relayCh2!=m_data->SCMonitor.relayCh2_mon)
 	{
-		std::cout << "Relay 2 is " << std::boolalpha << m_data->SCMonitor.relayCh2_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh2  << std::endl;
+		//std::cout << "Relay 2 is " << std::boolalpha << m_data->SCMonitor.relayCh2_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh2  << std::endl;
 		retval = m_data->CB->SetRelay(2,m_data->SCMonitor.relayCh2);
 		if(retval!=0 && retval!=1)
 		{
-			std::cout << " There was an error (Relay 2) with retval: " << retval << std::endl;
+			//std::cout << " There was an error (Relay 2) with retval: " << retval << std::endl;
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE02);
 		}
 	}
@@ -97,29 +97,29 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	if(m_data->SCMonitor.relayCh3!=m_data->SCMonitor.relayCh3_mon)
 	{
-		std::cout << "Relay 3 is " << std::boolalpha << m_data->SCMonitor.relayCh3_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh3  << std::endl;
+		//std::cout << "Relay 3 is " << std::boolalpha << m_data->SCMonitor.relayCh3_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh3  << std::endl;
 		retval = m_data->CB->SetRelay(3,m_data->SCMonitor.relayCh3);
 		if(retval!=0 && retval!=1)
 		{
-			std::cout << " There was an error (Relay 3) with retval: " << retval << std::endl;
+			//std::cout << " There was an error (Relay 3) with retval: " << retval << std::endl;
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE03);
 		}
 	}  
- std::cout<<"Relay Control end"<<std::endl;
-  std::cout<<"HV Prep"<<std::endl;
+ 	//std::cout<<"Relay Control end"<<std::endl;
+  	std::cout<<"HV Prep"<<std::endl;
 	//------------------------------------HV Prep
 	retval = m_data->CB->SetLV(false);
-	std::cout<<"p1"<<std::endl;
+	//std::cout<<"p1"<<std::endl;
 	if(retval!=0 && retval!=1)
 	  {
-	    std::cout<<"p2"<<std::endl;
-	    std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;
+	    //std::cout<<"p2"<<std::endl;
+	    //std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;
 	    m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
-	    std::cout<<"p3"<<std::endl;
+	    //std::cout<<"p3"<<std::endl;
 	  }
-	std::cout<<"p4"<<std::endl;
-	  std::cout<<"HV Prep end"<<std::endl;
-	   std::cout<<"HV control"<<std::endl;
+	//std::cout<<"p4"<<std::endl;
+	std::cout<<"HV Prep end"<<std::endl;
+	std::cout<<"HV control"<<std::endl;
 	//------------------------------------HV Control
 	bool tempHVmon;
 	int tCB_HV = m_data->CB->GetHV_ONOFF();
@@ -168,9 +168,9 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 		}
 	}
 
-     std::cout<<"HV control end "<<std::endl;
+     	std::cout<<"HV control end "<<std::endl;
 
-          std::cout<<"LV control"<<std::endl;
+        std::cout<<"LV control"<<std::endl;
 	//------------------------------------LV Control
 	bool tempLVmon;
 	int tCB_LV = m_data->CB->GetLV_ONOFF();
@@ -236,7 +236,7 @@ m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 		}
 	} 
 
-  std::cout<<"Triggerboard Control end"<<std::endl;
+  	std::cout<<"Triggerboard Control end"<<std::endl;
 	
 	m_data->SCMonitor.recieveFlag=2;
 	
