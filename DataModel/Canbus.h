@@ -158,8 +158,6 @@ public:
 	/*ID 2: Takes a message id and body and creates a CANBUS specific message*/
 	char* parseFrame(unsigned int id, unsigned long long msg)
 	{
-		char* t_id = (char *)malloc(64);
-		char* t_msg = (char *)malloc(64);
 		char* r_frame = (char*)malloc(128);
 
 		stringstream ss;
@@ -192,6 +190,7 @@ public:
 		if (len<4)
 		{
 			errorcode.push_back(0xCA03EE01);
+			free(t_frame);
 			return 0;
 		}
 		if (t_frame[3] == CANID_DELIM)
@@ -202,7 +201,8 @@ public:
 		  		if((temp = asc2nib(t_frame[i])) > 0x0F)
 		  		{
 		  			errorcode.push_back(0xCA03EE02);
-		    		return 0;
+					free(t_frame);
+		    			return 0;
 		  		}
 		  		cf->can_id |= (temp << (2-i)*4);
 			}
@@ -214,7 +214,8 @@ public:
 		  		if((temp = asc2nib(t_frame[i])) > 0x0F)
 		  		{
 		  			errorcode.push_back(0xCA03EE03);
-				    return 0;
+					free(t_frame);
+			    		return 0;
 				}
 		  		cf->can_id |= (temp << (7-i)*4);
 			}
@@ -225,6 +226,7 @@ public:
 		} else 
 		{
 			errorcode.push_back(0xCA03EE04);
+			free(t_frame);
 			return 0;
 		}
 
@@ -235,7 +237,7 @@ public:
 			/* check for optional DLC value for CAN 2.0B frames */
 			if (t_frame[++idx] && (temp = asc2nib(t_frame[idx])) <= CAN_MAX_DLC)
 			cf->len = temp;
-
+			free(t_frame);
 			return ret;
 		}
 		
@@ -246,8 +248,10 @@ public:
 
 			/* CAN FD frame <canid>##<flags><data> */
 			if ((temp = asc2nib(t_frame[idx+1])) > 0x0F)
-			return 0;
-
+			{	
+				free(t_frame);
+				return 0;
+			}
 			cf->flags = temp;
 			idx += 2;
 		}
@@ -265,12 +269,14 @@ public:
 			if((temp = asc2nib(t_frame[idx++])) > 0x0F)
 			{
 				errorcode.push_back(0xCA03EE05);
+				free(t_frame);
 		  		return 0;
 			}
 			cf->data[i] = (temp << 4);
 			if((temp = asc2nib(t_frame[idx++])) > 0x0F)
 			{
 				errorcode.push_back(0xCA03EE06);
+				free(t_frame);
 		  		return 0;
 			}
 			cf->data[i] |= temp;
@@ -278,6 +284,7 @@ public:
 		}
 		cf->len = dlc;
 
+		free(t_frame);
 		return ret;
 	}
 
