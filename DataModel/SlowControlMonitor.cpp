@@ -228,6 +228,10 @@ bool SlowControlMonitor::Send_Config(zmq::socket_t* sock){
 	std::memcpy(msgLTTL.data(), &LIMIT_Thermistor_temperature_low , sizeof LIMIT_Thermistor_temperature_low);
 	zmq::message_t msgLTTH(sizeof LIMIT_Thermistor_temperature_high);
 	std::memcpy(msgLTTH.data(), &LIMIT_Thermistor_temperature_high, sizeof LIMIT_Thermistor_temperature_high);
+	zmq::message_t msgLSL(sizeof LIMIT_saltbridge_low);
+	std::memcpy(msgLSL.data(), &LIMIT_saltbridge_low , sizeof LIMIT_saltbridge_low);
+	zmq::message_t msgLSH(sizeof LIMIT_saltbridge_high);
+	std::memcpy(msgLSH.data(), &LIMIT_saltbridge_high, sizeof LIMIT_saltbridge_high);
 	
 	//Triggerboard
 	zmq::message_t msgTrig0(sizeof Trig0_threshold);
@@ -256,6 +260,8 @@ bool SlowControlMonitor::Send_Config(zmq::socket_t* sock){
 	sock->send(msgLHH,ZMQ_SNDMORE);
 	sock->send(msgLTTL,ZMQ_SNDMORE);
 	sock->send(msgLTTH,ZMQ_SNDMORE);
+	sock->send(msgLSL,ZMQ_SNDMORE);
+	sock->send(msgLSH,ZMQ_SNDMORE);
 	sock->send(msgTrig0,ZMQ_SNDMORE);
 	sock->send(msgTrig1,ZMQ_SNDMORE);
 	sock->send(msgTrigRef,ZMQ_SNDMORE);
@@ -307,6 +313,10 @@ bool SlowControlMonitor::Receive_Config(zmq::socket_t* sock){
 	LIMIT_Thermistor_temperature_low =*(reinterpret_cast<float*>(msg.data())); 
 	sock->recv(&msg);
 	LIMIT_Thermistor_temperature_high =*(reinterpret_cast<float*>(msg.data())); 
+	sock->recv(&msg);
+	LIMIT_saltbridge_low =*(reinterpret_cast<float*>(msg.data())); 
+	sock->recv(&msg);
+	LIMIT_saltbridge_high =*(reinterpret_cast<float*>(msg.data())); 
 
 	//Triggerboard
 	sock->recv(&msg);   
