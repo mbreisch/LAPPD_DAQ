@@ -20,6 +20,10 @@ bool SC_Poll::Initialise(std::string configfile, DataModel &data){
 bool SC_Poll::Execute(){
   if(m_data->SCMonitor.recieveFlag==0){return true;}
 
+  //Timestamp
+  unsigned long timeSinceEpochMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+  m_data->SCMonitor.timeSinceEpochMilliseconds = timeSinceEpochMilliseconds;
+  
   //LV
   m_data->SCMonitor.LV_mon = m_data->CB->GetLV_ONOFF();
   std::vector<float> LVvoltage = m_data->CB->GetLV_voltage();
