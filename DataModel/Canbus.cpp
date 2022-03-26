@@ -672,51 +672,55 @@ int Canbus::SetHV_ONOFF(bool state){
 }
 
 /*ID 17: Set the HV voltage value*/
-int Canbus::SetHV_voltage(float volts){ 
-
+int Canbus::SetHV_voltage(float volts_user_input, float current_voltage, int verbosity){ 
 	int retval=0;
-	float sign = -1.0;
-	float v_pre, v_tmp, v_diff, vset, vpct, dac_vout;
+	float sign;
+	
+	float v_ramp, v_diff; //for prep
+	float vset, vpct, dac_vout; //for calc
+	
 	unsigned int id;
 	unsigned long long msg;
 	int k;
 	unsigned long long tmp;
 	
-
-	if(volts > HV_MAX)
+	if(volts_user_input > HV_MAX)
 	{
-		volts = 0;
+		volts_user_input = 0;
 		errorcode.push_back(0xCA17EE01);
 		//std::cout << "Max voltage set" << std::endl;
 	}
 
 	//take volts from input and 
-	v_pre = get_HV_volts;
-	if (volts > v_pre)
+	if (volts_user_input > current_voltage)
 	{
 		sign = 1.0;
-	}	
-	v_tmp = v_pre;
-	v_diff = abs(volts-v_tmp);
-    
-	while(v_tmp != volts)
+	}else
 	{
-		//std::cout << volts << "!=" << v_tmp << std::endl;
+	    sign = -1.0;
+	}
+	//Set temporary voltage to the current voltage and get the difference
+	v_ramp = current_voltage;
+	v_diff = fabs(volts_user_input-current_voltage); 
+    
+    	//While ramp value is not set value
+	while(v_ramp != volts_user_input)
+	{
 		if(v_diff < 50) // check if close to final voltage
 		{
-			v_tmp += sign*v_diff;
+			v_ramp += sign*v_diff;
 		}
 		else // increment by DV volts
 		{
-			v_tmp += sign*50;
+			v_ramp += sign*DV;
 		}
-		v_diff = fabs(volts - v_tmp);
+		v_diff = fabs(volts_user_input - v_ramp); 
 
+        	//Prepare the message
 		id = 0x050;
 		msg = 0x0000000000000000;
 	
-		vset = v_tmp;
-
+		vset = v_ramp;
 		vpct = vset / C40N_MAX;
 		//printf("  fraction of max HV output (4kV) = %f\n", vpct);
 		dac_vout = vpct * DAC_VMAX;
@@ -730,7 +734,6 @@ int Canbus::SetHV_voltage(float volts){
 		ss << std::hex << (k<<3);
 		tmp = 0x0000000000000000;
 		tmp = std::stoull(ss.str(),nullptr,16);
-		
 		msg = msg | (tmp<<48);
 
 		int retval = SendMessage(id,msg);
@@ -739,7 +742,12 @@ int Canbus::SetHV_voltage(float volts){
 			errorcode.push_back(0xCA17EE02);
 			return retval;	
 		}
-		usleep(3000000);
+		usleep(5000000);
+		
+		if(verbosity>1)
+		{
+		    std::cout << "Voltage set to " <<  v_ramp << "|" << volts_user_input << " V" << std::endl;
+		}
 	}
 	return retval;
 }
