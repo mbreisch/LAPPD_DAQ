@@ -83,13 +83,13 @@ bool SC_Poll::Execute(){
 
 bool SC_Poll::Finalise(){
   int retval=-2;
-  m_data->CB->SetHV_voltage(0);
+  m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
   usleep(10000);
   int retstate = m_data->CB->GetHV_ONOFF();
   float tempHV = m_data->CB->ReturnedHvValue;
   if(tempHV>1)
   {
-    m_data->CB->SetHV_voltage(0);
+    m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
     usleep(10000);
     retstate = m_data->CB->GetHV_ONOFF();
     tempHV = m_data->CB->ReturnedHvValue;
