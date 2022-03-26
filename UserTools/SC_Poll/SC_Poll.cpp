@@ -95,7 +95,7 @@ bool SC_Poll::Finalise(){
     tempHV = m_data->CB->ReturnedHvValue;
   }else
   {
-    retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
+    retval = m_data->CB->SetHV_ONOFF(false);
 		if(retval!=0 && retval!=1)
 		{
 			//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
