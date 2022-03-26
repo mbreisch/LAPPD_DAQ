@@ -684,7 +684,7 @@ int Canbus::SetHV_voltage(float volts_user_input, float current_voltage, int ver
 	int k;
 	unsigned long long tmp;
 	
-	if(volts_user_input > HV_MAX)
+	if(volts_user_input > HV_MAX || volts_user_input<0)
 	{
 		volts_user_input = 0;
 		errorcode.push_back(0xCA17EE01);
