@@ -87,12 +87,20 @@ bool SC_Poll::Finalise(){
   usleep(10000);
   int retstate = m_data->CB->GetHV_ONOFF();
   float tempHV = m_data->CB->ReturnedHvValue;
-  if(tempHV>10)
+  if(tempHV>5)
   {
     m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
     usleep(10000);
     retstate = m_data->CB->GetHV_ONOFF();
     tempHV = m_data->CB->ReturnedHvValue;
+  }else
+  {
+    retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
+		if(retval!=0 && retval!=1)
+		{
+			//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
+			m_data->SCMonitor.errorcodes.push_back(0xCD02EE01);
+		}
   }
 
     m_data->CB->get_HV_volts = tempHV;
