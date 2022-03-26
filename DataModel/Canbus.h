@@ -284,7 +284,7 @@ public:
 		}
 		cf->len = dlc;
 
-		//free(t_frame);
+		free(t_frame);
 		return ret;
 	}
 
