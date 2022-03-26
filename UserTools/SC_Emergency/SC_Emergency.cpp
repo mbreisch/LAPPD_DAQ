@@ -73,7 +73,7 @@ bool SC_Emergency::HVCHK()
     usleep(10000);
     int retstate = m_data->CB->GetHV_ONOFF();
     tempHV = m_data->CB->ReturnedHvValue;
-    if(tempHV>1)
+    if(tempHV>5)
     {
       bool ret;
       bool safety=true;
