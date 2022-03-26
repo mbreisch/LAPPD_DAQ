@@ -62,15 +62,14 @@ bool SC_SetConfig::Finalise(){
 
 bool SC_SetConfig::Setup(){
 
- 	 //std::cout<<"in setup"<<std::endl;
-  	
-
+	//Pre get the relay states
 	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
 	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
 	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
   
- 	if(m_verbose>1){std::cout<<"Relay Control"<<std::endl;}
+	
    	//------------------------------------Relay Control
+	if(m_verbose>1){std::cout<<"Relay Control"<<std::endl;}
 	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
 	{
 		//std::cout << "Relay 1 is " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh1  << std::endl;
@@ -105,33 +104,30 @@ bool SC_SetConfig::Setup(){
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE03);
 		}
 	}  
- 	//std::cout<<"Relay Control end"<<std::endl;
-  	if(m_verbose>1){std::cout<<"HV Prep"<<std::endl;}
+	
+  	
 	//------------------------------------HV Prep
+	if(m_verbose>1){std::cout<<"HV Prep"<<std::endl;}
 	retval = m_data->CB->SetLV(false);
-	//std::cout<<"p1"<<std::endl;
 	if(retval!=0 && retval!=1)
-	  {
-	    //std::cout<<"p2"<<std::endl;
+  	{
 	    //std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;
 	    m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
-	    //std::cout<<"p3"<<std::endl;
-	  }
-	//std::cout<<"p4"<<std::endl;
-	if(m_verbose>1){std::cout<<"HV control"<<std::endl;}
+  	}
+	
+	
 	//------------------------------------HV Control
-	bool tempHVmon;
-	int tCB_HV = m_data->CB->GetHV_ONOFF();
-	if(tCB_HV==0)
+	if(m_verbose>1){std::cout<<"HV control"<<std::endl;}
+	int temp_HVstate = m_data->CB->GetHV_ONOFF();
+	if(temp_HVstate==0 || temp_HVstate==1)
 	{
-		tempHVmon = false;
-		m_data->SCMonitor.HV_mon = 0;
-	}else if(tCB_HV==1)
+		m_data->SCMonitor.HV_mon = temp_HVstate;
+	}else
 	{
-	      tempHVmon = true;
-	      m_data->SCMonitor.HV_mon = 1;
-	}  
-	if(m_data->SCMonitor.HV_state_set!=tempHVmon)
+		m_data->SCMonitor.errorcodes.push_back(0xCB03EE00);
+	}
+	
+	if(m_data->SCMonitor.HV_state_set!=m_data->SCMonitor.HV_mon)
 	{
 		retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
 		if(retval!=0 && retval!=1)
@@ -141,9 +137,9 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
-	int retstate = m_data->CB->GetHV_ONOFF();
+	m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-	if(abs(m_data->CB->get_HV_volts-m_data->SCMonitor.HV_return_mon)>0.5)
+	if(fabs(m_data->CB->get_HV_volts-m_data->SCMonitor.HV_return_mon)>1)
 	{
 		//std::cout << "ERROR! " << "File gave " << m_data->CB->get_HV_volts << " Readback gave " << m_data->SCMonitor.HV_return_mon << std::endl;
 		//std::cout << "Setting them as the read back value" << std::endl;
@@ -151,15 +147,24 @@ bool SC_SetConfig::Setup(){
 		m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
 	}
 
-	if(m_data->SCMonitor.HV_volts!=m_data->CB->get_HV_volts)
+	if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon && m_data->SCMonitor.HV_mon==1)
 	{
-		retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts);
+		retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
 		if(retval==0)
-		{
-			m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
-			std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
-			outfile << m_data->CB->get_HV_volts;
-			outfile.close();
+		{	
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>1)
+			{
+				m_data->SCMonitor.errorcodes.push_back(0xCB03EE04);
+			}else
+			{
+				m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
+				std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+				outfile << m_data->CB->get_HV_volts;
+				outfile.close();
+			}
+
 		}else
 		{
 			//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
@@ -167,21 +172,19 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
-     	if(m_verbose>1){std::cout<<"LV control"<<std::endl;}
 
 	//------------------------------------LV Control
-	bool tempLVmon;
-	int tCB_LV = m_data->CB->GetLV_ONOFF();
-	if(tCB_LV==0)
+	if(m_verbose>1){std::cout<<"LV control"<<std::endl;}
+	int temp_LVstate = m_data->CB->GetLV_ONOFF();
+	if(temp_LVstate==0 || temp_LVstate==1)
 	{
-		tempLVmon = false;
-		m_data->SCMonitor.LV_mon = 0;
-	}else if(tCB_LV==1)
+		m_data->SCMonitor.LV_mon = temp_LVstate;
+	}else
 	{
-		tempLVmon = true;
-		m_data->SCMonitor.LV_mon = 1;
-	}     
-	if(m_data->SCMonitor.LV_state_set!=tempLVmon)
+		m_data->SCMonitor.errorcodes.push_back(0xCB04EE00);
+	}
+
+	if(m_data->SCMonitor.LV_state_set!=m_data->SCMonitor.LV_mon)
 	{
 		retval = m_data->CB->SetLV(m_data->SCMonitor.LV_state_set);
 		if(retval!=0 && retval!=1)
@@ -192,8 +195,8 @@ bool SC_SetConfig::Setup(){
 	}
 
 
-      	if(m_verbose>1){std::cout<<"Triggerboard Control"<<std::endl;}
 	//------------------------------------Triggerboard Control
+	if(m_verbose>1){std::cout<<"Triggerboard Control"<<std::endl;}
 	float tempval;
 	if(m_data->SCMonitor.Trig0_threshold!=m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref))
 	{
@@ -240,29 +243,59 @@ bool SC_SetConfig::Setup(){
 }
 
 bool SC_SetConfig::Update(){
-	int retstate = m_data->CB->GetHV_ONOFF();
+	//------------------------------------HV Control
+	if(m_verbose>1){std::cout<<"HV re-set"<<std::endl;}
+	int temp_HVstate = m_data->CB->GetHV_ONOFF();
+	if(temp_HVstate==0 || temp_HVstate==1)
+	{
+		m_data->SCMonitor.HV_mon = temp_HVstate;
+	}else
+	{
+		m_data->SCMonitor.errorcodes.push_back(0xCB06EE00);
+	}
+	
+	if(m_data->SCMonitor.HV_state_set!=m_data->SCMonitor.HV_mon)
+	{
+		retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
+		if(retval!=0 && retval!=1)
+		{
+			//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
+			m_data->SCMonitor.errorcodes.push_back(0xCB06EE01);
+		}
+	}
+
+	m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-	if(abs(m_data->CB->get_HV_volts-m_data->SCMonitor.HV_return_mon)>0.5)
+	if(fabs(m_data->CB->get_HV_volts-m_data->SCMonitor.HV_return_mon)>1)
 	{
 		//std::cout << "ERROR! " << "File gave " << m_data->CB->get_HV_volts << " Readback gave " << m_data->SCMonitor.HV_return_mon << std::endl;
 		//std::cout << "Setting them as the read back value" << std::endl;
-		m_data->SCMonitor.errorcodes.push_back(0xCB06EE01);
+		m_data->SCMonitor.errorcodes.push_back(0xCB06EE02);
 		m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
 	}
 
-	if(m_data->SCMonitor.HV_volts!=m_data->CB->get_HV_volts)
+	if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon && m_data->SCMonitor.HV_mon==1)
 	{
-		retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts);
+		retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
 		if(retval==0)
-		{
-			m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
-			std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
-			outfile << m_data->CB->get_HV_volts;
-			outfile.close();
+		{	
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>1)
+			{
+				m_data->SCMonitor.errorcodes.push_back(0xCB06EE04);
+			}else
+			{
+				m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
+				std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+				outfile << m_data->CB->get_HV_volts;
+				outfile.close();
+			}
+
 		}else
 		{
 			//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
-			m_data->SCMonitor.errorcodes.push_back(0xCB06EE02);
+			m_data->SCMonitor.errorcodes.push_back(0xCB06EE03);
 		}
 	}
 	
