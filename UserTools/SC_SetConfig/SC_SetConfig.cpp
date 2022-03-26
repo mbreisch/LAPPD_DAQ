@@ -139,7 +139,7 @@ bool SC_SetConfig::Setup(){
 
 	m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-	if(fabs(m_data->CB->get_HV_volts-m_data->SCMonitor.HV_return_mon)>1)
+	if(fabs(m_data->CB->get_HV_volts-m_data->SCMonitor.HV_return_mon)>10)
 	{
 		//std::cout << "ERROR! " << "File gave " << m_data->CB->get_HV_volts << " Readback gave " << m_data->SCMonitor.HV_return_mon << std::endl;
 		//std::cout << "Setting them as the read back value" << std::endl;
@@ -282,7 +282,7 @@ bool SC_SetConfig::Update(){
 		{	
 			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>1)
+			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
 			{
 				m_data->SCMonitor.errorcodes.push_back(0xCB06EE04);
 			}else
