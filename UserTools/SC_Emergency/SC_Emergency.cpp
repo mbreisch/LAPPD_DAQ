@@ -69,10 +69,10 @@ bool SC_Emergency::HVCHK()
   if(m_data->SCMonitor.HV_return_mon > (m_data->SCMonitor.HV_volts+200) || m_data->SCMonitor.HV_return_mon < (m_data->SCMonitor.HV_volts-200))
   {
     m_data->SCMonitor.errorcodes.push_back(0xCC10EE01);
-    m_data->CB->SetHV_voltage(0);
+    m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,2);
     usleep(10000);
     int retstate = m_data->CB->GetHV_ONOFF();
-	  tempHV = m_data->CB->ReturnedHvValue;
+    tempHV = m_data->CB->ReturnedHvValue;
     if(tempHV>1)
     {
       bool ret;
