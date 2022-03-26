@@ -73,7 +73,8 @@ bool SC_Emergency::HVCHK()
     usleep(10000);
     int retstate = m_data->CB->GetHV_ONOFF();
     tempHV = m_data->CB->ReturnedHvValue;
-    if(tempHV>5)
+    
+    if(tempHV>0.1)
     {
       bool ret;
       bool safety=true;
@@ -88,7 +89,14 @@ bool SC_Emergency::HVCHK()
       return safety;
     }else
     {
-   	m_data->CB->get_HV_volts = tempHV;
+        retval = m_data->CB->SetHV_ONOFF(false);
+		    if(retval!=0 && retval!=1)
+        {
+          //std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
+          m_data->SCMonitor.errorcodes.push_back(0xCC10EE04);
+        }
+      
+   	    m_data->CB->get_HV_volts = tempHV;
         std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
         outfile << m_data->CB->get_HV_volts;
         outfile.close();
