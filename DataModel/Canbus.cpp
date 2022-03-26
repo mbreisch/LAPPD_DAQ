@@ -800,7 +800,7 @@ int Canbus::GetHV_ONOFF(){
 		    	unsigned long long HVval2 = (retMSG & 0xffff000000) >> 24;
 			if(HVval==HVval2)
 			{
-				ReturnedHvValue = (double)HVval*CONVERSION;
+				ReturnedHvValue = (double)HVval*CONVERSION*1000;
 				return 1;
 			}else
 			{
