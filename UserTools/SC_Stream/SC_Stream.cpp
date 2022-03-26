@@ -36,12 +36,12 @@ bool SC_Stream::Initialise(std::string configfile, DataModel &data){
 
 bool SC_Stream::Execute(){
 
-  if(m_data->SCMonitor.recieveFlag==0){return true;}
+  //if(m_data->SCMonitor.recieveFlag==0){return true;}
   
   boost::posix_time::ptime current(boost::posix_time::second_clock::local_time());
   boost::posix_time::time_duration lapse(period - (current - last)); 
 
-  if(!lapse.is_negative())
+  if(lapse.is_negative())
   {
 
     std::cout<<"Sending SC data"<<std::endl;
