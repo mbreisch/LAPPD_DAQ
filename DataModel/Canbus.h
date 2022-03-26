@@ -38,7 +38,7 @@
 #define DELIM "#"
 #define DATA_SEPERATOR '.'
 #define C40N_MAX 4000.0 // V
-#define HV_MAX 2360
+#define HV_MAX 2360.0
 #define DAC_VMAX 5.0
 #define DAC_VREF 2.048
 #define DV 50.0 // V
@@ -93,7 +93,7 @@ public:
 	/*ID 16: Set the HV state*/
 	int SetHV_ONOFF(bool state); 
 	/*ID 17: Set the HV voltage value*/
-	int SetHV_voltage(float volts); 
+	int SetHV_voltage(float volts_user_input, float current_voltage, int verbosity); 
 	/*ID 25: Get the HV state*/
 	int GetHV_ONOFF(); 
 
