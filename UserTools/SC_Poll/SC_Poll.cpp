@@ -83,7 +83,7 @@ bool SC_Poll::Execute(){
 
 bool SC_Poll::Finalise(){
   int retval=-2;
-  if(m_data->SCMonitor.HV_return_mon>5 && m_data->SCMonitor.HV_mon==1)
+  if(m_data->SCMonitor.HV_return_mon>5 || m_data->SCMonitor.HV_mon==1)
   {
 	  m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
 	  usleep(10000);
