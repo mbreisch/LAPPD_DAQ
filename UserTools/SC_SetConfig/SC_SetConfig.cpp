@@ -154,7 +154,7 @@ bool SC_SetConfig::Setup(){
 		{	
 			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>1)
+			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
 			{
 				if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
 				m_data->SCMonitor.errorcodes.push_back(0xCB03EE04);
