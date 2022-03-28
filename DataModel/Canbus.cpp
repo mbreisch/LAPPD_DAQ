@@ -246,7 +246,7 @@ float Canbus::GetPhotodiode()
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -297,7 +297,7 @@ float Canbus::GetTriggerDac0(float VREF)
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -351,7 +351,7 @@ float Canbus::GetTriggerDac1(float VREF)
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -420,7 +420,7 @@ int Canbus::SetTriggerDac0(float threshold, float VREF)
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -497,7 +497,7 @@ int Canbus::SetTriggerDac1(float threshold, float VREF)
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);	
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -558,7 +558,7 @@ vector<float> Canbus::GetTemp()
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -632,7 +632,7 @@ int Canbus::SetHV_ONOFF(bool state){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -778,7 +778,7 @@ int Canbus::GetHV_ONOFF(){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -854,7 +854,7 @@ int Canbus::SetLV(bool state){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -918,7 +918,7 @@ int Canbus::GetLV_ONOFF(){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
@@ -976,7 +976,7 @@ vector<float> Canbus::GetLV_voltage(){
 	//back parse message to state
 	unsigned int retID = parseResponseID(rec_message);
 	unsigned long long retMSG = parseResponseMSG(rec_message);
-	free(rec_message);
+	//free(rec_message);
 	
 	/*
 	std::cout << "--------------- Control Window----------------" << std::endl;
