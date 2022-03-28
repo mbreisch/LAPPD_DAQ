@@ -153,14 +153,14 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 			if((retval=SendMessage(id,msg))!=0)
 			{
 				errorcode.push_back(0xCA10EE02);
-				free(rec_message);
+				//free(rec_message);
 				return empty;
 			}
 			//Reconnect for read
 			if(!Connect())
 			{
 				errorcode.push_back(0xCA10EE03);
-				free(rec_message);
+				//free(rec_message);
 				return empty;	
 			}
 			chk = true;
