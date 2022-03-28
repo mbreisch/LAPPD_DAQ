@@ -105,7 +105,7 @@ bool SC_SetConfig::Setup(){
 		}
 	}  
 	
-  	
+  	usleep(10000000);
 	//------------------------------------HV Prep
 	if(m_verbose>1){std::cout<<"HV Prep"<<std::endl;}
 	retval = m_data->CB->SetLV(false);
