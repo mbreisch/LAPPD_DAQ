@@ -83,31 +83,35 @@ bool SC_Poll::Execute(){
 
 bool SC_Poll::Finalise(){
   int retval=-2;
-  m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
-  usleep(10000);
-  int retstate = m_data->CB->GetHV_ONOFF();
-  float tempHV = m_data->CB->ReturnedHvValue;
-  if(tempHV>5)
+  if(m_data->SCMonitor.HV_return_mon>5 && m_data->SCMonitor.HV_mon==1)
   {
-    m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
-    usleep(10000);
-    retstate = m_data->CB->GetHV_ONOFF();
-    tempHV = m_data->CB->ReturnedHvValue;
-  }else
-  {
-    retval = m_data->CB->SetHV_ONOFF(false);
-		if(retval!=0 && retval!=1)
-		{
-			//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
-			m_data->SCMonitor.errorcodes.push_back(0xCD02EE01);
-		}
+	  m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
+	  usleep(10000);
+	  int retstate = m_data->CB->GetHV_ONOFF();
+	  float tempHV = m_data->CB->ReturnedHvValue;
+	  if(tempHV>5)
+	  {
+	    m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
+	    usleep(10000);
+	    retstate = m_data->CB->GetHV_ONOFF();
+	    tempHV = m_data->CB->ReturnedHvValue;
+	  }else
+	  {
+	    retval = m_data->CB->SetHV_ONOFF(false);
+			if(retval!=0 && retval!=1)
+			{
+				//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
+				m_data->SCMonitor.errorcodes.push_back(0xCD02EE01);
+			}
+	  }
+
+	    m_data->CB->get_HV_volts = tempHV;
+	    std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+	    outfile << m_data->CB->get_HV_volts;
+	    outfile.close();
+	  m_data->SCMonitor.HV_return_mon = tempHV;
   }
-
-    m_data->CB->get_HV_volts = tempHV;
-    std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
-    outfile << m_data->CB->get_HV_volts;
-    outfile.close();
-
+	
   while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
   while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
   while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
@@ -116,7 +120,7 @@ bool SC_Poll::Finalise(){
   delete m_data->CB;
   m_data->CB=0;
   
-  if(tempHV>1){return false;}
+  if(m_data->SCMonitor.HV_return_mon>5){return false;}
 
   return true;
 }
