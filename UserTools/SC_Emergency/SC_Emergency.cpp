@@ -66,6 +66,11 @@ bool SC_Emergency::HVCHK()
 {
   int retval=-2; 
   float tempHV;
+  if(m_verbose>1)
+  {
+	std::cout << "Last readback HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;	  
+	std::cout << "HV set value was: " << m_data->SCMonitor.HV_volts << std::endl;	
+  }
   if(m_data->SCMonitor.HV_return_mon > (m_data->SCMonitor.HV_volts+200) || m_data->SCMonitor.HV_return_mon < (m_data->SCMonitor.HV_volts-200))
   {
     m_data->SCMonitor.errorcodes.push_back(0xCC10EE01);
