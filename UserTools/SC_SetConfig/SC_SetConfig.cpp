@@ -146,6 +146,12 @@ bool SC_SetConfig::Setup(){
 			{	
 				m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 				m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+				while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+				{
+					usleep(10000000);
+					m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+					m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+				}
 				if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
 				{
 					if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
@@ -181,6 +187,12 @@ bool SC_SetConfig::Setup(){
 		usleep(5000000);//5s timeout to make sure it can ramp fully down
 		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+		{
+			usleep(10000000);
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+		}
 		if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
 		{
 			if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
@@ -208,6 +220,12 @@ bool SC_SetConfig::Setup(){
 	{
 		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+		{
+			usleep(10000000);
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+		}
 		if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
 		{
 			retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
