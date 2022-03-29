@@ -48,9 +48,9 @@ class SlowControlMonitor : public SerialisableObject{
   //LV
   bool LV_state_set=false; //Default chosen 
   int LV_mon=-1;
-  float v33=-444;
-  float v25=-444;
-  float v12=-444;
+  float v33=-1;
+  float v25=-1;
+  float v12=-1;
  
   //Saltbridge
   float saltbridge = -1;
