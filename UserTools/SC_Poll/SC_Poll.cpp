@@ -28,13 +28,13 @@ bool SC_Poll::Execute(){
   try
   {
     //LV
-    if(m_data->SCMonitor.relayCh1_mon = 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
+    if(m_data->SCMonitor.relayCh1_mon == 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
     {
 	    m_data->SCMonitor.LV_mon = m_data->CB->GetLV_ONOFF();
     }
     idf++;
 	
-    if(m_data->SCMonitor.relayCh1_mon = 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
+    if(m_data->SCMonitor.relayCh1_mon == 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
     {
      	    std::vector<float> LVvoltage = m_data->CB->GetLV_voltage();
 	    m_data->SCMonitor.v33 = LVvoltage[0];
@@ -44,19 +44,19 @@ bool SC_Poll::Execute(){
     idf++;
 	  
     //HV
-    if(m_data->SCMonitor.relayCh1_mon = 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
+    if(m_data->SCMonitor.relayCh1_mon == 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
     {
     	m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
     }
     idf++;
-    if(m_data->SCMonitor.relayCh1_mon = 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
+    if(m_data->SCMonitor.relayCh1_mon == 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
     {
     	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
     }
     idf++;
 
     //RHT
-    if(m_data->SCMonitor.relayCh1_mon = 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
+    if(m_data->SCMonitor.relayCh1_mon == 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
     {
     	vector<float> RHT = m_data->CB->GetTemp(); 
 	m_data->SCMonitor.temperature_mon = RHT[0];
@@ -68,13 +68,13 @@ bool SC_Poll::Execute(){
     idf++;
     
     //DAC0
-    if(m_data->SCMonitor.relayCh1_mon = 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
+    if(m_data->SCMonitor.relayCh1_mon == 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
     {
     	m_data->SCMonitor.Trig0_mon = m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref);
     }
     idf++;
     //DAC1
-    if(m_data->SCMonitor.relayCh1_mon = 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
+    if(m_data->SCMonitor.relayCh1_mon == 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
     {
     	m_data->SCMonitor.Trig1_mon = m_data->CB->GetTriggerDac1(m_data->SCMonitor.TrigVref);
     }
@@ -86,7 +86,7 @@ bool SC_Poll::Execute(){
     m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3); idf++;
 
     //Photodiode
-    if(m_data->SCMonitor.relayCh1_mon = 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
+    if(m_data->SCMonitor.relayCh1_mon == 1 && m_data->SCMonitor.relayCh2_mon == 1 && m_data->SCMonitor.relayCh3_mon ==1)
     {
     	m_data->SCMonitor.light = m_data->CB->GetPhotodiode();
     }
