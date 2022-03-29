@@ -88,7 +88,7 @@ bool SC_Poll::Finalise(){
   {
 	  m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
 	  usleep(10000);
-	  int retstate = m_data->CB->GetHV_ONOFF(); m_data->SCMonitor.HV_mon=retstate;
+	  int retstate = m_data->CB->GetHV_ONOFF(); 
 	  float tempHV = m_data->CB->ReturnedHvValue; m_data->SCMonitor.HV_volts=tempHV;
 	  counter=0;
 		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
