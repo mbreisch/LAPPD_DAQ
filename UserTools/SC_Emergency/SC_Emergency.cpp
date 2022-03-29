@@ -65,6 +65,7 @@ bool SC_Emergency::Finalise(){
 bool SC_Emergency::HVCHK()
 {
   int retval=-2; 
+  int counter;
   float tempHV;
   if(m_verbose>1)
   {
