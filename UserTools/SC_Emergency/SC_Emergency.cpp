@@ -82,7 +82,7 @@ bool SC_Emergency::HVCHK()
 		if(counter>=30){break;}
 		counter++;
 	}  
-    if(tempHV>0.1)
+    if(tempHV>5)
     {
       bool ret;
       bool safety=true;
