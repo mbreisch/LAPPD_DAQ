@@ -740,7 +740,7 @@ int Canbus::SetHV_voltage(float volts_user_input, float current_voltage, int ver
 			errorcode.push_back(0xCA17EE02);
 			return retval;	
 		}
-		usleep(3000000);
+		usleep(5000000);
 		
 		if(verbosity>1)
 		{
