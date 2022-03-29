@@ -153,7 +153,7 @@ bool SC_SetConfig::Setup(){
 					usleep(10000000);
 					m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 					m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-					if(counter>=100){break;}
+					if(counter>=30){break;}
 					counter++;
 				}
 				if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
@@ -197,7 +197,7 @@ bool SC_SetConfig::Setup(){
 			usleep(10000000);
 			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-			if(counter>=100){break;}
+			if(counter>=30){break;}
 			counter++;
 		}
 		if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
@@ -233,7 +233,7 @@ bool SC_SetConfig::Setup(){
 			usleep(10000000);
 			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-			if(counter>=100){break;}
+			if(counter>=30){break;}
 			counter++;
 		}
 		if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
