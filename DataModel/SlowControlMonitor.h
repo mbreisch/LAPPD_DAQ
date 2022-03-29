@@ -35,9 +35,9 @@ class SlowControlMonitor : public SerialisableObject{
   unsigned long timeSinceEpochMilliseconds;
  
   //RHT
-  float humidity_mon=-444;
-  float temperature_mon=-444;
-  float temperature_thermistor=-444; 
+  float humidity_mon=-1;
+  float temperature_mon=-1;
+  float temperature_thermistor=-1; 
  
   //HV
   bool HV_state_set=false; //Default chosen 
