@@ -79,10 +79,10 @@ bool SC_Emergency::HVCHK()
 		usleep(10000000);
 		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-		if(counter>=30){break;}
+		if(counter>=50){break;}
 		counter++;
 	}  
-    if(tempHV>5)
+    if(tempHV>50)
     {
       bool ret;
       bool safety=true;
