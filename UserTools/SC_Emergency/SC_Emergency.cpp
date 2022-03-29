@@ -72,7 +72,7 @@ bool SC_Emergency::HVCHK()
     m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,2);
     usleep(10000);
     int retstate = m_data->CB->GetHV_ONOFF(); 
-    tempHV = m_data->CB->ReturnedHvValue; m_data->SCMonitor.HV_return_mon=tempHV;
+    m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue; 
     counter=0;
 	while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
 	{
@@ -82,7 +82,7 @@ bool SC_Emergency::HVCHK()
 		if(counter>=50){break;}
 		counter++;
 	}  
-    if(tempHV>50)
+    if(m_data->SCMonitor.HV_return_mon>50)
     {
       bool ret;
       bool safety=true;
@@ -104,7 +104,7 @@ bool SC_Emergency::HVCHK()
           m_data->SCMonitor.errorcodes.push_back(0xCC10EE04);
         }
       
-   	    m_data->CB->get_HV_volts = tempHV;
+   	    m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
         std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
         outfile << m_data->CB->get_HV_volts;
         outfile.close();
