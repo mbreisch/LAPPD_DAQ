@@ -197,14 +197,12 @@ bool SC_SetConfig::Setup(){
 				//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
 				m_data->SCMonitor.errorcodes.push_back(0xCB03EE09);
 			}
-		}else
-		{	
-			retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
-			if(retval!=0 && retval!=1)
-			{
-				//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
-				m_data->SCMonitor.errorcodes.push_back(0xCB03EE07);
-			}
+		}
+		retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
+		if(retval!=0 && retval!=1)
+		{
+			//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
+			m_data->SCMonitor.errorcodes.push_back(0xCB03EE07);
 		}
 	}else if(temp_HVstate==1 && m_data->SCMonitor.HV_state_set==1)
 	{
