@@ -83,18 +83,37 @@ bool SC_Poll::Execute(){
 
 bool SC_Poll::Finalise(){
   int retval=-2;
+	int counter;
   if(m_data->SCMonitor.HV_return_mon>5 || m_data->SCMonitor.HV_mon==1)
   {
 	  m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
 	  usleep(10000);
-	  int retstate = m_data->CB->GetHV_ONOFF();
-	  float tempHV = m_data->CB->ReturnedHvValue;
+	  int retstate = m_data->CB->GetHV_ONOFF(); m_data->SCMonitor.HV_mon=retstate;
+	  float tempHV = m_data->CB->ReturnedHvValue; m_data->SCMonitor.HV_volts=tempHV;
+	  counter=0;
+		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+		{
+			usleep(10000000);
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+			if(counter>=30){break;}
+			counter++;
+		}
 	  if(tempHV>5)
 	  {
 	    m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
 	    usleep(10000);
-	    retstate = m_data->CB->GetHV_ONOFF();
-	    tempHV = m_data->CB->ReturnedHvValue;
+	    retstate = m_data->CB->GetHV_ONOFF(); m_data->SCMonitor.HV_mon=retstate;
+	    tempHV = m_data->CB->ReturnedHvValue; m_data->SCMonitor.HV_volts=tempHV;
+		  counter=0;
+		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+		{
+			usleep(10000000);
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+			if(counter>=30){break;}
+			counter++;
+		}
 	  }else
 	  {
 	    retval = m_data->CB->SetHV_ONOFF(false);
