@@ -106,73 +106,129 @@ bool SC_SetConfig::Setup(){
 	}  
 	
   	usleep(10000000);
-	//------------------------------------HV Prep
-	if(m_verbose>1){std::cout<<"HV Prep"<<std::endl;}
-	retval = m_data->CB->SetLV(false);
-	if(retval!=0 && retval!=1)
-  	{
-	    //std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;
-	    m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
-  	}
-	
-	
 	//------------------------------------HV Control
 	if(m_verbose>1){std::cout<<"HV control"<<std::endl;}
 	int temp_HVstate = m_data->CB->GetHV_ONOFF();
-	if(temp_HVstate==0 || temp_HVstate==1)
+	if(temp_HVstate==0 && m_data->SCMonitor.HV_state_set==1)
 	{
+		//------------------------------------HV Prep
+		if(m_verbose>1){std::cout<<"HV Prep"<<std::endl;}
+		retval = m_data->CB->SetLV(false);
+		if(retval!=0 && retval!=1)
+		{
+		    //std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;
+		    m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
+		}
+		
 		m_data->SCMonitor.HV_mon = temp_HVstate;
-	}else
-	{
-		m_data->SCMonitor.errorcodes.push_back(0xCB03EE00);
-	}
-	
-	if(m_data->SCMonitor.HV_state_set!=m_data->SCMonitor.HV_mon)
-	{
+		
 		retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
 		if(retval!=0 && retval!=1)
 		{
 			//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
 			m_data->SCMonitor.errorcodes.push_back(0xCB03EE01);
 		}
-	}
-
-	m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-	if(fabs(m_data->CB->get_HV_volts-m_data->SCMonitor.HV_return_mon)>10)
-	{
-		//std::cout << "ERROR! " << "File gave " << m_data->CB->get_HV_volts << " Readback gave " << m_data->SCMonitor.HV_return_mon << std::endl;
-		//std::cout << "Setting them as the read back value" << std::endl;
-		m_data->SCMonitor.errorcodes.push_back(0xCB03EE02);
-		m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
-	}
-
-	if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon && m_data->SCMonitor.HV_mon==1)
-	{
-		retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
-		if(retval==0)
-		{	
-			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
-			{
-				if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
-				m_data->SCMonitor.errorcodes.push_back(0xCB03EE04);
-			}else
-			{
+		
+		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
+		if(fabs(m_data->CB->get_HV_volts-m_data->SCMonitor.HV_return_mon)>10)
+		{
+			//std::cout << "ERROR! " << "File gave " << m_data->CB->get_HV_volts << " Readback gave " << m_data->SCMonitor.HV_return_mon << std::endl;
+			//std::cout << "Setting them as the read back value" << std::endl;
+			m_data->SCMonitor.errorcodes.push_back(0xCB03EE02);
+			m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
+		}
+		
+		if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
+		{
+			retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
+			if(retval==0)
+			{	
+				m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+				m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+				if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
+				{
+					if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
+					m_data->SCMonitor.errorcodes.push_back(0xCB03EE04);
+				}
 				m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
 				std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
 				outfile << m_data->CB->get_HV_volts;
 				outfile.close();
+			}else
+			{
+				//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
+				m_data->SCMonitor.errorcodes.push_back(0xCB03EE03);
 			}
-
-		}else
-		{
-			//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
-			m_data->SCMonitor.errorcodes.push_back(0xCB03EE03);
 		}
+	}else if(temp_HVstate==1 && m_data->SCMonitor.HV_state_set==0) 
+	{
+		if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
+		{
+			retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
+			if(retval==0)
+			{	
+				m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
+				std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+				outfile << m_data->CB->get_HV_volts;
+				outfile.close();
+			}else
+			{
+				//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
+				m_data->SCMonitor.errorcodes.push_back(0xCB03EE06);
+			}
+		}
+		usleep(5000000);//5s timeout to make sure it can ramp fully down
+		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+		if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
+		{
+			if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
+			m_data->SCMonitor.errorcodes.push_back(0xCB03EE08);
+			retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
+			if(retval==0)
+			{	
+				m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
+				std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+				outfile << m_data->CB->get_HV_volts;
+				outfile.close();
+			}else
+			{
+				//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
+				m_data->SCMonitor.errorcodes.push_back(0xCB03EE09);
+			}
+		}else
+		{	
+			retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
+			if(retval!=0 && retval!=1)
+			{
+				//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
+				m_data->SCMonitor.errorcodes.push_back(0xCB03EE07);
+			}
+		}
+	}else if(temp_HVstate==1 && m_data->SCMonitor.HV_state_set==1)
+	{
+		if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
+		{
+			retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
+			if(retval==0)
+			{	
+				m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
+				std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+				outfile << m_data->CB->get_HV_volts;
+				outfile.close();
+			}else
+			{
+				//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
+				m_data->SCMonitor.errorcodes.push_back(0xCB03EE10);
+			}
+		}
+	}else
+	{
+		//just continue
+		//Is already off and set to off
 	}
-
+	
 
 	//------------------------------------LV Control
 	if(m_verbose>1){std::cout<<"LV control"<<std::endl;}
