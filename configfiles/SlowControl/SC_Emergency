@@ -1,5 +1,1 @@
-verbose 9
-LIMIT_temperature_low 30
-LIMIT_humidity_low 75 
-LIMIT_temperature_high 50
-LIMIT_humidity_high 90
+verbose 2
