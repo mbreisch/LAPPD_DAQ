@@ -62,6 +62,7 @@ bool SC_SetConfig::Finalise(){
 
 bool SC_SetConfig::Setup(){
 
+	int counter=0;
 	//Pre get the relay states
 	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
 	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
@@ -146,11 +147,14 @@ bool SC_SetConfig::Setup(){
 			{	
 				m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 				m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+				counter = 0;
 				while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
 				{
 					usleep(10000000);
 					m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 					m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+					if(counter>=100){break;}
+					counter++;
 				}
 				if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
 				{
@@ -187,11 +191,14 @@ bool SC_SetConfig::Setup(){
 		usleep(5000000);//5s timeout to make sure it can ramp fully down
 		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+		counter=0;
 		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
 		{
 			usleep(10000000);
 			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+			if(counter>=100){break;}
+			counter++;
 		}
 		if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
 		{
@@ -220,11 +227,14 @@ bool SC_SetConfig::Setup(){
 	{
 		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+		counter = 0;
 		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
 		{
 			usleep(10000000);
 			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+			if(counter>=100){break;}
+			counter++;
 		}
 		if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
 		{
