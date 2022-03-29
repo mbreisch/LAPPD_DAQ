@@ -71,9 +71,9 @@ class SlowControlMonitor : public SerialisableObject{
   float LIMIT_saltbridge_high = 400000; //Default chosen 
  
   //relay
-  bool relayCh1=true; //Default chosen 
-  bool relayCh2=true; //Default chosen 
-  bool relayCh3=true; //Default chosen 
+  bool relayCh1=false; //Default chosen 
+  bool relayCh2=false; //Default chosen 
+  bool relayCh3=false; //Default chosen 
   bool relayCh1_mon;
   bool relayCh2_mon;
   bool relayCh3_mon;
