@@ -176,7 +176,7 @@ public:
 	/*ID 3: Main function that creates CANBUS messages*/
 	int createCanFrame(unsigned int id, unsigned long long msg, struct canfd_frame *cf)
 	{
-		char *t_frame = (char *)malloc(128);
+		char *t_frame;// = (char *)malloc(128);
 		t_frame = parseFrame(id,msg);
 
 		int i, idx, dlc, len;
