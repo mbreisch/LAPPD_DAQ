@@ -206,6 +206,8 @@ bool SC_SetConfig::Setup(){
 		}
 	}else if(temp_HVstate==1 && m_data->SCMonitor.HV_state_set==1)
 	{
+		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
 		if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
 		{
 			retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
