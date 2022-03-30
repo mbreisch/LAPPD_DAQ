@@ -1150,10 +1150,12 @@ float Canbus::GetSaltbridge()
     catch(...)
     {
         YAPI::FreeAPI();
+        usleep(100000);
         errorcode.push_back(0xCA25EE02);
         return -222;
     }
-	
+
+	usleep(100000);
 	return Resistance;
 }
 
@@ -1207,9 +1209,11 @@ float Canbus::GetThermistor()
     catch(...)
     {
         YAPI::FreeAPI();
+        usleep(100000);
         errorcode.push_back(0xCA26EE02);
         return -222;
     }
 	
+    usleep(100000);
 	return Temperature;
 }

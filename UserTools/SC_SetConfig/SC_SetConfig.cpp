@@ -82,7 +82,6 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
-	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
 	if(m_data->SCMonitor.relayCh2!=m_data->SCMonitor.relayCh2_mon)
 	{
 		//std::cout << "Relay 2 is " << std::boolalpha << m_data->SCMonitor.relayCh2_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh2  << std::endl;
@@ -94,7 +93,6 @@ bool SC_SetConfig::Setup(){
 		}
 	}
 
-	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	if(m_data->SCMonitor.relayCh3!=m_data->SCMonitor.relayCh3_mon)
 	{
 		//std::cout << "Relay 3 is " << std::boolalpha << m_data->SCMonitor.relayCh3_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh3  << std::endl;
@@ -109,12 +107,12 @@ bool SC_SetConfig::Setup(){
 	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
 	m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
 	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
-	if(m_data->SCMonitor.relayCh1_mon==0 && m_data->SCMonitor.relayCh2_mon==0 && m_data->SCMonitor.relayCh3_mon==0)
+	if(m_data->SCMonitor.relayCh1_mon==false && m_data->SCMonitor.relayCh2_mon==false && m_data->SCMonitor.relayCh3_mon==false)
 	{
 		m_data->SCMonitor.SumRelays = false;
 		m_data->SCMonitor.recieveFlag=2;
 		return true;
-	}else if(m_data->SCMonitor.relayCh1_mon==1 && m_data->SCMonitor.relayCh2_mon==1 && m_data->SCMonitor.relayCh3_mon==1)
+	}else if(m_data->SCMonitor.relayCh1_mon==true && m_data->SCMonitor.relayCh2_mon==true && m_data->SCMonitor.relayCh3_mon==true)
     {
         m_data->SCMonitor.SumRelays = true;
     }else

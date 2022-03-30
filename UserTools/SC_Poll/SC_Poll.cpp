@@ -19,10 +19,6 @@ bool SC_Poll::Initialise(std::string configfile, DataModel &data){
 
 bool SC_Poll::Execute(){
   //if(m_data->SCMonitor.recieveFlag==0){return true;}
-
-  m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
-  m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2);
-  m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	
   int idf = 0;
   try
