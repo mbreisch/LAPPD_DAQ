@@ -23,7 +23,7 @@ bool SC_Emergency::Execute()
   
   bool retchk;
 
-  if(m_data->SCMonitor.SumRelays==1)
+  if(m_data->SCMonitor.SumRelays==true)
   {
 	  if(m_data->SCMonitor.HV_mon==1)
 	  {
