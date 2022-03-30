@@ -60,18 +60,28 @@ bool SC_Poll::Execute(){
     {
 	 idf+=8;    
     }
-
-    //Thermistor
-    m_data->SCMonitor.temperature_thermistor = m_data->CB->GetThermistor();
-    idf++;
     
     //Relay
     m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1); idf++;
     m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2); idf++;
     m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3); idf++;
 
+    //Thermistor
+    float tmpTherm = m_data->SCMonitor.temperature_thermistor;
+    m_data->SCMonitor.temperature_thermistor = m_data->CB->GetThermistor(); idf++;
+    if(m_data->SCMonitor.temperature_thermistor<0)
+    {
+        m_data->SCMonitor.temperature_thermistor = tmpTherm; 
+    }
+    
+
     //Saltbridge
+    float tmpSalt = m_data->SCMonitor.saltbridge;
     m_data->SCMonitor.saltbridge = m_data->CB->GetSaltbridge(); idf++;
+    if(m_data->SCMonitor.saltbridge<0)
+    {
+        m_data->SCMonitor.saltbridge = tmpSalt; 
+    }
  
     //Errors
     m_data->SCMonitor.errorcodes = m_data->CB->returnErrors(); idf++;
