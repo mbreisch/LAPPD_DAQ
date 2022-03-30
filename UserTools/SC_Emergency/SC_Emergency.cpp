@@ -84,11 +84,11 @@ bool SC_Emergency::HVCHK()
     //multi check
     m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
     m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-    if(fabs(m_data->SCMonitor.HV_return_mo-m_data->SCMonitor.HV_volts)>200)
+    if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>200)
     {
         m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
         m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-        if(fabs(m_data->SCMonitor.HV_return_mo-m_data->SCMonitor.HV_volts)>200)
+        if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>200)
         {
             m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
             m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
