@@ -47,7 +47,6 @@ bool SC_Stream::Execute(){
     std::cout<<"Sending SC data"<<std::endl;
     m_data->SCMonitor.Print();
     m_data->SCMonitor.Send_Mon(sock);
-    if(m_data->SCMonitor.SumRelays == 0){usleep(1000000)};
     last=boost::posix_time::second_clock::local_time();
   }
 
