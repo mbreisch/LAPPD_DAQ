@@ -1119,6 +1119,33 @@ float Canbus::GetSaltbridge()
             errorcode.push_back(0xCA25EE01);
             return -111;
         }
+ 
+        //std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
+        //Get target device and sensor
+        target = thermistorID;
+        
+        tsensor = YTemperature::FindTemperature(target + ".temperature4");
+        serial = tsensor->get_module()->get_serialNumber();
+        
+        //tsensor = YGenericSensor::FindGenericSensor(target + ".genericsensor1");
+        //serial = tsensor->get_module()->get_serialNumber();	
+        
+        //cout << "serial " << serial << endl;
+        
+        YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature4");
+
+        if(t1->isOnline()){
+            Resistance = t1->get_signalValue();
+            //cout << "R for saltbridge is " << Resistance << endl;
+            string Unit = t1->get_signalUnit();
+            //cout << "Unit for saltbridge is " << Unit << endl;
+        }else
+        {
+            errorcode.push_back(0xCA25EE03);
+            return -333;
+        }
+        
+        YAPI::FreeAPI();
     }
     catch(...)
     {
@@ -1126,33 +1153,6 @@ float Canbus::GetSaltbridge()
         errorcode.push_back(0xCA25EE02);
         return -222;
     }
-	
-	//std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
-	//Get target device and sensor
-	target = thermistorID;
-	
-	tsensor = YTemperature::FindTemperature(target + ".temperature4");
-	serial = tsensor->get_module()->get_serialNumber();
-	
-	//tsensor = YGenericSensor::FindGenericSensor(target + ".genericsensor1");
-	//serial = tsensor->get_module()->get_serialNumber();	
-	
-	//cout << "serial " << serial << endl;
-	
-	YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature4");
-
-	if(t1->isOnline()){
-		Resistance = t1->get_signalValue();
-		//cout << "R for saltbridge is " << Resistance << endl;
-		string Unit = t1->get_signalUnit();
-		//cout << "Unit for saltbridge is " << Unit << endl;
-	}else
-	{
-		errorcode.push_back(0xCA25EE03);
-		return -333;
-	}
-	
-	YAPI::FreeAPI();
 	
 	return Resistance;
 }
@@ -1176,6 +1176,33 @@ float Canbus::GetThermistor()
             errorcode.push_back(0xCA26EE01);
             return -111;
         }
+ 
+        //std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
+        //Get target device and sensor
+        target = thermistorID;
+        
+        tsensor = YTemperature::FindTemperature(target + ".temperature1");
+        serial = tsensor->get_module()->get_serialNumber();
+        
+        //tsensor = YGenericSensor::FindGenericSensor(target + ".genericsensor1");
+        //serial = tsensor->get_module()->get_serialNumber();	
+        
+        //cout << "serial " << serial << endl;
+        
+        YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature1");
+
+        if(t1->isOnline()){
+            Temperature = t1->get_signalValue();
+            //cout << "R for thermistor is " << Temperature << endl;
+            string Unit = t1->get_signalUnit();
+            //cout << "Unit for thermistor is " << Unit << endl;
+        }else
+        {
+            errorcode.push_back(0xCA26EE03);
+            return -333;
+        }
+        
+        YAPI::FreeAPI();
     }
     catch(...)
     {
@@ -1183,33 +1210,6 @@ float Canbus::GetThermistor()
         errorcode.push_back(0xCA26EE02);
         return -222;
     }
-	
-	//std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
-	//Get target device and sensor
-	target = thermistorID;
-	
-	tsensor = YTemperature::FindTemperature(target + ".temperature1");
-	serial = tsensor->get_module()->get_serialNumber();
-	
-	//tsensor = YGenericSensor::FindGenericSensor(target + ".genericsensor1");
-	//serial = tsensor->get_module()->get_serialNumber();	
-	
-	//cout << "serial " << serial << endl;
-	
-	YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature1");
-
-	if(t1->isOnline()){
-		Temperature = t1->get_signalValue();
-		//cout << "R for thermistor is " << Temperature << endl;
-		string Unit = t1->get_signalUnit();
-		//cout << "Unit for thermistor is " << Unit << endl;
-	}else
-	{
-		errorcode.push_back(0xCA26EE03);
-		return -333;
-	}
-	
-	YAPI::FreeAPI();
 	
 	return Temperature;
 }
