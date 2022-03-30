@@ -1049,12 +1049,14 @@ int Canbus::SetRelay(int idx, bool state){
 	}
 	
 	digitalWrite(ch, stateInt);
-	usleep(1000);
+	usleep(100000);
 	if((digitalRead(ch)) == stateInt)
 	{		
+        usleep(100000);
 		return stateInt;
 	}else 
 	{
+        usleep(100000);
 		errorcode.push_back(0xCA23EE02);
 		return -3;
 	}
@@ -1088,9 +1090,11 @@ bool Canbus::GetRelayState(int idx){
 	retval = digitalRead(ch);
 	if(retval==0)
 	{
+        usleep(100000);
 		return false;
 	}else if(retval==1)
 	{
+        usleep(100000);
 		return true;
 	}
 	return retval;
