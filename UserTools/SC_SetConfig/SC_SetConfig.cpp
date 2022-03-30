@@ -111,8 +111,12 @@ bool SC_SetConfig::Setup(){
 	m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 	if(m_data->SCMonitor.relayCh1_mon==0 && m_data->SCMonitor.relayCh2_mon==0 && m_data->SCMonitor.relayCh3_mon==0)
 	{
+		m_data->SCMonitor.SumRelays = false;
 		m_data->SCMonitor.recieveFlag=2;
 		return true;
+	}else
+	{
+		m_data->SCMonitor.SumRelays = m_data->SCMonitor.relayCh1_mon;
 	}
 	
   	usleep(10000000);
