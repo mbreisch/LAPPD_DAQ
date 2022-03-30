@@ -38,15 +38,7 @@ bool SC_Receive::Initialise(std::string configfile, DataModel &data){
 
 bool SC_Receive::Execute(){
 
-  int timer;
-  
-  if(m_data->SCMonitor.recieveFlag==0)
-  {
-    timer = 0;
-  }else
-  {
-    timer = 100;
-  }
+  int timer=100;
 
   zmq::poll(&items[0], 1, timer);
 
