@@ -98,13 +98,14 @@ bool SC_Emergency::HVCHK()
 
     if(m_data->SCMonitor.HV_return_mon < (m_data->SCMonitor.HV_volts-200) || m_data->SCMonitor.HV_return_mon > (m_data->SCMonitor.HV_volts+200))
     {
+        int down_voltage = 0;
         m_data->SCMonitor.errorcodes.push_back(0xCC10EE01);
-        m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,2);
+        m_data->CB->SetHV_voltage(down_voltage,m_data->SCMonitor.HV_return_mon,2);
         
         m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF(); 
         m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue; 
         counter=0;
-        while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+        while(fabs(m_data->SCMonitor.HV_return_mon-down_voltage)>50)
         {
             usleep(10000000);
             m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();

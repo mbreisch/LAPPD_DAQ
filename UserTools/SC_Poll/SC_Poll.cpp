@@ -90,64 +90,62 @@ bool SC_Poll::Execute(){
 
 
 bool SC_Poll::Finalise(){
-  int retval=-2;
-	int counter;
-  if(m_data->SCMonitor.HV_return_mon>5 || m_data->SCMonitor.HV_mon==1)
-  {
-	  m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
-	  usleep(10000);
-	  int retstate = m_data->CB->GetHV_ONOFF(); 
-	  float tempHV = m_data->CB->ReturnedHvValue; m_data->SCMonitor.HV_volts=tempHV;
-	  counter=0;
-		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
-		{
-			usleep(10000000);
-			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-			if(counter>=30){break;}
-			counter++;
-		}
-	  if(tempHV>5)
-	  {
-	    m_data->CB->SetHV_voltage(0,m_data->SCMonitor.HV_return_mon,0);
-	    usleep(10000);
-	    retstate = m_data->CB->GetHV_ONOFF(); m_data->SCMonitor.HV_mon=retstate;
-	    tempHV = m_data->CB->ReturnedHvValue; m_data->SCMonitor.HV_volts=tempHV;
-		  counter=0;
-		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
-		{
-			usleep(10000000);
-			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-			if(counter>=30){break;}
-			counter++;
-		}
-	  }else
-	  {
-	    retval = m_data->CB->SetHV_ONOFF(false);
-			if(retval!=0 && retval!=1)
-			{
-				//std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
-				m_data->SCMonitor.errorcodes.push_back(0xCD02EE01);
-			}
-	  }
+    int retval=-2;
+    int counter;
+    float down_voltage = 0;
+    if(m_data->SCMonitor.HV_mon==1)
+    {
+        m_data->CB->SetHV_voltage(down_voltage,m_data->SCMonitor.HV_return_mon,0);
 
-	    m_data->CB->get_HV_volts = tempHV;
+        m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF(); 
+        m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue; 
+        counter=0;
+		while(fabs(m_data->SCMonitor.HV_return_mon-down_voltage)>50)
+		{
+			usleep(10000000);
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+			if(counter>=30){break;}
+			counter++;
+		}
+        if(m_data->SCMonitor.HV_return_mon>50)
+        {
+            m_data->CB->SetHV_voltage(down_voltage,m_data->SCMonitor.HV_return_mon,0);
+
+            m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF(); 
+            m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
+            counter=0;
+            while(fabs(m_data->SCMonitor.HV_return_mon-down_voltage)>50)
+            {
+                usleep(10000000);
+                m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+                m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+                if(counter>=30){break;}
+                counter++;
+            }
+        }
+        retval = m_data->CB->SetHV_ONOFF(false);
+        if(retval!=0 && retval!=1)
+        {
+            //std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
+            m_data->SCMonitor.errorcodes.push_back(0xCD02EE01);
+        }
+	    
+	    m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
 	    std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
 	    outfile << m_data->CB->get_HV_volts;
 	    outfile.close();
-	  m_data->SCMonitor.HV_return_mon = tempHV;
-  }
+    }
 	
-  while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
-  while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
-  while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
+    while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
+    while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
+    while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
 
-  m_data->CB->Disconnect();
-  delete m_data->CB;
-  m_data->CB=0;
+    m_data->CB->Disconnect();
+    delete m_data->CB;
+    m_data->CB=0;
   
-  if(m_data->SCMonitor.HV_return_mon>10){return false;}
+    if(m_data->SCMonitor.HV_return_mon>10){return false;}
 
-  return true;
+    return true;
 }
