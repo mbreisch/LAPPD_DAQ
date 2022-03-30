@@ -114,7 +114,10 @@ bool SC_SetConfig::Setup(){
 		m_data->SCMonitor.SumRelays = false;
 		m_data->SCMonitor.recieveFlag=2;
 		return true;
-	}else
+	}else if(m_data->SCMonitor.relayCh1_mon==1 && m_data->SCMonitor.relayCh2_mon==1 && m_data->SCMonitor.relayCh3_mon==1)
+    {
+        m_data->SCMonitor.SumRelays = true;
+    }else
 	{
 		m_data->SCMonitor.SumRelays = m_data->SCMonitor.relayCh1_mon;
 	}

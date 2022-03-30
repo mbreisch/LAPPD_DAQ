@@ -1107,16 +1107,25 @@ float Canbus::GetSaltbridge()
 	//std::cout << "Trying to connect to USB" << std::endl;
 	
 	// Setup the API to use local USB devices
-	if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
-	{
-		//cerr << "RegisterHub error: " << errmsg << endl;
-		errorcode.push_back(0xCA25EE01);
-		return -111;
-	}
+    try
+    {
+        if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
+        {
+            //cerr << "RegisterHub error: " << errmsg << endl;
+            errorcode.push_back(0xCA25EE01);
+            return -111;
+        }
+    }
+    catch(...)
+    {
+        YAPI::FreeAPI();
+        errorcode.push_back(0xCA25EE02);
+        return -222;
+    }
 	
 	//std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
 	//Get target device and sensor
-	target =thermistorID;
+	target = thermistorID;
 	
 	tsensor = YTemperature::FindTemperature(target + ".temperature4");
 	serial = tsensor->get_module()->get_serialNumber();
@@ -1135,7 +1144,7 @@ float Canbus::GetSaltbridge()
 		//cout << "Unit for saltbridge is " << Unit << endl;
 	}else
 	{
-		errorcode.push_back(0xCA25EE02);
+		errorcode.push_back(0xCA25EE03);
 		return -333;
 	}
 	
@@ -1155,16 +1164,25 @@ float Canbus::GetThermistor()
 	//std::cout << "Trying to connect to USB" << std::endl;
 	
 	// Setup the API to use local USB devices
-	if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
-	{
-		//cerr << "RegisterHub error: " << errmsg << endl;
-		errorcode.push_back(0xCA26EE02);
-		return -111;
-	}
+    try
+    {
+        if (YAPI::RegisterHub("usb", errmsg) != YAPI::SUCCESS) 
+        {
+            //cerr << "RegisterHub error: " << errmsg << endl;
+            errorcode.push_back(0xCA26EE01);
+            return -111;
+        }
+    }
+    catch(...)
+    {
+        YAPI::FreeAPI();
+        errorcode.push_back(0xCA26EE02);
+        return -222;
+    }
 	
 	//std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
 	//Get target device and sensor
-	target =thermistorID;
+	target = thermistorID;
 	
 	tsensor = YTemperature::FindTemperature(target + ".temperature1");
 	serial = tsensor->get_module()->get_serialNumber();
@@ -1183,7 +1201,7 @@ float Canbus::GetThermistor()
 		//cout << "Unit for thermistor is " << Unit << endl;
 	}else
 	{
-		errorcode.push_back(0xCA26EE02);
+		errorcode.push_back(0xCA26EE03);
 		return -333;
 	}
 	
