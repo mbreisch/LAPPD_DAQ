@@ -28,7 +28,7 @@ bool SC_Poll::Execute(){
   try
   {
     
-    if(m_data->SCMonitor.SumRelays == 1)
+    if(m_data->SCMonitor.SumRelays == true)
     {
 	//LV
 	m_data->SCMonitor.LV_mon = m_data->CB->GetLV_ONOFF();  idf++;
