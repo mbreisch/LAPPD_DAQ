@@ -219,7 +219,11 @@ bool SC_Emergency::HUMIDITYCHK(){
 
 bool SC_Emergency::TEMPCHK_Thermistor(){
     int retval=-2;
-    if(m_data->SCMonitor.temperature_thermistor<0){return true;}
+    if(m_data->SCMonitor.temperature_thermistor<0)
+    {
+        m_data->SCMonitor.errorcodes.push_back(0xCC07EE02);
+        return true;
+    }
     if(m_data->SCMonitor.temperature_thermistor > m_data->SCMonitor.LIMIT_Thermistor_temperature_low )
     {
         m_data->SCMonitor.FLAG_temperature_Thermistor  = 0;
@@ -254,7 +258,11 @@ bool SC_Emergency::TEMPCHK_Thermistor(){
  
 bool SC_Emergency::SALTBRIDGECHK(){
     int retval=-2;
-    if(m_data->SCMonitor.saltbridge<0){return true;}
+    if(m_data->SCMonitor.saltbridge<0)
+    {
+        m_data->SCMonitor.errorcodes.push_back(0xCC08EE02);
+        return true;
+    }
     if(m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_low)
     {
         m_data->SCMonitor.FLAG_saltbridge  = 0;
