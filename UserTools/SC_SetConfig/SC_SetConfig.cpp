@@ -340,6 +340,7 @@ bool SC_SetConfig::Setup(){
 	return true;	
 }
 
+//Outdated
 bool SC_SetConfig::Update(){
 	//------------------------------------HV Control
 	if(m_verbose>1){std::cout<<"HV re-set"<<std::endl;}

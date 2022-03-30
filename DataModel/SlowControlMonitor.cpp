@@ -1,6 +1,8 @@
 #include <SlowControlMonitor.h>
 
-SlowControlMonitor::SlowControlMonitor(){}
+SlowControlMonitor::SlowControlMonitor(){
+    //VersionNumber = 0x0006;
+}
 
 bool SlowControlMonitor::Send_Mon(zmq::socket_t* sock){
 	std::string tmp="LAPPDMon";
