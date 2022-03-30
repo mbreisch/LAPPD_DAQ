@@ -147,7 +147,7 @@ bool SC_Poll::Finalise(){
   delete m_data->CB;
   m_data->CB=0;
   
-  if(m_data->SCMonitor.HV_return_mon>5){return false;}
+  if(m_data->SCMonitor.HV_return_mon>10){return false;}
 
   return true;
 }
