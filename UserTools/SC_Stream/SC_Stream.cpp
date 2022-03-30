@@ -20,6 +20,8 @@ bool SC_Stream::Initialise(std::string configfile, DataModel &data){
     std::string connection="tcp://*:"+port;
     sock->bind(connection.c_str());
 
+    if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
+
     long time_sec=0;
 
     if(!m_variables.Get("Period",time_sec)) time_sec=1;
@@ -44,7 +46,7 @@ bool SC_Stream::Execute(){
     if(lapse.is_negative())
     {
         std::cout<<"Sending SC data"<<std::endl;
-        m_data->SCMonitor.Print();
+        if(m_verbose>1)m_data->SCMonitor.Print();
         m_data->SCMonitor.Send_Mon(sock);
         last=boost::posix_time::second_clock::local_time();
     }

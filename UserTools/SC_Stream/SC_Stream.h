@@ -31,6 +31,7 @@ class SC_Stream: public Tool {
 
   zmq::socket_t* sock;
   int m_port;
+  int m_verbose;
 
   boost::posix_time::time_duration period;
   boost::posix_time::ptime last;
