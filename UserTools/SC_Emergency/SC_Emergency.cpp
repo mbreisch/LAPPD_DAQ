@@ -22,30 +22,41 @@ bool SC_Emergency::Execute()
   //if(m_data->SCMonitor.recieveFlag==0){return true;}
   
   bool retchk;
-  retchk = HVCHK();
-  if(retchk==false)
+
+  if(m_data->SCMonitor.SumRelays==1)
   {
-    //report error behavior 
-    m_data->SCMonitor.errorcodes.push_back(0xCC09EE01);
-  }  
-  retchk = TEMPCHK();
-  if(retchk==false)
-  {
-    //report error behavior 
-    m_data->SCMonitor.errorcodes.push_back(0xCC01EE01);
-  }
+	  if(m_data->SCMonitor.HV_mon==1)
+	  {
+		  retchk = HVCHK();
+		  if(retchk==false)
+		  {
+		    //report error behavior 
+		    m_data->SCMonitor.errorcodes.push_back(0xCC09EE01);
+		  }  	  
+	  }
+	  retchk = TEMPCHK();
+	  if(retchk==false)
+	  {
+	    //report error behavior 
+	    m_data->SCMonitor.errorcodes.push_back(0xCC01EE01);
+	  }
+
+	  retchk = HUMIDITYCHK();
+	  if(retchk==false)
+	  {
+	    //report error behavior
+	    m_data->SCMonitor.errorcodes.push_back(0xCC02EE01);
+	  } 
+  }	
+	
+  //Always do
   retchk = TEMPCHK_Thermistor();
   if(retchk==false)
   {
     //report error behavior 
     m_data->SCMonitor.errorcodes.push_back(0xCC07EE01);
-  }
-  retchk = HUMIDITYCHK();
-  if(retchk==false)
-  {
-    //report error behavior
-    m_data->SCMonitor.errorcodes.push_back(0xCC02EE01);
-  } 
+  }	
+	
   retchk = SALTBRIDGECHK();
   if(retchk==false)
   {
