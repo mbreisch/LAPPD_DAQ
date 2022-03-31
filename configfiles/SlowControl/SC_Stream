@@ -1,4 +1,5 @@
 verbose 1
 IP 127.0.0.1
 Port 3333
+Period 60
 

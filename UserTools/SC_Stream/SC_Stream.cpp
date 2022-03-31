@@ -21,9 +21,6 @@ bool SC_Stream::Initialise(std::string configfile, DataModel &data){
     sock->bind(connection.c_str());
 
     if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
-
-    long time_sec=0;
-
     if(!m_variables.Get("Period",time_sec)) time_sec=1;
 
     period=boost::posix_time::seconds(time_sec);

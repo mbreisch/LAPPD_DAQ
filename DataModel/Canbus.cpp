@@ -1,7 +1,14 @@
 #include <Canbus.h>
 
 /*ID 6: Constructor*/
-Canbus::Canbus(){};
+Canbus::Canbus()
+{}
+
+/*ID6.1 DeConstructor*/
+Canbus::~Canbus()
+{
+    YAPI::FreeAPI();
+}
 
 /*ID 7: Connect to CANBUS socket*/
 bool Canbus::Connect()
@@ -1148,8 +1155,6 @@ float Canbus::GetSaltbridge()
         Resistance = -222;
     }
 
-	YAPI::FreeAPI();
-
 	return Resistance;
 }
 
@@ -1205,6 +1210,5 @@ float Canbus::GetThermistor()
         Temperature = -222;
     }
 
-	YAPI::FreeAPI();
 	return Temperature;
 }

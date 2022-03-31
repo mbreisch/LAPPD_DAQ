@@ -56,6 +56,8 @@ public:
 
 	/*ID 6: Constructor*/
 	Canbus();
+	/*ID 6.5: DeConstructor*/
+	~Canbus();
 
 	/*-------------------Comm functions-----------------*/
 	/*ID 7: Connect to CANBUS socket*/
