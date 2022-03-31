@@ -1049,14 +1049,12 @@ int Canbus::SetRelay(int idx, bool state){
 	}
 	
 	digitalWrite(ch, stateInt);
-	usleep(100000);
+	usleep(10000);
 	if((digitalRead(ch)) == stateInt)
 	{		
-        usleep(100000);
 		return stateInt;
 	}else 
 	{
-        usleep(100000);
 		errorcode.push_back(0xCA23EE02);
 		return -3;
 	}
@@ -1090,11 +1088,9 @@ bool Canbus::GetRelayState(int idx){
 	retval = digitalRead(ch);
 	if(retval==0)
 	{
-        usleep(100000);
 		return false;
 	}else if(retval==1)
 	{
-        usleep(100000);
 		return true;
 	}
 	return retval;
@@ -1105,8 +1101,9 @@ float Canbus::GetSaltbridge()
 {
 	//init
 	string errmsg, target, serial;
-	YTemperature *tsensor;
-	float Resistance;
+	YTemperature *tsensor=0;
+	YTemperature *t1=0;
+	float Resistance=0.0;
 	
 	//std::cout << "Trying to connect to USB" << std::endl;
 	
@@ -1117,7 +1114,7 @@ float Canbus::GetSaltbridge()
         {
             //cerr << "RegisterHub error: " << errmsg << endl;
             errorcode.push_back(0xCA25EE01);
-            return -111;
+            Resistance = -111;
         }
  
         //std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
@@ -1142,20 +1139,22 @@ float Canbus::GetSaltbridge()
         }else
         {
             errorcode.push_back(0xCA25EE03);
-            return -333;
-        }
-        
-        YAPI::FreeAPI();
+            Resistance = -333;
+        } 
     }
     catch(...)
     {
-        YAPI::FreeAPI();
-        usleep(100000);
         errorcode.push_back(0xCA25EE02);
-        return -222;
+        Resistance = -222;
     }
 
-	usleep(100000);
+	delete t1;
+	t1=0
+	delete tsensor;
+	tsensor=0;  
+
+	YAPI::FreeAPI();
+
 	return Resistance;
 }
 
@@ -1164,8 +1163,9 @@ float Canbus::GetThermistor()
 {
 	//init
 	string errmsg, target, serial;
-	YTemperature *tsensor;
-	float Temperature;
+	YTemperature *tsensor=0;
+	YTemperature *t1=0;
+	float Temperature=0.0;
 	
 	//std::cout << "Trying to connect to USB" << std::endl;
 	
@@ -1176,7 +1176,7 @@ float Canbus::GetThermistor()
         {
             //cerr << "RegisterHub error: " << errmsg << endl;
             errorcode.push_back(0xCA26EE01);
-            return -111;
+            Temperature = -111;
         }
  
         //std::cout << "Thermistor ID is"  << thermistor_id << std::endl;
@@ -1201,19 +1201,20 @@ float Canbus::GetThermistor()
         }else
         {
             errorcode.push_back(0xCA26EE03);
-            return -333;
+            Temperature = -333;
         }
-        
-        YAPI::FreeAPI();
     }
     catch(...)
     {
-        YAPI::FreeAPI();
-        usleep(100000);
         errorcode.push_back(0xCA26EE02);
-        return -222;
+        Temperature = -222;
     }
-	
-    usleep(100000);
+
+	delete t1;
+	t1=0
+	delete tsensor;
+	tsensor=0;  
+
+	YAPI::FreeAPI();
 	return Temperature;
 }

@@ -7,6 +7,7 @@
 
 #include "Tool.h"
 
+using namespace std;
 
 /**
  * \class Poll
@@ -30,7 +31,8 @@ class SC_Poll: public Tool {
 
  private:
 
-
+    int Scount;
+    int Tcount;
 
 
 
