@@ -1149,7 +1149,7 @@ float Canbus::GetSaltbridge()
     }
 
 	delete t1;
-	t1=0
+	t1=0;
 	delete tsensor;
 	tsensor=0;  
 
@@ -1211,7 +1211,7 @@ float Canbus::GetThermistor()
     }
 
 	delete t1;
-	t1=0
+	t1=0;
 	delete tsensor;
 	tsensor=0;  
 
