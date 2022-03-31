@@ -1129,7 +1129,7 @@ float Canbus::GetSaltbridge()
         
         //cout << "serial " << serial << endl;
         
-        YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature4");
+        t1 = YTemperature::FindTemperature(serial + ".temperature4");
 
         if(t1->isOnline()){
             Resistance = t1->get_signalValue();
@@ -1191,7 +1191,7 @@ float Canbus::GetThermistor()
         
         //cout << "serial " << serial << endl;
         
-        YTemperature *t1 = YTemperature::FindTemperature(serial + ".temperature1");
+    	t1 = YTemperature::FindTemperature(serial + ".temperature1");
 
         if(t1->isOnline()){
             Temperature = t1->get_signalValue();
