@@ -18,67 +18,69 @@ bool SC_Poll::Initialise(std::string configfile, DataModel &data){
 
 
 bool SC_Poll::Execute(){
-  //if(m_data->SCMonitor.recieveFlag==0){return true;}
+    //if(m_data->SCMonitor.recieveFlag==0){return true;}
 	
-  int idf = 0;
-  try
-  {
-    
+    int idf = 0;
     if(m_data->SCMonitor.SumRelays == true)
     {
-	//LV
-	m_data->SCMonitor.LV_mon = m_data->CB->GetLV_ONOFF();  idf++;
+        //LV
+        m_data->SCMonitor.LV_mon = m_data->CB->GetLV_ONOFF();  idf++;
 
-	//LV vlaues
-	std::vector<float> LVvoltage = m_data->CB->GetLV_voltage();  idf++;
-	m_data->SCMonitor.v33 = LVvoltage[0];
-	m_data->SCMonitor.v25 = LVvoltage[1];
-	m_data->SCMonitor.v12 = LVvoltage[2];
+        //LV vlaues
+        std::vector<float> LVvoltage = m_data->CB->GetLV_voltage();  idf++;
+        m_data->SCMonitor.v33 = LVvoltage[0];
+        m_data->SCMonitor.v25 = LVvoltage[1];
+        m_data->SCMonitor.v12 = LVvoltage[2];
 
-	//HV state
-	m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();  idf++;
+        //HV state
+        m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();  idf++;
 
-	//HV value
-	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;  idf++;
+        //HV value
+        m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;  idf++;
 
-	//Hum Temp
-	vector<float> RHT = m_data->CB->GetTemp(); idf++;
-	m_data->SCMonitor.temperature_mon = RHT[0];
-	m_data->SCMonitor.humidity_mon = RHT[1];
+        //Hum Temp
+        vector<float> RHT = m_data->CB->GetTemp(); idf++;
+        m_data->SCMonitor.temperature_mon = RHT[0];
+        m_data->SCMonitor.humidity_mon = RHT[1];
 
-	//Triggerboard
-	m_data->SCMonitor.Trig0_mon = m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref);  idf++;
-	m_data->SCMonitor.Trig1_mon = m_data->CB->GetTriggerDac1(m_data->SCMonitor.TrigVref);  idf++;  
-	    
-	//Photodiode
-	m_data->SCMonitor.light = m_data->CB->GetPhotodiode();idf++;
+        //Triggerboard
+        m_data->SCMonitor.Trig0_mon = m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref);  idf++;
+        m_data->SCMonitor.Trig1_mon = m_data->CB->GetTriggerDac1(m_data->SCMonitor.TrigVref);  idf++;  
+            
+        //Photodiode
+        m_data->SCMonitor.light = m_data->CB->GetPhotodiode();idf++;
     }else
     {
-	 idf+=8;    
+        idf+=8;    
     }
-    
+
     //Relay
     m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1); idf++;
     m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2); idf++;
     m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3); idf++;
 
-    //Thermistor
-    float tmpTherm = m_data->SCMonitor.temperature_thermistor;
-    m_data->SCMonitor.temperature_thermistor = m_data->CB->GetThermistor(); idf++;
-    if(m_data->SCMonitor.temperature_thermistor<0)
+    try
     {
-        m_data->SCMonitor.temperature_thermistor = tmpTherm; 
-    }
+        //Thermistor
+        float tmpTherm = m_data->SCMonitor.temperature_thermistor;
+        m_data->SCMonitor.temperature_thermistor = m_data->CB->GetThermistor(); idf++;
+        if(m_data->SCMonitor.temperature_thermistor<0)
+        {
+            m_data->SCMonitor.temperature_thermistor = tmpTherm; 
+        }
     
 
-    //Saltbridge
-    float tmpSalt = m_data->SCMonitor.saltbridge;
-    m_data->SCMonitor.saltbridge = m_data->CB->GetSaltbridge(); idf++;
-    if(m_data->SCMonitor.saltbridge<0)
+        //Saltbridge
+        float tmpSalt = m_data->SCMonitor.saltbridge;
+        m_data->SCMonitor.saltbridge = m_data->CB->GetSaltbridge(); idf++;
+        if(m_data->SCMonitor.saltbridge<0)
+        {
+            m_data->SCMonitor.saltbridge = tmpSalt; 
+        }
+    }catch(...)
     {
-        m_data->SCMonitor.saltbridge = tmpSalt; 
+        m_data->SCMonitor.errorcodes.push_back((0xCD01EE00 | idf));
     }
- 
     //Errors
     m_data->SCMonitor.errorcodes = m_data->CB->returnErrors(); idf++;
     m_data->CB->clearErrors();
@@ -86,12 +88,9 @@ bool SC_Poll::Execute(){
     //Timestamp
     unsigned long timeSinceEpochMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     m_data->SCMonitor.timeSinceEpochMilliseconds = timeSinceEpochMilliseconds; idf++;
-  }catch(...)
-  {
-    m_data->SCMonitor.errorcodes.push_back((0xCD01EE00 | idf));
-  }
+ 
 
-  return true;
+    return true;
 }
 
 
