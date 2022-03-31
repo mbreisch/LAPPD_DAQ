@@ -1148,11 +1148,6 @@ float Canbus::GetSaltbridge()
         Resistance = -222;
     }
 
-	delete t1;
-	t1=0;
-	delete tsensor;
-	tsensor=0;  
-
 	YAPI::FreeAPI();
 
 	return Resistance;
@@ -1209,11 +1204,6 @@ float Canbus::GetThermistor()
         errorcode.push_back(0xCA26EE02);
         Temperature = -222;
     }
-
-	delete t1;
-	t1=0;
-	delete tsensor;
-	tsensor=0;  
 
 	YAPI::FreeAPI();
 	return Temperature;
