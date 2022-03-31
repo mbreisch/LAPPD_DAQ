@@ -239,17 +239,6 @@ bool SC_SetConfig::Setup(){
 		}
 	}else if(temp_HVstate==1 && m_data->SCMonitor.HV_state_set==1)
 	{
-		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-		counter = 0;
-		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
-		{
-			usleep(10000000);
-			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-			if(counter>=30){break;}
-			counter++;
-		}
 		if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
 		{
 			retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
@@ -264,6 +253,18 @@ bool SC_SetConfig::Setup(){
 				//std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;
 				m_data->SCMonitor.errorcodes.push_back(0xCB03EE10);
 			}
+		}
+
+		m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+		m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+		counter = 0;
+		while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+		{
+			usleep(10000000);
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+			if(counter>=30){break;}
+			counter++;
 		}
 	}else
 	{
