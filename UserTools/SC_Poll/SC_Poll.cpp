@@ -145,15 +145,13 @@ bool SC_Poll::Finalise(){
 	    outfile.close();
     }
 	
-    while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
-    while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
-    while(retval!=0){retval = m_data->CB->SetRelay(0,false);} retval=-2;
+    while(retval!=0){retval = m_data->CB->SetRelay(1,false);} retval=-2;
+    while(retval!=0){retval = m_data->CB->SetRelay(2,false);} retval=-2;
+    while(retval!=0){retval = m_data->CB->SetRelay(3,false);} retval=-2;
 
     m_data->CB->Disconnect();
     delete m_data->CB;
     m_data->CB=0;
-  
-    if(m_data->SCMonitor.HV_return_mon>10){return false;}
 
     return true;
 }
