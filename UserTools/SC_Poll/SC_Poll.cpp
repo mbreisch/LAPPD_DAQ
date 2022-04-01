@@ -90,8 +90,8 @@ bool SC_Poll::Execute(){
     m_data->CB->clearErrors();
 
     //Timestamp
-    unsigned long long timeSinceEpochMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    m_data->SCMonitor.timeSinceEpochMilliseconds = to_string(timeSinceEpochMilliseconds); 
+    unsigned long long timeSinceEpoch = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    m_data->SCMonitor.timeSinceEpochMilliseconds = to_string(timeSinceEpoch); 
  
     return true;
 }
