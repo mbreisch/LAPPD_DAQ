@@ -87,13 +87,13 @@ bool SC_Emergency::HVCHK()
     if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>200)
     {
         if(m_verbose>1){std::cout << "Last readback 1 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
-        usleep(100000);
+        usleep(1000000);
         m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
         m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
         if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>200)
         {
             if(m_verbose>1){std::cout << "Last readback 2 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
-            usleep(100000);
+            usleep(1000000);
             m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
             m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
         }	
