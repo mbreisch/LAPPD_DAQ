@@ -78,27 +78,27 @@ bool SC_Emergency::HVCHK()
     int counter;
     if(m_verbose>1)
     {
-        std::cout << "Last readback HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;	  
         std::cout << "HV set value was: " << m_data->SCMonitor.HV_volts << std::endl;	
+        std::cout << "Last readback HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;	        
     }   
     //multi check
     m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
     m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
     if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>200)
     {
-        std::cout << "Last readback 1 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;
+        if(m_verbose>1){std::cout << "Last readback 1 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
         usleep(100000);
         m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
         m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
         if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>200)
         {
-            std::cout << "Last readback 2 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;
+            if(m_verbose>1){std::cout << "Last readback 2 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
             usleep(100000);
             m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
             m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
         }	
     }
-    std::cout << "Last readback 3 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;
+    if(m_verbose>1){std::cout << "Last readback 3 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
 
     if(m_data->SCMonitor.HV_return_mon < (m_data->SCMonitor.HV_volts-200) || m_data->SCMonitor.HV_return_mon > (m_data->SCMonitor.HV_volts+200))
     {
