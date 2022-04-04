@@ -245,6 +245,7 @@ float Canbus::GetPhotodiode()
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}
 	
@@ -296,6 +297,7 @@ float Canbus::GetTriggerDac0(float VREF)
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}
 	
@@ -350,6 +352,7 @@ float Canbus::GetTriggerDac1(float VREF)
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}
 	
@@ -419,6 +422,7 @@ int Canbus::SetTriggerDac0(float threshold, float VREF)
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}
 
@@ -496,6 +500,7 @@ int Canbus::SetTriggerDac1(float threshold, float VREF)
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}
 
@@ -557,6 +562,7 @@ vector<float> Canbus::GetTemp()
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}
 
@@ -631,6 +637,7 @@ int Canbus::SetHV_ONOFF(bool state){
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}
 
@@ -776,6 +783,7 @@ int Canbus::GetHV_ONOFF(){
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}	
 
@@ -854,6 +862,7 @@ int Canbus::SetLV(bool state){
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}
 	//back parse message to state
@@ -917,6 +926,7 @@ int Canbus::GetLV_ONOFF(){
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}	
 
@@ -975,6 +985,7 @@ vector<float> Canbus::GetLV_voltage(){
 	rec_message = ReceiveMessage(id,msg);
 	if(strlen(rec_message)<=0)
 	{
+		free(rec_message);
 		rec_message = ReceiveMessage(id,msg);
 	}		
 
