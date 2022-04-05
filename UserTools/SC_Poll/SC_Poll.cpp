@@ -51,6 +51,9 @@ bool SC_Poll::Execute(){
             
         //Photodiode
         m_data->SCMonitor.light = m_data->CB->GetPhotodiode();
+    }else
+    {
+        m_data->SCMonitor.SetDefaultValues();
     }
 
     //Relay
@@ -91,7 +94,7 @@ bool SC_Poll::Execute(){
 
     //Timestamp
     unsigned long long timeSinceEpoch = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    m_data->SCMonitor.timeSinceEpochMilliseconds = to_string(timeSinceEpoch); 
+    m_data->SCMonitor.timeSinceEpochMilliseconds = to_string(timeSinceEpoch-UTCCONV); 
  
     return true;
 }
@@ -138,7 +141,7 @@ bool SC_Poll::Finalise(){
             //std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
             m_data->SCMonitor.errorcodes.push_back(0xCD02EE01);
         }
-	    
+	    m_data->SCMonitor.HV_return_mon = down_voltage;
 	    m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
 	    std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
 	    outfile << m_data->CB->get_HV_volts;

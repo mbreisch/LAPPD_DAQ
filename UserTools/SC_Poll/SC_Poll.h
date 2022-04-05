@@ -7,6 +7,8 @@
 
 #include "Tool.h"
 
+#define UTCCONV 18000000
+
 using namespace std;
 
 /**

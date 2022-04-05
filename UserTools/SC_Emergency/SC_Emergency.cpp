@@ -5,15 +5,15 @@ SC_Emergency::SC_Emergency():Tool(){}
 
 bool SC_Emergency::Initialise(std::string configfile, DataModel &data)
 {
-  if(configfile!="")  m_variables.Initialise(configfile);
-  //m_variables.Print();
+    if(configfile!="")  m_variables.Initialise(configfile);
+    //m_variables.Print();
 
-  m_data= &data;
-  m_log= m_data->Log;
-
-  if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
-
-  return true;
+    m_data= &data;
+    m_log= m_data->Log;
+    
+    if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
+    if(!m_variables.Get("PRINTFLAG",PRINTFLAG)) PRINTFLAG=0;
+    return true;
 }
 
 
@@ -75,30 +75,48 @@ bool SC_Emergency::Finalise(){
 bool SC_Emergency::HVCHK()
 {
     int retval=-2; 
-    int counter;
+    int counter=0;
+    float timer=0.0;
+
+    //Verbosity print for first appearance
     if(m_verbose>1)
     {
         std::cout << "HV set value was: " << m_data->SCMonitor.HV_volts << std::endl;	
-        std::cout << "Last readback HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;	        
+        std::cout << "Last readback HV value before multi check was: " << m_data->SCMonitor.HV_return_mon << std::endl;	        
     }   
-    //multi check
-    m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-    m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+
+    //Multi check start
     if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>200)
     {
-        if(m_verbose>1){std::cout << "Last readback 1 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
-        usleep(1000000);
-        m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-        m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-        if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>200)
+        timer = 0.0;
+        while(timer<timeout) //timeout = 10s
         {
-            if(m_verbose>1){std::cout << "Last readback 2 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
-            usleep(1000000);
             m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
             m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-        }	
+
+            if(m_data->SCMonitor.HV_mon!=1){if(m_verbose>1){std::cout<<"HV state: "<<m_data->SCMonitor.HV_mon<<std::endl;}}
+
+            if(m_verbose>1)
+            {
+                std::cout << "HV value after " << timer << " s was: " <<  m_data->SCMonitor.HV_return_mon << " V" << std::endl;
+            }
+
+            if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)<200)
+            {              
+                if(i_chk<10000 && PRINTFLAG==1)
+                {
+                    std::fstream outfile("./configfiles/SlowControl/HV_timer_list.txt", std::ios_base::out | std::ios_base::app);
+                    outfile << m_data->CB->get_HV_volts << std::endl;
+                    outfile.close();
+                    i_chk++;
+                }
+                break;
+            }
+
+            usleep(timestep*1000000);
+            timer+=timestep;
+        }
     }
-    if(m_verbose>1){std::cout << "Last readback 3 HV value was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
 
     if(m_data->SCMonitor.HV_return_mon < (m_data->SCMonitor.HV_volts-200) || m_data->SCMonitor.HV_return_mon > (m_data->SCMonitor.HV_volts+200))
     {
@@ -139,7 +157,7 @@ bool SC_Emergency::HVCHK()
                 //std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
                 m_data->SCMonitor.errorcodes.push_back(0xCC10EE04);
             }
-
+            m_data->SCMonitor.HV_return_mon = down_voltage;
             m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
             std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
             outfile << m_data->CB->get_HV_volts;
@@ -317,6 +335,8 @@ bool SC_Emergency::HardShutdown(int relay, int errortype)
       return false;
     }
   
+    m_data->SCMonitor.SumRelays = false;
+
     return true;
 }
     
