@@ -103,7 +103,7 @@ bool SC_Emergency::HVCHK()
 
             if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)<200)
             {              
-                if(i_chk<10000 && PRINTFLAG==1)
+                if(i_chk<1000 && PRINTFLAG==1)
                 {
                     std::fstream outfile("./configfiles/SlowControl/HV_timer_list.txt", std::ios_base::out | std::ios_base::app);
                     outfile << "HV was set to " << m_data->SCMonitor.HV_volts << "V and worked  after " << timer << "s" << std::endl;
