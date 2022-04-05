@@ -36,7 +36,7 @@ class SC_Emergency: public Tool {
 
  private:
 
-    float timeout = 10; //10s timeout for sleep in s
+    float timeout = 30; //10s timeout for sleep in s
     float timestep = 0.5; //100ms timer for sleep in s
     int i_chk=0;
     int PRINTFLAG=0;
