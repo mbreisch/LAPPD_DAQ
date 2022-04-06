@@ -120,14 +120,16 @@ int Canbus::SendMessage(unsigned int id, unsigned long long msg){
 /*ID 10: Send function to receive CANBUS messages*/
 char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 	
-	//Prepare an empty message for error handling
-	char *empty;
+	//Prepare message variables
+	char rec_id[5];
+	char rec_temp[3];
+	char *rec_message; rec_message = (char*) malloc(256);
 	
 	//Connect to the socket
 	if(!Connect())
 	{
 		errorcode.push_back(0xCA10EE01);	
-		return empty;	
+		return rec_message;	
 	}
 
 	//Prepare help variables for select()
@@ -136,10 +138,6 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 	struct timeval tv;
 	int retval;
 	
-	//Prepare message variables
-	char rec_id[5];
-	char rec_temp[3];
-	char *rec_message; rec_message = (char*) malloc(256);
 	
 	//Prepare the byte counter
 	nbytes=0;
@@ -151,7 +149,7 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 		//If enough attempts at a read were made re-send the message
 		if(counter==100)
 		{
-			if(chk==true){return empty;}
+			if(chk==true){return rec_message;}
 
 			//Preperation
 			Disconnect();
@@ -160,13 +158,13 @@ char* Canbus::ReceiveMessage(unsigned int id, unsigned long long msg){
 			if((retval=SendMessage(id,msg))!=0)
 			{
 				errorcode.push_back(0xCA10EE02);
-				return empty;
+				return rec_message;
 			}
 			//Reconnect for read
 			if(!Connect())
 			{
 				errorcode.push_back(0xCA10EE03);
-				return empty;	
+				return rec_message;	
 			}
 			chk = true;
 		}
