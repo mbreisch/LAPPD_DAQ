@@ -61,7 +61,7 @@ bool SC_Emergency::Execute()
     {
         //report error behavior
         m_data->SCMonitor.errorcodes.push_back(0xCC08EE01);
-    }  
+    }
 
     return true;
 }
@@ -316,6 +316,7 @@ bool SC_Emergency::SALTBRIDGECHK(){
         return false;
     }
 }  
+
 
 bool SC_Emergency::HardShutdown(int relay, int errortype)
 {
