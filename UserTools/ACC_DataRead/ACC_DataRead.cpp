@@ -23,12 +23,11 @@ bool ACC_DataRead::Execute(){
 	{
 		m_data->acc->softwareTrigger();
 	}
-	if(m_data->conf.receiveFlag==0){return true;}
 
 	m_data->psec.readRetval = m_data->acc->listenForAcdcData(m_data->conf.triggermode);
 	if(m_data->psec.readRetval != 0)
 	{
-		m_data->psec.FailedReadCounter = m_data->psec.FailedReadCounter + 1;
+        if(m_data->psec.readRetval != 404){m_data->psec.FailedReadCounter = m_data->psec.FailedReadCounter + 1;}
 		m_data->psec.ReceiveData.clear();
 		m_data->acc->clearData();
 	}else
@@ -36,10 +35,7 @@ bool ACC_DataRead::Execute(){
 		m_data->psec.AccInfoFrame = m_data->acc->returnACCIF();
 		m_data->psec.ReceiveData = m_data->acc->returnRaw();
 		m_data->psec.BoardIndex = m_data->acc->returnBoardIndices();
-		if(m_data->psec.ReceiveData.size()%7795==0 || m_data->psec.ReceiveData.size()%16==0)
-		{
-			m_data->acc->clearData();
-		}
+		m_data->acc->clearData();
 	}
 	vector<unsigned int> tmpERR = m_data->acc->returnErrors();
 	m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
@@ -51,5 +47,6 @@ bool ACC_DataRead::Execute(){
 
 bool ACC_DataRead::Finalise(){
 	delete m_data->acc;
+    m_data->acc=0;
 	return true;
 }

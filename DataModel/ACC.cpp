@@ -544,7 +544,7 @@ int ACC::listenForAcdcData(int trigMode)
 	//duration variables
 	auto start = chrono::steady_clock::now(); //start of the current event listening. 
 	auto now = chrono::steady_clock::now(); //just for initialization 
-	auto timeoutDuration = chrono::seconds(60); // will exit and reinitialize
+	auto timeoutDuration = chrono::seconds(15); // will exit and reinitialize
 
 	while(true)
 	{ 
@@ -663,6 +663,7 @@ int ACC::listenForAcdcData(int trigMode)
 		if(acdc_buffer[0] != 0x1234)
 		{
 			acdc_buffer.clear();
+            return 406;
 		}
 
 		//save this buffer a private member of ACDC
@@ -677,8 +678,10 @@ int ACC::listenForAcdcData(int trigMode)
 		}
 	}
 	vector_bi = boardsReadyForRead;
-
-	return 0;
+    boardsReadyForRead.clear();
+    acdc_buffer.clear();
+	
+    return 0;
 }
 
 

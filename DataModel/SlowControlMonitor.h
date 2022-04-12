@@ -17,6 +17,8 @@ class SlowControlMonitor : public SerialisableObject{
  public:
 
   SlowControlMonitor();
+  SlowControlMonitor(unsigned int id);
+  ~SlowControlMonitor();
   
   //Comms
   bool Send_Mon(zmq::socket_t* sock);

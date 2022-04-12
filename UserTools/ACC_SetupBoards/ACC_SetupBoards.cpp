@@ -15,14 +15,16 @@ bool ACC_SetupBoards::Initialise(std::string configfile, DataModel &data){
 
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 
-	m_data->acc= new ACC();
+	m_data->acc = new ACC();
 
 	return true;
 }
 
 
 bool ACC_SetupBoards::Execute(){
-	if(m_data->conf.receiveFlag==0){return true;}
+
+	//if(m_data->conf.receiveFlag==0){return true;}
+
 	bool setupret = false;
 	if(m_data->conf.receiveFlag==1)
 	{
@@ -41,14 +43,21 @@ bool ACC_SetupBoards::Execute(){
 
 	if(m_data->psec.readRetval!=0)
 	{
-		if(m_data->psec.readRetval==405 || m_data->psec.readRetval==404)
+		if(m_data->psec.readRetval==404)
 		{
-			m_data->acc->dumpData(0xFF);
+			//m_data->acc->dumpData(0xFF);
 		}else
 		{
+<<<<<<< Updated upstream
 			unsigned int shift = (1<<(m_data->psec.readRetval-1));
 			printf("Necessary dump of board 0x%02x\n", shift);
 			m_data->acc->dumpData(shift);
+=======
+            m_data->psec.errorcodes.push_back(0xAA02EE01);
+			//unsigned int shift = (1<<(m_data->psec.readRetval-1));
+			//printf("Necessary dump of board 0x%02x\n", shift);
+			m_data->acc->dumpData(0xFF);
+>>>>>>> Stashed changes
 		}
 	}
 	return true;
@@ -60,7 +69,7 @@ bool ACC_SetupBoards::Finalise(){
 }
 
 void ACC_SetupBoards::LoadDefaults(){
-	m_variables.Get("receiveFlag",m_data->conf.receiveFlag);
+/*	m_variables.Get("receiveFlag",m_data->conf.receiveFlag);
 	m_variables.Get("Triggermode",m_data->conf.triggermode);
 	
 	m_variables.Get("ResetSwitchACC",m_data->conf.ResetSwitchACC);
@@ -108,22 +117,19 @@ void ACC_SetupBoards::LoadDefaults(){
 	string tempPPSRatio;
 	m_variables.Get("PPS_Ratio",tempPPSRatio);
 	m_data->conf.PPSRatio = std::stoul(tempPPSRatio,nullptr,16);	
-	m_variables.Get("PPS_Mux",m_data->conf.PPSBeamMultiplexer);	
+	m_variables.Get("PPS_Mux",m_data->conf.PPSBeamMultiplexer);	*/
 }
 
 bool ACC_SetupBoards::Setup(){
-	if(m_data->conf.receiveFlag==0)	
-	{
-		LoadDefaults();	
-		m_data->psec.errorcodes.push_back(0xFFF0DEF0);
-	}
 
-	////polarity
+    bool ret=false;
+
+	//polarity
 	m_data->acc->setSign(m_data->conf.ACC_Sign, 2);
 	m_data->acc->setSign(m_data->conf.ACDC_Sign, 3);
 	m_data->acc->setSign(m_data->conf.SELF_Sign, 4);
 
-	////self trigger options
+	//self trigger options
 	m_data->acc->setEnableCoin(m_data->conf.SELF_Enable_Coincidence);
 
 	unsigned int coinNum;
@@ -139,10 +145,10 @@ bool ACC_SetupBoards::Setup(){
 	m_data->acc->setThreshold(threshold);
 
 	//psec masks combine
-	std::vector<int> tempPsecChipMask = {m_data->conf.PSEC_Chip_Mask_0,m_data->conf.PSEC_Chip_Mask_1,m_data->conf.PSEC_Chip_Mask_2,m_data->conf.PSEC_Chip_Mask_3,m_data->conf.PSEC_Chip_Mask_4};
-	std::vector<unsigned int> tempVecPsecChannelMask = {m_data->conf.PSEC_Channel_Mask_0,m_data->conf.PSEC_Channel_Mask_1,m_data->conf.PSEC_Channel_Mask_2,m_data->conf.PSEC_Channel_Mask_3,m_data->conf.PSEC_Channel_Mask_4};
-	m_data->acc->setPsecChipMask(tempPsecChipMask);
-	m_data->acc->setPsecChannelMask(tempVecPsecChannelMask);
+	std::vector<int> PsecChipMask = {m_data->conf.PSEC_Chip_Mask_0,m_data->conf.PSEC_Chip_Mask_1,m_data->conf.PSEC_Chip_Mask_2,m_data->conf.PSEC_Chip_Mask_3,m_data->conf.PSEC_Chip_Mask_4};
+	std::vector<unsigned int> VecPsecChannelMask = {m_data->conf.PSEC_Channel_Mask_0,m_data->conf.PSEC_Channel_Mask_1,m_data->conf.PSEC_Channel_Mask_2,m_data->conf.PSEC_Channel_Mask_3,m_data->conf.PSEC_Channel_Mask_4};
+	m_data->acc->setPsecChipMask(PsecChipMask);
+	m_data->acc->setPsecChannelMask(VecPsecChannelMask);
 
 	//validation window
 	unsigned int validationStart;
@@ -181,17 +187,17 @@ bool ACC_SetupBoards::Setup(){
 	retval = m_data->acc->initializeForDataReadout(m_data->conf.triggermode, m_data->conf.ACDC_mask, m_data->conf.Calibration_Mode);
 	if(retval != 0)
 	{
-		std::cout << "Initialization failed!" << std::endl;
-		return false;
+		m_data->psec.errorcodes.push_back(0xAA02EE01);
+		ret = false;
 	}else
 	{
-		std::cout << "Initialization successfull!" << std::endl;
+        m_data->conf.receiveFlag = 2;
+		ret = true;
+        //std::cout << "Initialization successfull!" << std::endl;
 	}
-
-	m_data->conf.receiveFlag = 2;
 
 	m_data->acc->emptyUsbLine();
 	m_data->acc->dumpData(0xFF);
 
-	return true;	
+	return ret;	
 }
