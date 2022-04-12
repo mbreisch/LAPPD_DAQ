@@ -48,16 +48,10 @@ bool ACC_SetupBoards::Execute(){
 			//m_data->acc->dumpData(0xFF);
 		}else
 		{
-<<<<<<< Updated upstream
-			unsigned int shift = (1<<(m_data->psec.readRetval-1));
-			printf("Necessary dump of board 0x%02x\n", shift);
-			m_data->acc->dumpData(shift);
-=======
-            m_data->psec.errorcodes.push_back(0xAA02EE01);
+            		m_data->psec.errorcodes.push_back(0xAA02EE01);
 			//unsigned int shift = (1<<(m_data->psec.readRetval-1));
 			//printf("Necessary dump of board 0x%02x\n", shift);
 			m_data->acc->dumpData(0xFF);
->>>>>>> Stashed changes
 		}
 	}
 	return true;
