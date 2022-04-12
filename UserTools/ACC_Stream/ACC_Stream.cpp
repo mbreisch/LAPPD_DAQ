@@ -33,7 +33,7 @@ bool ACC_Stream::Execute(){
 
     m_data->psec.RawWaveform = m_data->psec.ReceiveData;
     m_data->psec.Send(sock);
-    if(m_verbose>1){m_data->psec.Print()};
+    if(m_verbose>1){m_data->psec.Print();}
 
     m_data->psec.errorcodes.clear();
     m_data->psec.ReceiveData.clear();
