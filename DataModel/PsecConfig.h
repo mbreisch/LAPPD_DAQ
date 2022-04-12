@@ -22,6 +22,7 @@ class PsecConfig : public SerialisableObject{
  
     //Version number
   unsigned int VersionNumber;
+  unsigned int LAPPD_ID;
 
   //Run control variable
   int receiveFlag;
