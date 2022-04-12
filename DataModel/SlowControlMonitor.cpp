@@ -1,8 +1,5 @@
 #include <SlowControlMonitor.h>
 
-<<<<<<< Updated upstream
-SlowControlMonitor::SlowControlMonitor(){}
-=======
 SlowControlMonitor::SlowControlMonitor()
 {
     VersionNumber = 0x0007;
@@ -11,7 +8,7 @@ SlowControlMonitor::SlowControlMonitor()
 	SetDefaultSettings();
 	SetDefaultValues();
 }
->>>>>>> Stashed changes
+
 
 SlowControlMonitor::SlowControlMonitor(unsigned int id)
 {
