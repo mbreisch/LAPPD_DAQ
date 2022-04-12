@@ -13,61 +13,67 @@ class PsecConfig : public SerialisableObject{
  public:
 
   PsecConfig();
+  PsecConfig(unsigned int id);
+  ~PsecConfig();
   
   //Comms
   bool Send(zmq::socket_t* sock);
   bool Receive(zmq::socket_t* sock);
  
-  unsigned int VersionNumber = 0x0002;
-  int receiveFlag = 0;
+    //Version number
+  unsigned int VersionNumber;
+  unsigned int LAPPD_ID;
+
+  //Run control variable
+  int receiveFlag;
 
   //Reset switch
-  int ResetSwitchACC = 0;
-  int ResetSwitchACDC = 0;
+  int ResetSwitchACC;
+  int ResetSwitchACDC;
  
   //trigger
-  int triggermode = 0;
+  int triggermode;
 
   //triggersettings
-  int ACC_Sign = 0;
-  int ACDC_Sign = 0;
-  int SELF_Sign = 0;
-  int SELF_Enable_Coincidence = 0;
-  int SELF_Coincidence_Number = 0;
-  int SELF_threshold = 0;
+  int ACC_Sign;
+  int ACDC_Sign;
+  int SELF_Sign;
+  int SELF_Enable_Coincidence;
+  int SELF_Coincidence_Number;
+  int SELF_threshold;
 
   //ACDC boards
-  unsigned int ACDC_mask  = 0x00;
+  unsigned int ACDC_mask;
 
   //PSEC chips for self trigger
-  int PSEC_Chip_Mask_0 = 0;
-  int PSEC_Chip_Mask_1 = 0;
-  int PSEC_Chip_Mask_2 = 0;
-  int PSEC_Chip_Mask_3 = 0;
-  int PSEC_Chip_Mask_4 = 0;
-  unsigned int PSEC_Channel_Mask_0 = 0x00;
-  unsigned int PSEC_Channel_Mask_1 = 0x00;
-  unsigned int PSEC_Channel_Mask_2 = 0x00;
-  unsigned int PSEC_Channel_Mask_3 = 0x00;
-  unsigned int PSEC_Channel_Mask_4 = 0x00;
+  int PSEC_Chip_Mask_0;
+  int PSEC_Chip_Mask_1;
+  int PSEC_Chip_Mask_2;
+  int PSEC_Chip_Mask_3;
+  int PSEC_Chip_Mask_4;
+  unsigned int PSEC_Channel_Mask_0;
+  unsigned int PSEC_Channel_Mask_1;
+  unsigned int PSEC_Channel_Mask_2;
+  unsigned int PSEC_Channel_Mask_3;
+  unsigned int PSEC_Channel_Mask_4;
 
   //Validation time
-  float Validation_Start = 0;
-  float Validation_Window = 0;
+  float Validation_Start;
+  float Validation_Window;
 
   //Calibration mode
-  int Calibration_Mode = 0;
+  int Calibration_Mode;
 
   //Raw mode
-  bool Raw_Mode = false;
+  bool Raw_Mode;
 
   //Pedestal set value channel
-  int Pedestal_channel = 0;
-  unsigned int Pedestal_channel_mask = 0x00;
+  int Pedestal_channel;
+  unsigned int Pedestal_channel_mask;
  
   //PPS settings
-  unsigned int PPSRatio = 0x00;
-  int PPSBeamMultiplexer = 0;
+  unsigned int PPSRatio;
+  int PPSBeamMultiplexer;
 
   bool SetDefaults();
   bool Print();
@@ -76,49 +82,53 @@ class PsecConfig : public SerialisableObject{
  
  template <class Archive> void serialize(Archive& ar, const unsigned int version){
 
-  ar & receiveFlag;
-  ar & ResetSwitchACC;
-  ar & ResetSwitchACDC;
-  ar & triggermode;
-  ar & ACC_Sign;
-  ar & ACDC_Sign;
-  ar & SELF_Sign;
-  ar & SELF_Enable_Coincidence;
-  ar & SELF_Coincidence_Number;
-  ar & SELF_threshold;
+    ar & VersionNumber;   
+    ar & LAPPD_ID;
+    ar & receiveFlag;
 
-  //ACDC boards
-  ar & ACDC_mask;
+    ar & ResetSwitchACC;
+    ar & ResetSwitchACDC;
 
-  //PSEC chips for self trigger
-  ar & PSEC_Chip_Mask_0;
-  ar & PSEC_Chip_Mask_1;
-  ar & PSEC_Chip_Mask_2;
-  ar & PSEC_Chip_Mask_3;
-  ar & PSEC_Chip_Mask_4;
-  ar & PSEC_Channel_Mask_0;
-  ar & PSEC_Channel_Mask_1;
-  ar & PSEC_Channel_Mask_2;
-  ar & PSEC_Channel_Mask_3;
-  ar & PSEC_Channel_Mask_4;
+    ar & triggermode;
+    ar & ACC_Sign;
+    ar & ACDC_Sign;
+    ar & SELF_Sign;
+    ar & SELF_Enable_Coincidence;
+    ar & SELF_Coincidence_Number;
+    ar & SELF_threshold;
 
-  //Validation time
-  ar & Validation_Start;
-  ar & Validation_Window;
+    //ACDC boards
+    ar & ACDC_mask;
 
-  //Calibration mode
-  ar & Calibration_Mode;
+    //PSEC chips for self trigger
+    ar & PSEC_Chip_Mask_0;
+    ar & PSEC_Chip_Mask_1;
+    ar & PSEC_Chip_Mask_2;
+    ar & PSEC_Chip_Mask_3;
+    ar & PSEC_Chip_Mask_4;
+    ar & PSEC_Channel_Mask_0;
+    ar & PSEC_Channel_Mask_1;
+    ar & PSEC_Channel_Mask_2;
+    ar & PSEC_Channel_Mask_3;
+    ar & PSEC_Channel_Mask_4;
 
-  //Raw mode
-  ar & Raw_Mode;
+    //Validation time
+    ar & Validation_Start;
+    ar & Validation_Window;
 
-  //Pedestal set value channel
-  ar & Pedestal_channel;
-  ar & Pedestal_channel_mask;
-  
-  //PPS setting
-  ar & PPSRatio;
-  ar & PPSBeamMultiplexer;
+    //Calibration mode
+    ar & Calibration_Mode;
+
+    //Raw mode
+    ar & Raw_Mode;
+
+    //Pedestal set value channel
+    ar & Pedestal_channel;
+    ar & Pedestal_channel_mask;
+
+    //PPS setting
+    ar & PPSRatio;
+    ar & PPSBeamMultiplexer;
  }
  
 };

@@ -395,7 +395,6 @@ int ACC::readAcdcBuffers()
 	unsigned int command;
 	int maxCounter=0;
 	bool clearCheck;
-
 	//Enables the transfer of data from ACDC to ACC
    	enableTransfer(1);
 	
@@ -420,7 +419,6 @@ int ACC::readAcdcBuffers()
 		{
 			continue;
 		}
-
 		for(int k=0; k<MAX_NUM_BOARDS; k++)
 		{
 			if(lastAccBuffer.at(14) & (1 << k))
@@ -436,17 +434,14 @@ int ACC::readAcdcBuffers()
 				}
 			}
 		}
-
 		//old trigger
 		if(boardsReadyForRead==alignedAcdcIndices)
 		{
 			map_accIF = lastAccBuffer;
 			break;
 		}
-
 		//new trigger
 		std::sort(boardsReadyForRead.begin(), boardsReadyForRead.end());
-
 		bool control = false;
 		if(boardsReadyForRead.size()%2==0)
 		{
@@ -475,7 +470,6 @@ int ACC::readAcdcBuffers()
 				break;
 			}
 		}
-
 		maxCounter++;
 		if(maxCounter>500)
 		{
@@ -483,17 +477,14 @@ int ACC::readAcdcBuffers()
 			return 404;
 		}
 	}
-
 	for(int bi: boardsReadyForRead)
 	{
 		//base command for set readmode and which board bi to read
 		unsigned int command = 0x00210000; 
 		command = command | (unsigned int)(bi); 
 		usbcheck=usb->sendData(command); if(usbcheck==false){errorcode.push_back(0x31001403);}	
-
 		//Tranfser the data to a receive vector
 		vector<unsigned short> acdc_buffer = usb->safeReadData(readoutSize[bi]);
-
 		//Handles buffers =/= 7795 words
 		if((int)acdc_buffer.size() != readoutSize[bi])
 		{
@@ -516,7 +507,6 @@ int ACC::readAcdcBuffers()
 			}
 		}
 	}
-
 	return 0;
 }
 */
@@ -544,7 +534,7 @@ int ACC::listenForAcdcData(int trigMode)
 	//duration variables
 	auto start = chrono::steady_clock::now(); //start of the current event listening. 
 	auto now = chrono::steady_clock::now(); //just for initialization 
-	auto timeoutDuration = chrono::seconds(60); // will exit and reinitialize
+	auto timeoutDuration = chrono::seconds(15); // will exit and reinitialize
 
 	while(true)
 	{ 
@@ -610,7 +600,6 @@ int ACC::listenForAcdcData(int trigMode)
 
 		/*new trigger
 		std::sort(boardsReadyForRead.begin(), boardsReadyForRead.end());
-
 		bool control = false;
 		if(boardsReadyForRead.size()%2==0)
 		{
@@ -663,6 +652,7 @@ int ACC::listenForAcdcData(int trigMode)
 		if(acdc_buffer[0] != 0x1234)
 		{
 			acdc_buffer.clear();
+            return 406;
 		}
 
 		//save this buffer a private member of ACDC
@@ -677,8 +667,9 @@ int ACC::listenForAcdcData(int trigMode)
 		}
 	}
 	vector_bi = boardsReadyForRead;
-
-	return 0;
+    boardsReadyForRead.clear();
+	
+    return 0;
 }
 
 

@@ -1,12 +1,26 @@
 #include <SlowControlMonitor.h>
 
-SlowControlMonitor::SlowControlMonitor(){
+SlowControlMonitor::SlowControlMonitor()
+{
     VersionNumber = 0x0007;
 	recieveFlag = 1;
 	LAPPD_ID = 0;
 	SetDefaultSettings();
 	SetDefaultValues();
 }
+
+
+SlowControlMonitor::SlowControlMonitor(unsigned int id)
+{
+    VersionNumber = 0x0007;
+	recieveFlag = 1;
+	LAPPD_ID = id;
+	SetDefaultSettings();
+	SetDefaultValues();
+}
+
+SlowControlMonitor::~SlowControlMonitor()
+{}
 
 bool SlowControlMonitor::Send_Mon(zmq::socket_t* sock){
 	std::string tmp="LAPPDMon";
