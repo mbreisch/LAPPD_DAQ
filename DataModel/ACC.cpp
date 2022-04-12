@@ -679,7 +679,6 @@ int ACC::listenForAcdcData(int trigMode)
 	}
 	vector_bi = boardsReadyForRead;
     boardsReadyForRead.clear();
-    acdc_buffer.clear();
 	
     return 0;
 }
