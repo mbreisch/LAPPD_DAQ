@@ -272,8 +272,8 @@ bool PsecConfig::SetDefaults()
     PSEC_Channel_Mask_4 = 0x00;
 
     //Validation time
-    Validation_Start = 325250;
-    Validation_Window = 20000;
+    Validation_Start = 0;
+    Validation_Window = 0;
 
     //Calibration mode
     Calibration_Mode = 0;
@@ -286,7 +286,7 @@ bool PsecConfig::SetDefaults()
     Pedestal_channel_mask = 0x1F;
 
     //PPS settings
-    PPSRatio = 0x000A;
+    PPSRatio = 0x0000;
     PPSBeamMultiplexer = 1;
 
     ResetSwitchACC = 0;
