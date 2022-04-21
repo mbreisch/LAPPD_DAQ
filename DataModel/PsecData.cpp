@@ -4,14 +4,14 @@ PsecData::PsecData()
 {
 	VersionNumber = 0x0003;
 	LAPPD_ID = 0;
-    	SetDefaults();
+    SetDefaults();
 }
 
 PsecData::PsecData(unsigned int id)
 {
 	VersionNumber = 0x0003;
 	LAPPD_ID = id;
-    	SetDefaults();
+    SetDefaults();
 }
 
 PsecData::~PsecData()
@@ -173,9 +173,9 @@ bool PsecData::Print(){
 	}else
 	{
 		printf("Errorcodes found: %li\n", errorcodes.size());
-		for(unsigned int k: errorcodes)
+		for(unsigned int k=0; k<errorcodes.size(); k++)
 		{
-			printf("Errorcode: 0x%08x\n", k);
+			printf("Errorcode: 0x%08x\n", errorcodes[k]);
 	
 		}
 	}

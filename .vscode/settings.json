@@ -1,6 +1,11 @@
 {
     "cmake.configureOnOpen": false,
     "files.associations": {
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "array": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp",
+        "iosfwd": "cpp"
     }
 }
