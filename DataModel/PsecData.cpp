@@ -4,14 +4,14 @@ PsecData::PsecData()
 {
 	VersionNumber = 0x0003;
 	LAPPD_ID = 0;
-    SetDefaults();
+    	SetDefaults();
 }
 
 PsecData::PsecData(unsigned int id)
 {
 	VersionNumber = 0x0003;
 	LAPPD_ID = id;
-    SetDefaults();
+    	SetDefaults();
 }
 
 PsecData::~PsecData()
@@ -66,7 +66,7 @@ bool PsecData::Send(zmq::socket_t* sock)
 	sock->send(msgSW,ZMQ_SNDMORE);
 	if(S_RawWaveform>0){sock->send(msgW,ZMQ_SNDMORE);}
 	sock->send(msgSE,ZMQ_SNDMORE);
-	sock->send(msgE,ZMQ_SNDMORE);
+	if(S_errorcodes>0){sock->send(msgE,ZMQ_SNDMORE);}
 	sock->send(msgF);
 
 	return true;
@@ -86,59 +86,62 @@ bool PsecData::Receive(zmq::socket_t* sock)
 		return false;
 	}
 
-    //ID
-    sock->recv(&msg);
-    LAPPD_ID=*(reinterpret_cast<unsigned int*>(msg.data())); 
+	//ID
+	sock->recv(&msg);
+	LAPPD_ID=*(reinterpret_cast<unsigned int*>(msg.data())); 
 
-    //Timestamp
-    sock->recv(&msg);
-    std::istringstream iss(static_cast<char*>(msg.data()));
-    iss >> Timestamp;   
+	//Timestamp
+	sock->recv(&msg);
+	std::istringstream iss(static_cast<char*>(msg.data()));
+	iss >> Timestamp;   
 
-    //Boards
-    sock->recv(&msg);
-    tmp_size=0;
-    tmp_size=*(reinterpret_cast<int*>(msg.data()));
-    if(tmp_size>0)
-    {
-        sock->recv(&msg);
-        BoardIndex.resize(msg.size()/sizeof(int));
-        std::memcpy(&BoardIndex[0], msg.data(), msg.size());
-    }
+	//Boards
+	sock->recv(&msg);
+	tmp_size=0;
+	tmp_size=*(reinterpret_cast<int*>(msg.data()));
+	if(tmp_size>0)
+	{
+		sock->recv(&msg);
+		BoardIndex.resize(msg.size()/sizeof(int));
+		std::memcpy(&BoardIndex[0], msg.data(), msg.size());
+	}
 
-    //ACC
-    sock->recv(&msg);
-    tmp_size=0;
-    tmp_size=*(reinterpret_cast<int*>(msg.data()));
-    if(tmp_size>0)
-    {
-        sock->recv(&msg);
-        AccInfoFrame.resize(msg.size()/sizeof(unsigned short));
-        std::memcpy(&AccInfoFrame[0], msg.data(), msg.size());
-    }
+	//ACC
+	sock->recv(&msg);
+	tmp_size=0;
+	tmp_size=*(reinterpret_cast<int*>(msg.data()));
+	if(tmp_size>0)
+	{
+		sock->recv(&msg);
+		AccInfoFrame.resize(msg.size()/sizeof(unsigned short));
+		std::memcpy(&AccInfoFrame[0], msg.data(), msg.size());
+	}
 
-    //Waveforms
-    sock->recv(&msg);
-    tmp_size=0;
-    tmp_size=*(reinterpret_cast<int*>(msg.data()));
-    if(tmp_size>0)
-    {
-        sock->recv(&msg);
-        RawWaveform.resize(msg.size()/sizeof(unsigned short));
-        std::memcpy(&RawWaveform[0], msg.data(), msg.size());
-    }
+	//Waveforms
+	sock->recv(&msg);
+	tmp_size=0;
+	tmp_size=*(reinterpret_cast<int*>(msg.data()));
+	if(tmp_size>0)
+	{
+		sock->recv(&msg);
+		RawWaveform.resize(msg.size()/sizeof(unsigned short));
+		std::memcpy(&RawWaveform[0], msg.data(), msg.size());
+	}
 
-    //Errors
-    sock->recv(&msg);
-    tmp_size=0;
-    tmp_size=*(reinterpret_cast<int*>(msg.data()));
-    sock->recv(&msg);
-    errorcodes.resize(msg.size()/sizeof(unsigned int));
-    std::memcpy(&errorcodes[0], msg.data(), msg.size());
-
-    sock->recv(&msg);
-    FailedReadCounter=*(reinterpret_cast<int*>(msg.data()));
+	//Errors
+	sock->recv(&msg);
+	tmp_size=0;
+	tmp_size=*(reinterpret_cast<int*>(msg.data()));
+	if(tmp_size>0)
+	{
+		sock->recv(&msg);
+		errorcodes.resize(msg.size()/sizeof(unsigned int));
+		std::memcpy(&errorcodes[0], msg.data(), msg.size());
+	}
 	
+	sock->recv(&msg);
+	FailedReadCounter=*(reinterpret_cast<int*>(msg.data()));
+
 	return true;
 }
 
@@ -148,11 +151,6 @@ bool PsecData::SetDefaults()
 	Timestamp="";
 	FailedReadCounter=0;
 	readRetval=0;
-    ReceiveData={};
-    BoardIndex={};
-    AccInfoFrame={};
-    RawWaveform={};
-    errorcodes={};
     
 	return true;
 }
