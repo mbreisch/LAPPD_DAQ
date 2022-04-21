@@ -5,6 +5,10 @@
 #include <SerialisableObject.h>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <sstream>
+
+using namespace std;
 
 class PsecConfig : public SerialisableObject{
 

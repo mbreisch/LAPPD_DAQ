@@ -150,6 +150,12 @@ bool PsecData::SetDefaults()
 	Timestamp="";
 	FailedReadCounter=0;
 	readRetval=0;
+    ReceiveData={};
+    BoardIndex={};
+    AccInfoFrame={};
+    RawWaveform={};
+    errorcodes={};
+    
 	return true;
 }
 
