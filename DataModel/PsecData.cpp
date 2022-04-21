@@ -92,7 +92,7 @@ bool PsecData::Receive(zmq::socket_t* sock)
 
 	//Timestamp
 	sock->recv(&msg);
-	std::istringstream iss(static_cast<char*>(msg.data()));
+	std::stringstream iss(static_cast<char*>(msg.data()));
 	iss >> Timestamp;   
 
 	//Boards
