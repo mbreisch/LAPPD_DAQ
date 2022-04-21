@@ -184,5 +184,10 @@ bool ACC_SetupBoards::Setup(){
 	m_data->acc->emptyUsbLine();
 	m_data->acc->dumpData(0xFF);
 
+    vector<unsigned int> tmpERR = m_data->acc->returnErrors();
+	m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
+	m_data->acc->clearErrors();
+	tmpERR.clear();
+
 	return ret;	
 }

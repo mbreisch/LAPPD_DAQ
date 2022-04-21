@@ -13,7 +13,7 @@ using namespace std;
 
 class PsecData{
 
- friend class boost::serialization::access;
+    friend class boost::serialization::access;
 
  public:
 
