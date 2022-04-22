@@ -38,6 +38,7 @@ class ACC_Stream: public Tool {
  private:
 
   zmq::socket_t* sock;
+  zmq::pollitem_t items[1];
   boost::posix_time::ptime first;
   
 

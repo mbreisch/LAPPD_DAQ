@@ -2,7 +2,7 @@
 
 PsecConfig::PsecConfig()
 {
-    VersionNumber = 0x0003;
+    VersionNumber = 0x0004;
     LAPPD_ID = 0;
     receiveFlag = 1;
     SetDefaults();
@@ -10,7 +10,7 @@ PsecConfig::PsecConfig()
 
 PsecConfig::PsecConfig(unsigned int id)
 {
-    VersionNumber = 0x0003;
+    VersionNumber = 0x0004;
     LAPPD_ID = id;
     receiveFlag = 1;
     SetDefaults();
@@ -29,6 +29,9 @@ bool PsecConfig::Send(zmq::socket_t* sock)
 
     zmq::message_t msg1(sizeof receiveFlag);
     memcpy(msg1.data(), &receiveFlag, sizeof receiveFlag);
+
+    zmq::message_t msgRC(sizeof RunControl);
+    memcpy(msgRC.data(), &RunControl, sizeof RunControl);
 
     zmq::message_t msg2(sizeof triggermode);
     memcpy(msg2.data(), &triggermode, sizeof triggermode);
@@ -117,6 +120,7 @@ bool PsecConfig::Send(zmq::socket_t* sock)
     sock->send(msg0,ZMQ_SNDMORE);
     sock->send(msgID,ZMQ_SNDMORE);
     sock->send(msg1,ZMQ_SNDMORE);
+    sock->send(msgRC,ZMQ_SNDMORE);
     sock->send(msg2,ZMQ_SNDMORE);
     sock->send(msg3,ZMQ_SNDMORE);
     sock->send(msg4,ZMQ_SNDMORE);
@@ -165,6 +169,10 @@ bool PsecConfig::Receive(zmq::socket_t* sock)
     //flag
     sock->recv(&msg);
     receiveFlag=*(reinterpret_cast<int*>(msg.data())); 
+
+    //RunControl
+    sock->recv(&msg);
+    RunControl=*(reinterpret_cast<int*>(msg.data())); 
 
     //trigger
     sock->recv(&msg);
@@ -245,6 +253,9 @@ bool PsecConfig::Receive(zmq::socket_t* sock)
 
 bool PsecConfig::SetDefaults()
 {
+    //RunControl
+    RunControl = -1;
+
     //trigger
     triggermode = 5;
 

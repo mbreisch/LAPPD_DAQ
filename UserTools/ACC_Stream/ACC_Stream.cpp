@@ -23,7 +23,12 @@ bool ACC_Stream::Initialise(std::string configfile, DataModel &data){
 
     sock=new zmq::socket_t(*(m_data->context), ZMQ_DEALER);
 
-    sock->connect(connection.c_str());
+    sock->bind(connection.c_str());
+
+    items[0].socket = *sock;
+    items[0].fd = 0;
+    items[0].events = ZMQ_POLLIN;
+    items[0].revents =0;
 
     return true;
 }
@@ -31,9 +36,27 @@ bool ACC_Stream::Initialise(std::string configfile, DataModel &data){
 
 bool ACC_Stream::Execute(){
 
-    m_data->psec.RawWaveform = m_data->psec.ReceiveData;
-    m_data->psec.Send(sock);
-    if(m_verbose>1){m_data->psec.Print();}
+    int timer=100;
+    zmq::poll(&items[0], 1, timer);
+
+    if((items [0].revents & ZMQ_POLLIN)) 
+    {
+        m_data->psec.RawWaveform = m_data->psec.ReceiveData;
+        if(m_data->TCS.Buffer.size()>0)
+        {
+            m_data->TCS.Buffer.at(0).Send(sock);
+            m_data->TCS.Buffer.erase(m_data->TCS.Buffer.begin());
+            if(m_verbose>1){m_data->TCS.Buffer.at(0).Print();}
+            m_data->TCS.Buffer.push_back(m_data->psec);
+        }else
+        {
+            m_data->psec.Send(sock);
+            if(m_verbose>1){m_data->psec.Print();}
+        }
+    }else
+    {
+        m_data->TCS.Buffer.push_back(m_data->psec);
+    }
 
     m_data->psec.errorcodes.clear();
     m_data->psec.ReceiveData.clear();

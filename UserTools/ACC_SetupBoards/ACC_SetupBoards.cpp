@@ -28,6 +28,17 @@ bool ACC_SetupBoards::Execute(){
 	bool setupret = false;
 	if(m_data->conf.receiveFlag==1)
 	{
+        if(m_data->conf.RunControl==0 || m_data->conf.RunControl==1)
+        {
+            m_data->TCS.Buffer.clear();
+            m_data->psec.errorcodes.clear();
+            m_data->psec.ReceiveData.clear();
+            m_data->psec.BoardIndex.clear();
+            m_data->psec.AccInfoFrame.clear();
+            m_data->psec.RawWaveform.clear();
+            m_data->conf.RunControl=-1;
+        }
+
 		if(m_data->conf.ResetSwitchACC == 1)
 		{
 			m_data->acc->resetACC();
@@ -186,7 +197,6 @@ bool ACC_SetupBoards::Setup(){
 
     vector<unsigned int> tmpERR = m_data->acc->returnErrors();
 	m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
-	m_data->acc->clearErrors();
 	tmpERR.clear();
 
 	return ret;	
