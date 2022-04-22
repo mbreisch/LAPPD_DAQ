@@ -18,12 +18,12 @@ class TempClassStore{
 
     vector<PsecData> Buffer;
 
- private:
-
     //For Fake data use
     map<int,vector<unsigned short>> ReadFileData;
     vector<unsigned short> ReadFileACC;
     vector<unsigned int> ReadFileError;
+
+ private:
 
 };
 
