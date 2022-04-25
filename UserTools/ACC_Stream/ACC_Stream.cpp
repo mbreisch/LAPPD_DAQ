@@ -35,9 +35,6 @@ bool ACC_Stream::Initialise(std::string configfile, DataModel &data){
 
 
 bool ACC_Stream::Execute(){
-
-    //Skip Tool if timeout was triggered in readout
-    if(m_data->psec.readRetval==404){return true;}
 	
     int timer=100;
     zmq::poll(&items[0], 1, timer);
@@ -53,6 +50,17 @@ bool ACC_Stream::Execute(){
             m_data->TCS.Buffer.push_back(m_data->psec);
         }else
         {
+	    //Skip Tool if timeout was triggered in readout
+	    if(m_data->psec.readRetval==404)
+	    {   
+		    m_data->psec.errorcodes.clear();
+		    m_data->psec.ReceiveData.clear();
+		    m_data->psec.BoardIndex.clear();
+		    m_data->psec.AccInfoFrame.clear();
+		    m_data->psec.RawWaveform.clear();
+		    return true;
+	    }
+		
             m_data->psec.Send(sock);
             if(m_verbose>1){m_data->psec.Print();}
         }
