@@ -36,6 +36,9 @@ bool ACC_Stream::Initialise(std::string configfile, DataModel &data){
 
 bool ACC_Stream::Execute(){
 
+    //Skip Tool if timeout was triggered in readout
+    if(m_data->psec.readRetval==404){return true;}
+	
     int timer=100;
     zmq::poll(&items[0], 1, timer);
 
