@@ -44,22 +44,26 @@ bool ACC_Stream::Execute(){
         m_data->psec.RawWaveform = m_data->psec.ReceiveData;
         if(m_data->TCS.Buffer.size()>0)
         {
-            m_data->TCS.Buffer.at(0).Send(sock);
+            //Skip Tool if timeout was triggered in readout
+            if(m_data->TCS.Buffer.readRetval!=404)
+            {   
+                m_data->TCS.Buffer.at(0).Send(sock);
+                if(m_verbose>1){m_data->TCS.Buffer.at(0).Print();}
+            }
             m_data->TCS.Buffer.erase(m_data->TCS.Buffer.begin());
-            if(m_verbose>1){m_data->TCS.Buffer.at(0).Print();}
             m_data->TCS.Buffer.push_back(m_data->psec);
         }else
         {
-	    //Skip Tool if timeout was triggered in readout
-	    if(m_data->psec.readRetval==404)
-	    {   
-		    m_data->psec.errorcodes.clear();
-		    m_data->psec.ReceiveData.clear();
-		    m_data->psec.BoardIndex.clear();
-		    m_data->psec.AccInfoFrame.clear();
-		    m_data->psec.RawWaveform.clear();
-		    return true;
-	    }
+            //Skip Tool if timeout was triggered in readout
+            if(m_data->psec.readRetval==404)
+            {   
+                m_data->psec.errorcodes.clear();
+                m_data->psec.ReceiveData.clear();
+                m_data->psec.BoardIndex.clear();
+                m_data->psec.AccInfoFrame.clear();
+                m_data->psec.RawWaveform.clear();
+                return true;
+            }
 		
             m_data->psec.Send(sock);
             if(m_verbose>1){m_data->psec.Print();}
