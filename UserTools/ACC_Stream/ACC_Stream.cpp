@@ -27,7 +27,7 @@ bool ACC_Stream::Initialise(std::string configfile, DataModel &data){
 
     items[0].socket = *sock;
     items[0].fd = 0;
-    items[0].events = ZMQ_POLLIN;
+    items[0].events = ZMQ_POLLOUT;
     items[0].revents =0;
 
     return true;
@@ -39,7 +39,7 @@ bool ACC_Stream::Execute(){
     int timer=100;
     zmq::poll(&items[0], 1, timer);
 
-    if((items [0].revents & ZMQ_POLLIN)) 
+    if((items [0].revents & ZMQ_POLLOUT)) 
     {
         m_data->psec.RawWaveform = m_data->psec.ReceiveData;
         if(m_data->TCS.Buffer.size()>0)
