@@ -45,7 +45,7 @@ bool ACC_Stream::Execute(){
         if(m_data->TCS.Buffer.size()>0)
         {
             //Skip Tool if timeout was triggered in readout
-            if(m_data->TCS.Buffer.readRetval!=404)
+            if(m_data->TCS.Buffer.at(0).readRetval!=404)
             {   
                 m_data->TCS.Buffer.at(0).Send(sock);
                 if(m_verbose>1){m_data->TCS.Buffer.at(0).Print();}
