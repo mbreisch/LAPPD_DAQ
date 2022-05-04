@@ -59,7 +59,7 @@ bool ACC_SetupBoards::Execute(){
 			//m_data->acc->dumpData(0xFF);
 		}else
 		{
-            		m_data->psec.errorcodes.push_back(0xAA02EE01);
+            m_data->psec.errorcodes.push_back(0xAA02EE01);
 			//unsigned int shift = (1<<(m_data->psec.readRetval-1));
 			//printf("Necessary dump of board 0x%02x\n", shift);
 			m_data->acc->dumpData(0xFF);
@@ -119,6 +119,11 @@ void ACC_SetupBoards::LoadDefaults(){
 bool ACC_SetupBoards::Setup(){
 
     bool ret=false;
+
+    //Set timeout value
+    int timeout;
+    m_variables.Get("Timeout",timeout);
+    m_data->acc->setTimeoutInMs(timeout);
 
 	//polarity
 	m_data->acc->setSign(m_data->conf.ACC_Sign, 2);

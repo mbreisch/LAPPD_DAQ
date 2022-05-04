@@ -6,6 +6,9 @@ IP_BIND 0.0.0.0
 Port 8888
 Port_BIND 6666
 
+# Timeout
+Timeout 500 #int in ms
+
 #Trigger
 ##Triggermode
 Triggermode 1 #...

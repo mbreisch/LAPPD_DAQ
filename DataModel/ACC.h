@@ -72,7 +72,8 @@ public:
 		else if(source==4){SELF_sign = in;}
 	}
 	void setPPSRatio(unsigned int in){PPSRatio = in;} 
-	void setPPSBeamMultiplexer(int in){PPSBeamMultiplexer = in;} 
+	void setPPSBeamMultiplexer(int in){PPSBeamMultiplexer = in;}
+    void setTimeoutInMs(int in){timeoutvalue = in;}  
 	
 	/*------------------------------------------------------------------------------------*/
 	/*-------------------------Local set functions for board setup------------------------*/
@@ -151,6 +152,7 @@ private:
 	map<int, vector<unsigned short>> map_acdcIF;
 	vector<unsigned short> map_accIF;
 	bool usbcheck;
+    int timeoutvalue;
 	
 	static void got_signal(int);
 };

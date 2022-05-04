@@ -534,7 +534,7 @@ int ACC::listenForAcdcData(int trigMode)
 	//duration variables
 	auto start = chrono::steady_clock::now(); //start of the current event listening. 
 	auto now = chrono::steady_clock::now(); //just for initialization 
-	auto timeoutDuration = chrono::seconds(15); // will exit and reinitialize
+	auto timeoutDuration = chrono::milliseconds(timeoutvalue); // will exit and reinitialize
 
 	while(true)
 	{ 
@@ -543,9 +543,9 @@ int ACC::listenForAcdcData(int trigMode)
 		readoutSize.clear();
 		//Time the listen fuction
 		now = chrono::steady_clock::now();
-		if(chrono::duration_cast<chrono::seconds>(now - start) > timeoutDuration)
+		if(chrono::duration_cast<chrono::milliseconds>(now - start) > timeoutDuration)
 		{
-			errorcode.push_back(0xAC15EE01);
+			//errorcode.push_back(0xAC15EE01);
 			return 404;
 		}
 
