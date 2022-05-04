@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <queue>
 
 #include<PsecData.h>
 
@@ -16,7 +17,7 @@ class TempClassStore{
 
     TempClassStore();
 
-    vector<PsecData> Buffer;
+    queue<PsecData> Buffer;
 
     //For Fake data use
     map<int,vector<unsigned short>> ReadFileData;

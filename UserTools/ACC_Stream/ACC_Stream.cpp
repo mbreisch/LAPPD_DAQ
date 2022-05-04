@@ -39,24 +39,30 @@ bool ACC_Stream::Execute(){
     int timer=100;
     zmq::poll(&items[0], 1, timer);
 
+    //Poll
     if((items [0].revents & ZMQ_POLLOUT)) 
     {
         m_data->psec.RawWaveform = m_data->psec.ReceiveData;
-        if(m_data->TCS.Buffer.size()>0)
+
+        //If poll succeeds check if the buffer is empty
+        if(!m_data->TCS.Buffer.empty())
         {
-            //Skip Tool if timeout was triggered in readout
-            if(m_data->TCS.Buffer.at(0).readRetval!=404)
-            {   
-                m_data->TCS.Buffer.at(0).Send(sock);
-                if(m_verbose>1){m_data->TCS.Buffer.at(0).Print();}
+            //If it is not empty send a buffer value and verbose print
+            m_data->TCS.Buffer.front().Send(sock);
+            if(m_verbose>1){m_data->TCS.Buffer.front().Print();}
+            //Remove the first entry that was send
+            m_data->TCS.Buffer.pop();
+            //If the current read is not a timeout add it to the buffer
+            if(m_data->psec.readRetval!=404)
+            {
+                m_data->TCS.Buffer.push(m_data->psec);
             }
-            m_data->TCS.Buffer.erase(m_data->TCS.Buffer.begin());
-            m_data->TCS.Buffer.push_back(m_data->psec);
         }else
         {
-            //Skip Tool if timeout was triggered in readout
+            //If the buffer is empty check if the event was a timeout
             if(m_data->psec.readRetval==404)
             {   
+                //If it was clear and end
                 m_data->psec.errorcodes.clear();
                 m_data->psec.ReceiveData.clear();
                 m_data->psec.BoardIndex.clear();
@@ -64,15 +70,20 @@ bool ACC_Stream::Execute(){
                 m_data->psec.RawWaveform.clear();
                 return true;
             }
-		
+            //If it was not send the data and verbose print
             m_data->psec.Send(sock);
             if(m_verbose>1){m_data->psec.Print();}
         }
     }else
     {
-        m_data->TCS.Buffer.push_back(m_data->psec);
+        //If the poll failed and the read was not a timeout fill the buffer
+        if(m_data->psec.readRetval!=404)
+        {
+            m_data->TCS.Buffer.push(m_data->psec);
+        }
     }
 
+    //At the end always clear
     m_data->psec.errorcodes.clear();
     m_data->psec.ReceiveData.clear();
     m_data->psec.BoardIndex.clear();
