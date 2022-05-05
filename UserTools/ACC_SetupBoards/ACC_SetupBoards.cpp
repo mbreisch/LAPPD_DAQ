@@ -30,7 +30,7 @@ bool ACC_SetupBoards::Execute(){
 	{
         if(m_data->conf.RunControl==0 || m_data->conf.RunControl==1)
         {
-            m_data->TCS.Buffer.clear();
+            queue<PsecData>().swap(m_data->TCS.Buffer);
             m_data->psec.errorcodes.clear();
             m_data->psec.ReceiveData.clear();
             m_data->psec.BoardIndex.clear();

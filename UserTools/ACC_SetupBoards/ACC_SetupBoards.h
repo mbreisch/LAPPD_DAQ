@@ -4,8 +4,11 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <queue>
 
 #include "Tool.h"
+
+using namespace std;
 
 
 /**

@@ -90,6 +90,10 @@ bool ACC_Stream::Execute(){
     m_data->psec.AccInfoFrame.clear();
     m_data->psec.RawWaveform.clear();
 
+    std::stringstream tmp;
+    tmp<<"U="<<m_data->TCS.Buffer.size();
+    m_data->vars.Set("Status", tmp.str());
+
     return true;
 }
 
