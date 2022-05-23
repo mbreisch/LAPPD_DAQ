@@ -59,7 +59,7 @@ bool ACC_SetupBoards::Execute(){
             vector<unsigned short> tempV = m_data->acc->getACCInfoFrame();
             for(int i=0; i<MAX_NUM_BOARDS; i++)
             {
-				if(tempV.at(16+k)>PSECFRAME)
+				if(tempV.at(16+i)>PSECFRAME)
 				{
                     m_data->acc->dumpData(0xFF);
                 }
