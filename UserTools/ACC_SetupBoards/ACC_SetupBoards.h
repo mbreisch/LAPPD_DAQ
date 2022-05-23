@@ -10,6 +10,10 @@
 
 using namespace std;
 
+#define MAX_NUM_BOARDS 8
+#define PSECFRAME 7795
+
+
 
 /**
  * \class SetupBoards

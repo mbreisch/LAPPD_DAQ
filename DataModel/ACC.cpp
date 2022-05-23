@@ -541,6 +541,7 @@ int ACC::listenForAcdcData(int trigMode)
 		//Clear the boards read vector
 		boardsReadyForRead.clear(); 
 		readoutSize.clear();
+        lastAccBuffer.clear();
 		//Time the listen fuction
 		now = chrono::steady_clock::now();
 		if(chrono::duration_cast<chrono::milliseconds>(now - start) > timeoutDuration)
@@ -903,11 +904,12 @@ vector<unsigned short> ACC::getACCInfoFrame()
 		
 		if(buffer.size()!=ACCFRAME)
 		{
+            buffer.clear();
 			counter++;
 			errorcode.push_back(0xAC26EE02);
 		}else
 		{
-			map_accIF = buffer;
+			//map_accIF = buffer;
 			return buffer;	
 		}
 	}

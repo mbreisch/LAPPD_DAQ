@@ -56,7 +56,15 @@ bool ACC_SetupBoards::Execute(){
 	{
 		if(m_data->psec.readRetval==404)
 		{
-			//m_data->acc->dumpData(0xFF);
+            vector<unsigned short> tempV = m_data->acc->getACCInfoFrame();
+            for(int i=0; i<MAX_NUM_BOARDS; i++)
+            {
+				if(tempV.at(16+k)>PSECFRAME)
+				{
+                    m_data->acc->dumpData(0xFF);
+                }
+            }
+            tempV.clear();
 		}else
 		{
             m_data->psec.errorcodes.push_back(0xAA02EE01);
@@ -192,11 +200,11 @@ bool ACC_SetupBoards::Setup(){
 		ret = false;
 	}else
 	{
-        m_data->conf.receiveFlag = 2;
 		ret = true;
         //std::cout << "Initialization successfull!" << std::endl;
 	}
 
+    m_data->conf.receiveFlag = 2;
 	m_data->acc->emptyUsbLine();
 	m_data->acc->dumpData(0xFF);
 
