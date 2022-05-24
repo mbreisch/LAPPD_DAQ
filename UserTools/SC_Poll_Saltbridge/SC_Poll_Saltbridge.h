@@ -31,8 +31,9 @@ class SC_Poll_Saltbridge: public Tool {
         bool SALTBRIDGECHK();
         bool HardShutdown(int relay, int errortype);
 
-    private:
         int Scount;
+    private:
+        
 
 };
 

@@ -58,23 +58,20 @@ bool SC_Poll_Saltbridge::Finalise()
 
 bool SC_Poll_Saltbridge::SALTBRIDGECHK(){
     int retval=-2;
+    bool safety=true;
     if(m_data->SCMonitor.saltbridge<0)
     {
         m_data->SCMonitor.errorcodes.push_back(0xCC02EE01);
-        return true;
     }
     if(m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_low)
     {
         m_data->SCMonitor.FLAG_saltbridge  = 0;
-        return true;     
     }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_low && m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_high)
     {
         m_data->SCMonitor.FLAG_saltbridge  = 1;
-        return true;   
     }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_high)
     {
         bool ret;
-        bool safety=true;
 
         ret = HardShutdown(1,10);
         if(ret==false){safety=false;}
@@ -86,12 +83,12 @@ bool SC_Poll_Saltbridge::SALTBRIDGECHK(){
         m_data->SCMonitor.FLAG_saltbridge = 2;
 
         if(safety==false){m_data->SCMonitor.FLAG_saltbridge = 3;}
-
-        return safety; 
     }else
     {
-        return false;
+        safety = false;
     }
+    
+    return safety; 
 }
 
 
