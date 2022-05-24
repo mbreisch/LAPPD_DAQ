@@ -1,6 +1,6 @@
-#include "SC_Poll_RHT.h"
+#include "SC_Poll_Saltbridge.h"
 
-SC_Poll_Saltbridge::SC_Poll_RHT():Tool(){}
+SC_Poll_Saltbridge::SC_Poll_Saltbridge():Tool(){}
 
 
 bool SC_Poll_Saltbridge::Initialise(std::string configfile, DataModel &data)
