@@ -9,6 +9,8 @@
 
 using namespace std;
 
+#define TIMESLEEP 10000000
+
 /**
  * \class Poll
  *
@@ -32,7 +34,9 @@ class SC_Poll_HV: public Tool {
         bool HardShutdown(int relay, int errortype);
 
     private:
-
+        float timeout = 30; //10s timeout for sleep in s
+        float timestep = 0.5; //100ms timer for sleep in s
+        int i_chk=0;
 
 };
 

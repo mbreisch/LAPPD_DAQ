@@ -20,6 +20,7 @@ bool SC_Poll_HV::Initialise(std::string configfile, DataModel &data)
 
 bool SC_Poll_HV::Execute()
 {
+    bool retchk;
     if(m_data->SCMonitor.SumRelays == true)
     {
         //Get HV state
@@ -34,7 +35,7 @@ bool SC_Poll_HV::Execute()
             if(retchk==false)
             {
                 //report error behavior 
-                m_data->SCMonitor.errorcodes.push_back(0xCC09EE01);
+                m_data->SCMonitor.errorcodes.push_back(0xCC00EE00);
             }  	  
         }
     }else
@@ -67,7 +68,7 @@ bool SC_Poll_HV::Finalise()
         counter=0;
 		while(fabs(m_data->SCMonitor.HV_return_mon-down_voltage)>50)
 		{
-			usleep(10000000);
+			usleep(TIMESLEEP);
 			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
 			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
 			if(counter>=30){break;}
@@ -82,7 +83,7 @@ bool SC_Poll_HV::Finalise()
             counter=0;
             while(fabs(m_data->SCMonitor.HV_return_mon-down_voltage)>50)
             {
-                usleep(10000000);
+                usleep(TIMESLEEP);
                 m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
                 m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
                 if(counter>=30){break;}
@@ -93,7 +94,7 @@ bool SC_Poll_HV::Finalise()
         if(retval!=0 && retval!=1)
         {
             //std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
-            m_data->SCMonitor.errorcodes.push_back(0xCD02EE01);
+            m_data->SCMonitor.errorcodes.push_back(0xCC00EE01);
         }
 	    m_data->SCMonitor.HV_return_mon = down_voltage;
 	    m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
@@ -163,7 +164,7 @@ bool SC_Poll_HV::HVCHK()
     if(m_data->SCMonitor.HV_return_mon < (m_data->SCMonitor.HV_volts-200) || m_data->SCMonitor.HV_return_mon > (m_data->SCMonitor.HV_volts+200))
     {
         float down_voltage = 0;
-        m_data->SCMonitor.errorcodes.push_back(0xCC10EE01);
+        m_data->SCMonitor.errorcodes.push_back(0xCC00EE02);
         m_data->CB->SetHV_voltage(down_voltage,m_data->SCMonitor.HV_return_mon,2);
         
         m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF(); 
@@ -171,7 +172,7 @@ bool SC_Poll_HV::HVCHK()
         counter=0;
         while(fabs(m_data->SCMonitor.HV_return_mon-down_voltage)>50)
         {
-            usleep(10000000);
+            usleep(TIMESLEEP);
             m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
             m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
             if(counter>=50){break;}
@@ -183,13 +184,13 @@ bool SC_Poll_HV::HVCHK()
             bool ret;
             bool safety=true;
 
-            ret = HardShutdown(1,5);
+            ret = HardShutdown(1,10);
             if(ret==false){safety=false;}
-            ret = HardShutdown(2,5);
+            ret = HardShutdown(2,11);
             if(ret==false){safety=false;}
-            ret = HardShutdown(3,5);
+            ret = HardShutdown(3,12);
             if(ret==false){safety=false;}
-            m_data->SCMonitor.errorcodes.push_back(0xCC10EE03);
+            m_data->SCMonitor.errorcodes.push_back(0xCC00EE03);
             return safety;
         }else
         {
@@ -197,7 +198,7 @@ bool SC_Poll_HV::HVCHK()
                 if(retval!=0 && retval!=1)
             {
                 //std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
-                m_data->SCMonitor.errorcodes.push_back(0xCC10EE04);
+                m_data->SCMonitor.errorcodes.push_back(0xCC00EE04);
             }
             m_data->SCMonitor.HV_return_mon = down_voltage;
             m_data->CB->get_HV_volts = m_data->SCMonitor.HV_return_mon;
@@ -227,7 +228,7 @@ bool SC_Poll_HV::HardShutdown(int relay, int errortype)
 
     if(tries>=max_tries && retval!=0)
     {
-      m_data->SCMonitor.errorcodes.push_back((0xCC05EE00 | errortype));
+      m_data->SCMonitor.errorcodes.push_back((0xCC00EE00 | errortype));
       return false;
     }
   

@@ -21,6 +21,7 @@ bool SC_Poll_Saltbridge::Initialise(std::string configfile, DataModel &data)
 bool SC_Poll_Saltbridge::Execute()
 {
     //Saltbridge
+    bool retchk;
     float tmpSalt = m_data->SCMonitor.saltbridge;
     m_data->SCMonitor.saltbridge = m_data->CB->GetSaltbridge(); 
     if(m_data->SCMonitor.saltbridge<0 && Scount<2)
@@ -36,7 +37,7 @@ bool SC_Poll_Saltbridge::Execute()
     if(retchk==false)
     {
         //report error behavior
-        m_data->SCMonitor.errorcodes.push_back(0xCC08EE01);
+        m_data->SCMonitor.errorcodes.push_back(0xCC02EE00);
     }
 
     //Get Errorscodes
@@ -59,7 +60,7 @@ bool SC_Poll_Saltbridge::SALTBRIDGECHK(){
     int retval=-2;
     if(m_data->SCMonitor.saltbridge<0)
     {
-        m_data->SCMonitor.errorcodes.push_back(0xCC08EE02);
+        m_data->SCMonitor.errorcodes.push_back(0xCC02EE01);
         return true;
     }
     if(m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_low)
@@ -75,11 +76,11 @@ bool SC_Poll_Saltbridge::SALTBRIDGECHK(){
         bool ret;
         bool safety=true;
 
-        ret = HardShutdown(1,4);
+        ret = HardShutdown(1,10);
         if(ret==false){safety=false;}
-        ret = HardShutdown(2,4);
+        ret = HardShutdown(2,11);
         if(ret==false){safety=false;}
-        ret = HardShutdown(3,4);
+        ret = HardShutdown(3,12);
         if(ret==false){safety=false;}
 
         m_data->SCMonitor.FLAG_saltbridge = 2;
@@ -108,7 +109,7 @@ bool SC_Poll_Saltbridge::HardShutdown(int relay, int errortype)
 
     if(tries>=max_tries && retval!=0)
     {
-      m_data->SCMonitor.errorcodes.push_back((0xCC05EE00 | errortype));
+      m_data->SCMonitor.errorcodes.push_back((0xCC02EE00 | errortype));
       return false;
     }
   

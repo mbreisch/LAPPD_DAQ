@@ -32,13 +32,13 @@ bool SC_Poll_RHT::Execute()
         if(retchk==false)
         {
             //report error behavior 
-            m_data->SCMonitor.errorcodes.push_back(0xCC01EE01);
+            m_data->SCMonitor.errorcodes.push_back(0xCC01EE00);
         }
         retchk = HUMIDITYCHK();
         if(retchk==false)
         {
             //report error behavior
-            m_data->SCMonitor.errorcodes.push_back(0xCC02EE01);
+            m_data->SCMonitor.errorcodes.push_back(0xCC01EE01);
         } 
     }else
     {
@@ -77,11 +77,11 @@ bool SC_Poll_RHT::TEMPCHK(){
         bool ret;
         bool safety=true;
 
-        ret = HardShutdown(1,1);
+        ret = HardShutdown(1,10);
         if(ret==false){safety=false;}
-        ret = HardShutdown(2,1);
+        ret = HardShutdown(2,11);
         if(ret==false){safety=false;}
-        ret = HardShutdown(3,1);
+        ret = HardShutdown(3,12);
         if(ret==false){safety=false;}
 
         m_data->SCMonitor.FLAG_temperature = 2;
@@ -112,11 +112,11 @@ bool SC_Poll_RHT::HUMIDITYCHK(){
         bool ret;
         bool safety=true;
 
-        ret = HardShutdown(1,2);
+        ret = HardShutdown(1,13);
         if(ret==false){safety=false;}
-        ret = HardShutdown(2,2);
+        ret = HardShutdown(2,14);
         if(ret==false){safety=false;}
-        ret = HardShutdown(3,2);
+        ret = HardShutdown(3,15);
         if(ret==false){safety=false;}
 
         m_data->SCMonitor.FLAG_humidity = 2;
@@ -145,7 +145,7 @@ bool SC_Poll_RHT::HardShutdown(int relay, int errortype)
 
     if(tries>=max_tries && retval!=0)
     {
-      m_data->SCMonitor.errorcodes.push_back((0xCC05EE00 | errortype));
+      m_data->SCMonitor.errorcodes.push_back((0xCC01EE00 | errortype));
       return false;
     }
   
