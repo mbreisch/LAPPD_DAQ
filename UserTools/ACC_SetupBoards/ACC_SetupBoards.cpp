@@ -61,7 +61,9 @@ bool ACC_SetupBoards::Execute(){
             {
 				if(tempV.at(16+i)>PSECFRAME)
 				{
+                    if(m_verbose>1){std::cout<<"Data buffers were to large with buffer: "<<i<<" -> "<<tempV.at(16+i)<<std::endl;}
                     m_data->acc->dumpData(0xFF);
+                    m_data->acc->emptyUsbLine();
                 }
             }
             tempV.clear();
@@ -71,6 +73,7 @@ bool ACC_SetupBoards::Execute(){
 			//unsigned int shift = (1<<(m_data->psec.readRetval-1));
 			//printf("Necessary dump of board 0x%02x\n", shift);
 			m_data->acc->dumpData(0xFF);
+            m_data->acc->emptyUsbLine();
 		}
 	}
 	return true;
