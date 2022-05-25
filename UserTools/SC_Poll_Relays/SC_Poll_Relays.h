@@ -4,7 +4,8 @@
 #include <string>
 #include <iostream>
 #include <chrono>
-
+#include <vector>
+#include <cmath>
 #include "Tool.h"
 
 using namespace std;

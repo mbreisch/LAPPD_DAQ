@@ -37,6 +37,12 @@ bool ACC_DataRead::Execute(){
 		m_data->psec.BoardIndex = m_data->acc->returnBoardIndices();
 		m_data->acc->clearData();
 	}
+
+    //Get Timestamp
+    unsigned long long timeSinceEpoch = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    m_data->psec.Timestamp = to_string(timeSinceEpoch-UTCCONV); 
+
+    //Get errors
 	vector<unsigned int> tmpERR = m_data->acc->returnErrors();
 	m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
 	m_data->acc->clearErrors();

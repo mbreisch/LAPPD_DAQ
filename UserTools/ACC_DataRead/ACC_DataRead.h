@@ -9,6 +9,9 @@
 
 #include "Tool.h"
 
+using namespace std;
+
+#define UTCCONV 18000000
 
 /**
  * \class ListenForData
