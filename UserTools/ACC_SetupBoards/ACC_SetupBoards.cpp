@@ -67,6 +67,10 @@ bool ACC_SetupBoards::Execute(){
                 }
             }
             tempV.clear();
+            if(m_verbose>1)
+            {
+                m_data->conf.Print();
+            }
 		}else
 		{
             m_data->psec.errorcodes.push_back(0xAA02EE01);
