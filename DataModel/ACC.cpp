@@ -591,6 +591,17 @@ int ACC::listenForAcdcData(int trigMode)
 				}
 			}
 		}
+        //check for mixed buffersizes
+        int vksum = 0;
+        for(int vk=0; vk<readoutSize.size(); vk++)
+        {
+            vksum += readoutSize[vk];
+        }
+        if(vksum%7795!=0 && vksum%16!=0)
+        {
+            errorcode.push_back(0xAC15EE06);
+            return 407;
+        }
 
 		//old trigger
 		if(boardsReadyForRead==alignedAcdcIndices)
