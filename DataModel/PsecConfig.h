@@ -91,6 +91,8 @@ class PsecConfig : public SerialisableObject{
 
     ar & VersionNumber;   
     ar & LAPPD_ID;
+    ar & LAPPDtoBoard1;
+    ar & LAPPDtoBoard2;
     ar & receiveFlag;
     ar & RunControl;
 
