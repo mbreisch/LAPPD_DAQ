@@ -25,21 +25,24 @@ PsecConfig::~PsecConfig()
 
 bool PsecConfig::Send(zmq::socket_t* sock)
 {
+    int S_LAPPDtoBoard1 = LAPPDtoBoard1.size();
+    int S_LAPPDtoBoard2 = LAPPDtoBoard2.size();
+
     zmq::message_t msg0(sizeof VersionNumber);
     memcpy(msg0.data(), &VersionNumber, sizeof VersionNumber);
 
     zmq::message_t msgID(sizeof LAPPD_ID);
     memcpy(msgID.data(), &LAPPD_ID, sizeof LAPPD_ID);
 
-    zmq::message_t msgSL1(sizeof LAPPDtoBoard1.size());
-	std::memcpy(msgSL1.data(), &LAPPDtoBoard1.size(), sizeof LAPPDtoBoard1.size());
-	zmq::message_t msgL1(sizeof(int) * LAPPDtoBoard1.size());
-	std::memcpy(msgL1.data(), LAPPDtoBoard1.data(), sizeof(int) * LAPPDtoBoard1.size());
+    zmq::message_t msgSL1(sizeof S_LAPPDtoBoard1);
+	std::memcpy(msgSL1.data(), &S_LAPPDtoBoard1, sizeof S_LAPPDtoBoard1);
+	zmq::message_t msgL1(sizeof(int) * S_LAPPDtoBoard1);
+	std::memcpy(msgL1.data(), LAPPDtoBoard1.data(), sizeof(int) * S_LAPPDtoBoard1);
 
-    zmq::message_t msgSL2(sizeof LAPPDtoBoard2.size());
-	std::memcpy(msgSL2.data(), &LAPPDtoBoard2.size(), sizeof LAPPDtoBoard2.size());
-	zmq::message_t msgL2(sizeof(int) * LAPPDtoBoard2.size());
-	std::memcpy(msgL2.data(), LAPPDtoBoard2.data(), sizeof(int) * LAPPDtoBoard2.size());
+    zmq::message_t msgSL2(sizeof S_LAPPDtoBoard2);
+	std::memcpy(msgSL2.data(), &S_LAPPDtoBoard2, sizeof S_LAPPDtoBoard2);
+	zmq::message_t msgL2(sizeof(int) * S_LAPPDtoBoard2);
+	std::memcpy(msgL2.data(), LAPPDtoBoard2.data(), sizeof(int) * S_LAPPDtoBoard2);
 
     zmq::message_t msg1(sizeof receiveFlag);
     memcpy(msg1.data(), &receiveFlag, sizeof receiveFlag);
@@ -134,9 +137,9 @@ bool PsecConfig::Send(zmq::socket_t* sock)
     sock->send(msg0,ZMQ_SNDMORE);
     sock->send(msgID,ZMQ_SNDMORE);
     sock->send(msgSL1,ZMQ_SNDMORE);
-    if(LAPPDtoBoard1.size()>0){sock->send(msgL1,ZMQ_SNDMORE);}
+    if(S_LAPPDtoBoard1>0){sock->send(msgL1,ZMQ_SNDMORE);}
     sock->send(msgSL2,ZMQ_SNDMORE);
-    if(LAPPDtoBoard2.size()>0){sock->send(msgL2,ZMQ_SNDMORE);}
+    if(S_LAPPDtoBoard2>0){sock->send(msgL2,ZMQ_SNDMORE);}
     sock->send(msg1,ZMQ_SNDMORE);
     sock->send(msgRC,ZMQ_SNDMORE);
     sock->send(msg2,ZMQ_SNDMORE);
