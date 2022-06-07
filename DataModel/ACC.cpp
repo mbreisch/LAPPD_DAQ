@@ -515,6 +515,7 @@ int ACC::readAcdcBuffers()
 int ACC::listenForAcdcData(int trigMode)
 {
 	vector<int> boardsReadyForRead;
+    vector<int> boardCheck;
 	map<int,int> readoutSize;
 	unsigned int command; 
 	bool clearCheck;
@@ -540,8 +541,10 @@ int ACC::listenForAcdcData(int trigMode)
 	{ 
 		//Clear the boards read vector
 		boardsReadyForRead.clear(); 
+        boardCheck.clear();
 		readoutSize.clear();
         lastAccBuffer.clear();
+
 		//Time the listen fuction
 		now = chrono::steady_clock::now();
 		if(chrono::duration_cast<chrono::milliseconds>(now - start) > timeoutDuration)
@@ -582,65 +585,60 @@ int ACC::listenForAcdcData(int trigMode)
 			{
 				if(lastAccBuffer.at(16+k)==PSECFRAME)
 				{
-					boardsReadyForRead.push_back(k);
+					boardCheck.push_back(k);
 					readoutSize[k] = PSECFRAME;
 				}else if(lastAccBuffer.at(16+k)==PPSFRAME)
 				{
-					boardsReadyForRead.push_back(k);
+					boardCheck.push_back(k);
 					readoutSize[k] = PPSFRAME;
 				}
 			}
 		}
-        //check for mixed buffersizes
-        int vksum = 0;
-        for(int vk=0; vk<readoutSize.size(); vk++)
-        {
-            vksum += readoutSize[vk];
-        }
-        if(vksum%7795!=0 && vksum%16!=0)
-        {
-            errorcode.push_back(0xAC15EE06);
-            return 407;
-        }
 
 		//old trigger
-		if(boardsReadyForRead==alignedAcdcIndices)
+		if(boardCheck==alignedAcdcIndices)
 		{
+            boardsReadyForRead = boardCheck;
+            boardCheck.clear();
 			map_accIF = lastAccBuffer;
 			break;
 		}
 
 		/*new trigger
-		std::sort(boardsReadyForRead.begin(), boardsReadyForRead.end());
-		bool control = false;
-		if(boardsReadyForRead.size()%2==0)
-		{
-			for(int m=0; m<boardsReadyForRead.size(); m+=2)
-			{
-				if({boardsReadyForRead[m],boardsReadyForRead[m+1]}=={0,1})
-				{
-					control = true;
-				}else if({boardsReadyForRead[m],boardsReadyForRead[m+1]}=={2,3})
-				{
-					control = true;
-				}else if({boardsReadyForRead[m],boardsReadyForRead[m+1]}=={4,5})
-				{
-					control = true;
-				}else if({boardsReadyForRead[m],boardsReadyForRead[m+1]}=={6,7})
-				{
-					control = true;
-				}else
-				{
-					control = false;
-				}
-			}
-			if(control==true)
-			{
-				map_accIF = lastAccBuffer;
-				break;
-			}
-		}*/
+        bool control = false;
+        if(std::find(boardCheck.begin(),boardCheck.end(),LAPPD1[0])!=boardCheck.end() && std::find(boardCheck.begin(),boardCheck.end(),LAPPD1[1])!=boardCheck.end()) 
+        {
+            control = true;
+            boardsReadyForRead.push_back(LAPPD1[0]);
+            boardsReadyForRead.push_back(LAPPD1[1]);
+        }
+        if(std::find(boardCheck.begin(),boardCheck.end(),LAPPD2[0])!=boardCheck.end() && std::find(boardCheck.begin(),boardCheck.end(),LAPPD2[1])!=boardCheck.end()) 
+        {
+            control = true;
+            boardsReadyForRead.push_back(LAPPD2[0]);
+            boardsReadyForRead.push_back(LAPPD2[1]);
+        }
+        if(control==true)
+        {
+            boardCheck.clear();
+            map_accIF = lastAccBuffer;
+            break;
+        }
+        */
 	}
+
+    //check for mixed buffersizes
+    bool chk=true;
+    int first = readoutSize.begin()->second;
+    for(map<int,int>::iterator it=readoutSize.begin(); it!=readoutSize.end(); it++)
+    {
+        if(it->second!=first){chk=false;}
+    }
+    if(chk==false)
+    {
+        errorcode.push_back(0xAC15EE06);
+        return 407;       
+    }
 
 	//each ACDC needs to be queried individually
 	//by the ACC for its buffer. 

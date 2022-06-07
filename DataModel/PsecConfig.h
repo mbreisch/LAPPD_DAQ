@@ -27,6 +27,8 @@ class PsecConfig : public SerialisableObject{
     //Version number
   unsigned int VersionNumber;
   unsigned int LAPPD_ID;
+  vector<int> LAPPDtoBoard1;
+  vector<int> LAPPDtoBoard2;
   int RunControl;
 
   //Run control variable
