@@ -13,7 +13,6 @@ bool ACC_DataRead::Initialise(std::string configfile, DataModel &data){
 
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 
-	
 	return true;
 }
 
