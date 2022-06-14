@@ -141,8 +141,8 @@ bool ACC_SetupBoards::Setup(){
     m_data->acc->setTimeoutInMs(timeout);
 
     //Map boards to LAPPDs
-    m_data->acc->setLAPPD1(m_data->conf.LAPPDtoBoard1);
-    m_data->acc->setLAPPD2(m_data->conf.LAPPDtoBoard2);
+    //m_data->acc->setLAPPD1(m_data->conf.LAPPDtoBoard1);
+    //m_data->acc->setLAPPD2(m_data->conf.LAPPDtoBoard2);
 
 	//polarity
 	m_data->acc->setSign(m_data->conf.ACC_Sign, 2);
