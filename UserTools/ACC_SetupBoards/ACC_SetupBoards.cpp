@@ -30,6 +30,9 @@ bool ACC_SetupBoards::Execute(){
     if(Timeoutcounter>=1000)
     {
         Timeoutcounter = 0; //Reset the timeout counter 
+        
+        //IF THERE ARE PROBLEMS 
+        //COMMENT FROM HERE -----------
         m_data->conf.receiveFlag = 1; //Re-init the Setup part uf the tool
         m_data->conf.RunControl = 0; //Re-clear the buffers
 
@@ -43,6 +46,7 @@ bool ACC_SetupBoards::Execute(){
 	    outfile << std::dec;
 	    outfile.close();
         PrintFrame.clear();
+        //TO HERE -------------
     }
 
 
