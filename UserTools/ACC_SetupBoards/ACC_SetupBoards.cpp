@@ -17,6 +17,8 @@ bool ACC_SetupBoards::Initialise(std::string configfile, DataModel &data){
 
 	m_data->acc = new ACC();
 
+    Timeoutcounter = 0;
+
 	return true;
 }
 
@@ -24,6 +26,24 @@ bool ACC_SetupBoards::Initialise(std::string configfile, DataModel &data){
 bool ACC_SetupBoards::Execute(){
 
 	//if(m_data->conf.receiveFlag==0){return true;}
+
+    if(Timeoutcounter>=1000)
+    {
+        Timeoutcounter = 0; //Reset the timeout counter 
+        m_data->conf.receiveFlag = 1; //Re-init the Setup part uf the tool
+        m_data->conf.RunControl = 0: //Re-clear the buffers
+
+        //Print debug frame as overwrite
+        vector<unsigned short> PrintFrame = m_data->acc->getACCInfoFrame();
+        std::fstream outfile("./configfiles/ReadOutChain/ACCIF.txt", std::ios_base::out | std::ios_base::trunc);
+        for(int j=0; j<PrintFrame.size(); j++)
+        {
+            outfile << std::hex << PrintFrame[j] << std::endl; 
+        }
+	    outfile << std::dec;
+	    outfile.close();
+    }
+
 
 	bool setupret = false;
 	if(m_data->conf.receiveFlag==1)
@@ -56,6 +76,7 @@ bool ACC_SetupBoards::Execute(){
 	{
 		if(m_data->psec.readRetval==404)
 		{
+            Timeoutcounter++;
             vector<unsigned short> tempV = m_data->acc->getACCInfoFrame();
             for(int i=0; i<MAX_NUM_BOARDS; i++)
             {
@@ -73,13 +94,17 @@ bool ACC_SetupBoards::Execute(){
             }
 		}else
 		{
+            Timeoutcounter = 0;
             m_data->psec.errorcodes.push_back(0xAA02EE01);
 			//unsigned int shift = (1<<(m_data->psec.readRetval-1));
 			//printf("Necessary dump of board 0x%02x\n", shift);
 			m_data->acc->dumpData(0xFF);
             m_data->acc->emptyUsbLine();
 		}
-	}
+	}else
+    {
+        Timeoutcounter = 0;
+    }
 	return true;
 }
 
