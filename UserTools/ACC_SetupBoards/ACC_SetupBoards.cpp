@@ -42,6 +42,7 @@ bool ACC_SetupBoards::Execute(){
         }
 	    outfile << std::dec;
 	    outfile.close();
+        PrintFrame.clear();
     }
 
 
