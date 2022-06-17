@@ -31,7 +31,7 @@ bool ACC_SetupBoards::Execute(){
     {
         Timeoutcounter = 0; //Reset the timeout counter 
         m_data->conf.receiveFlag = 1; //Re-init the Setup part uf the tool
-        m_data->conf.RunControl = 0: //Re-clear the buffers
+        m_data->conf.RunControl = 0; //Re-clear the buffers
 
         //Print debug frame as overwrite
         vector<unsigned short> PrintFrame = m_data->acc->getACCInfoFrame();
