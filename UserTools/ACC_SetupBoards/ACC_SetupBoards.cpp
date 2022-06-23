@@ -344,9 +344,9 @@ bool ACC_SetupBoards::SaveErrorLog()
     file.close();
 
     if(numLines>PrintLinesMax){return false;}
-    if(m_data.psec.errorcodes.size()==1)
+    if(m_data->psec.errorcodes.size()==1)
     {
-        if(m_data.psec.errorcodes.at(0)==0x00000000)
+        if(m_data->psec.errorcodes.at(0)==0x00000000)
         {
             return false;
         }
@@ -357,9 +357,9 @@ bool ACC_SetupBoards::SaveErrorLog()
 
     //Print a timestamp
     outfile << "Time: " << m_data->psec.Timestamp << endl;
-    for(int k1=0; k1<m_data.psec.errorcodes.size(); k1++)
+    for(int k1=0; k1<m_data->psec.errorcodes.size(); k1++)
     {
-        outfile << m_data.psec.errorcodes.at(k1) << " ";
+        outfile << m_data->psec.errorcodes.at(k1) << " ";
     }
     outfile << endl;
 
