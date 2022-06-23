@@ -14,6 +14,7 @@ bool ACC_SetupBoards::Initialise(std::string configfile, DataModel &data){
 	m_log= m_data->Log;
 
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
+    if(!m_variables.Get("TimeoutMax",TimeoutMax)) TimeoutMax=300;
 
 	m_data->acc = new ACC();
 
@@ -27,7 +28,7 @@ bool ACC_SetupBoards::Execute(){
 
 	//if(m_data->conf.receiveFlag==0){return true;}
 
-    if(Timeoutcounter>=300)
+    if(Timeoutcounter>=TimeoutMax)
     {
         Timeoutcounter = 0; //Reset the timeout counter 
         

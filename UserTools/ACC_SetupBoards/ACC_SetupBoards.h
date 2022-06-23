@@ -37,6 +37,7 @@ class ACC_SetupBoards: public Tool {
     bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
     int Timeoutcounter;
+    int TimeoutMax;
 
  private:
 
