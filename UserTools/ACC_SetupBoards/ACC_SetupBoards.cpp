@@ -27,7 +27,7 @@ bool ACC_SetupBoards::Execute(){
 
 	//if(m_data->conf.receiveFlag==0){return true;}
 
-    if(Timeoutcounter>=1000)
+    if(Timeoutcounter>=300)
     {
         Timeoutcounter = 0; //Reset the timeout counter 
         
