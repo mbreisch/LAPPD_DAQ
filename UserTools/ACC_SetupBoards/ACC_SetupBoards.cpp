@@ -106,7 +106,7 @@ bool ACC_SetupBoards::Execute(){
             m_data->acc->emptyUsbLine();
 		}
 
-        if(m_verbose>1){SaveErrorLog();}
+        if(m_verbose>3){SaveErrorLog();}
 	}else
     {
         Timeoutcounter = 0;
