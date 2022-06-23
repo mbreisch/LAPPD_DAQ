@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <unistd.h>
+#include <fstream>
 
 #include "Tool.h"
 
@@ -40,6 +42,8 @@ class ACC_SetupBoards: public Tool {
 
     bool Setup();
     void LoadDefaults();
+    void PrintDebugFrames();
+    void PrintSettings();
 
 };
 

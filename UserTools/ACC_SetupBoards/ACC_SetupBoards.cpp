@@ -37,18 +37,16 @@ bool ACC_SetupBoards::Execute(){
         m_data->conf.RunControl = 0; //Re-clear the buffers
 
         //Print debug frame as overwrite
-        vector<unsigned short> PrintFrame = m_data->acc->getACCInfoFrame();
-        std::fstream outfile("./configfiles/ReadOutChain/ACCIF.txt", std::ios_base::out | std::ios_base::trunc);
-        for(int j=0; j<PrintFrame.size(); j++)
-        {
-            outfile << std::hex << PrintFrame[j] << std::endl; 
-        }
-	    outfile << std::dec;
-	    outfile.close();
-        PrintFrame.clear();
+        int numLines = 0;
+        std::string line;
+        ifstream file("./configfiles/ReadOutChain/ACCIF.txt");
+        while(getline(file, line)){numLines++;}
+        file.close();
+
+        if(numLines<30000){PrintDebugFrames();}
+        PrintSettings();
         //TO HERE -------------
     }
-
 
 	bool setupret = false;
 	if(m_data->conf.receiveFlag==1)
@@ -255,3 +253,82 @@ bool ACC_SetupBoards::Setup(){
 
 	return ret;	
 }
+
+
+void ACC_SetupBoards::PrintDebugFrames()
+{
+    //Create Debug file
+    std::fstream outfile("./configfiles/ReadOutChain/ACCIF.txt", std::ios_base::out | std::ios_base::app);
+
+    //Print a timestamp
+    outfile << "Time: " << m_data->psec.Timestamp << endl;
+
+    //Grab first ACC info frame and get all buffer sizes that are present
+    vector<unsigned short> PrintFrame = m_data->acc->getACCInfoFrame();
+    for(int j=0; j<8; j++)
+    {
+        if(PrintFrame.at(14) & (1 << j))
+        {
+            outfile << "W" << j << ": " << PrintFrame.at(16+j) << " | ";
+        }
+    }
+    outfile << endl;
+
+    //Clear temp vector plus sleep a bit
+    PrintFrame.clear();
+    usleep(100000);
+
+    //Grab second ACC info frame and get all buffer sizes that are present
+    PrintFrame = m_data->acc->getACCInfoFrame();
+    for(int j2=0; j2<8; j2++)
+    {
+        if(PrintFrame.at(14) & (1 << j2))
+        {
+            outfile << "W" << j2 << ": " << PrintFrame.at(16+j2) << " | ";
+        }
+    }
+    outfile << endl;
+
+    //Close and clear
+    outfile.close();
+    PrintFrame.clear();
+}
+
+
+void ACC_SetupBoards::PrintSettings()
+{
+    std::fstream outfile("./configfiles/ReadOutChain/FoundSettings.txt", std::ios_base::out | std::ios_base::trunc);
+
+    outfile << "------------------LAPPD to Board mappig-------------" << std::endl;
+    outfile << "Will come soon" << std::endl;
+    outfile << "LAPPD 1 is mapped to boards " << m_data->conf.LAPPDtoBoard1[0] << " and " << m_data->conf.LAPPDtoBoard1[1] << std::endl;
+    outfile << "LAPPD 2 is mapped to boards " << m_data->conf.LAPPDtoBoard2[0] << " and " << m_data->conf.LAPPDtoBoard2[1] << std::endl;
+    outfile << "------------------General settings------------------" << std::endl;
+    outfile << "Receive flag: " <<  m_data->conf.receiveFlag << std::endl;
+    outfile << "ACDC boardmask: " <<  m_data->conf.ACDC_mask << std::endl;
+    outfile << "Calibration Mode: " <<  m_data->conf.Calibration_Mode << std::endl;
+    outfile << "Raw_Mode: " <<  m_data->conf.Raw_Mode << std::endl;
+    outfile << "------------------Trigger settings------------------" << std::endl;
+    outfile << "Triggermode: " << m_data->conf.triggermode << std::endl;
+    outfile << "ACC trigger Sign: " << m_data->conf.ACC_Sign << std::endl;
+    outfile << "ACDC trigger Sign: " << m_data->conf.ACDC_Sign << std::endl;
+    outfile << "Selftrigger Sign: " << m_data->conf.SELF_Sign << std::endl;
+    outfile << "Coincidence Mode: " <<  m_data->conf.SELF_Enable_Coincidence << std::endl;
+    outfile << "Required Coincidence Channels: " <<  m_data->conf.SELF_Coincidence_Number << std::endl;
+    outfile << "Selftrigger threshold: " << m_data->conf.SELF_threshold << std::endl;
+    outfile << "Validation trigger start: " << m_data->conf.Validation_Start << std::endl;
+    outfile << "Validation trigger window: " << m_data->conf.Validation_Window << std::endl;
+    outfile << "------------------PSEC settings------------------" << std::endl;
+    outfile << "PSEC chipmask (chip 0 to 4) : " << m_data->conf.PSEC_Chip_Mask_0 << "|" << m_data->conf.PSEC_Chip_Mask_1 << "|" << m_data->conf.PSEC_Chip_Mask_2 << "|" << m_data->conf.PSEC_Chip_Mask_3 << "|" << m_data->conf.PSEC_Chip_Mask_4 << std::endl;
+    outfile << "PSEC channelmask (for chip 0 to 4) : " << m_data->conf.PSEC_Channel_Mask_0 << "|" << m_data->conf.PSEC_Channel_Mask_1 << "|" << m_data->conf.PSEC_Channel_Mask_2 << "|" << m_data->conf.PSEC_Channel_Mask_3 << "|" << m_data->conf.PSEC_Channel_Mask_4 << std::endl;
+    outfile << "PSEC pedestal value: " << m_data->conf.Pedestal_channel << std::endl;
+    outfile << "PSEC chipmask for pedestal: " << m_data->conf.Pedestal_channel_mask << std::endl;
+    outfile << "------------------PSEC settings------------------" << std::endl;	
+    outfile << "PPS divider ratio: " << m_data->conf.PPSRatio << std::endl;
+    outfile << "PPS multiplexer: " << m_data->conf.PPSBeamMultiplexer << std::endl;
+    outfile << "-------------------------------------------------" << std::endl;
+
+    outfile.close();
+}
+
+
