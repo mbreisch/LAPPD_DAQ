@@ -37,6 +37,7 @@ class ACC_SetupBoards: public Tool {
     bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
     int Timeoutcounter;
+    int PrintLinesMax;
     int TimeoutMax;
 
  private:
@@ -45,6 +46,7 @@ class ACC_SetupBoards: public Tool {
     void LoadDefaults();
     void PrintDebugFrames();
     void PrintSettings();
+    bool SaveErrorLog();
 
 };
 

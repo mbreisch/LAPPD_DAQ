@@ -15,6 +15,7 @@ bool ACC_SetupBoards::Initialise(std::string configfile, DataModel &data){
 
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
     if(!m_variables.Get("TimeoutMax",TimeoutMax)) TimeoutMax=300;
+    if(!m_variables.Get("PrintLinesMax",PrintLinesMax)) PrintLinesMax=15000;
 
 	m_data->acc = new ACC();
 
@@ -40,11 +41,11 @@ bool ACC_SetupBoards::Execute(){
         //Print debug frame as overwrite
         int numLines = 0;
         std::string line;
-        ifstream file("./configfiles/ReadOutChain/ACCIF.txt");
+        std::ifstream file("./configfiles/ReadOutChain/ACCIF.txt");
         while(getline(file, line)){numLines++;}
         file.close();
 
-        if(numLines<30000){PrintDebugFrames();}
+        if(numLines<PrintLinesMax){PrintDebugFrames();}
         PrintSettings();
         //TO HERE -------------
     }
@@ -98,13 +99,14 @@ bool ACC_SetupBoards::Execute(){
             }
 		}else
 		{
-            Timeoutcounter = 0;
             m_data->psec.errorcodes.push_back(0xAA02EE01);
 			//unsigned int shift = (1<<(m_data->psec.readRetval-1));
 			//printf("Necessary dump of board 0x%02x\n", shift);
 			m_data->acc->dumpData(0xFF);
             m_data->acc->emptyUsbLine();
 		}
+
+        if(m_verbose>1){SaveErrorLog();}
 	}else
     {
         Timeoutcounter = 0;
@@ -331,5 +333,40 @@ void ACC_SetupBoards::PrintSettings()
 
     outfile.close();
 }
+
+
+bool ACC_SetupBoards::SaveErrorLog()
+{
+    int numLines = 0;
+    std::string line;
+    std::ifstream file("./Errorlog.txt");    
+    while(getline(file, line)){numLines++;}
+    file.close();
+
+    if(numLines>PrintLinesMax){return false;}
+    if(m_data.psec.errorcodes.size()==1)
+    {
+        if(m_data.psec.errorcodes.at(0)==0x00000000)
+        {
+            return false;
+        }
+    }
+
+    //Create Debug file
+    std::fstream outfile("./Errorlog.txt", std::ios_base::out | std::ios_base::app);
+
+    //Print a timestamp
+    outfile << "Time: " << m_data->psec.Timestamp << endl;
+    for(int k1=0; k1<m_data.psec.errorcodes.size(); k1++)
+    {
+        outfile << m_data.psec.errorcodes.at(k1) << " ";
+    }
+    outfile << endl;
+
+    outfile.close();
+
+    return true;
+}
+
 
 

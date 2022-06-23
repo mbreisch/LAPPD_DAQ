@@ -6,6 +6,8 @@
 #include <vector>
 #include <map>
 #include <chrono>
+#include <unistd.h>
+#include <fstream>
 
 #include "Tool.h"
 
@@ -27,14 +29,15 @@ class ACC_DataRead: public Tool {
 
  public:
 
-  ACC_DataRead(); ///< Simple constructor
-  bool Initialise(std::string configfile,DataModel &data); ///< Initialise Function for setting up Tool resorces. @param configfile The path and name of the dynamic configuration file to read in. @param data A reference to the transient data class used to pass information between Tools.
-  bool Execute(); ///< Executre function used to perform Tool perpose. 
-  bool Finalise(); ///< Finalise funciton used to clean up resorces.
+    ACC_DataRead(); ///< Simple constructor
+    bool Initialise(std::string configfile,DataModel &data); ///< Initialise Function for setting up Tool resorces. @param configfile The path and name of the dynamic configuration file to read in. @param data A reference to the transient data class used to pass information between Tools.
+    bool Execute(); ///< Executre function used to perform Tool perpose. 
+    bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
-
+    int PrintLinesMax;
  private:
 
+    bool SaveErrorLog();
 
 
 

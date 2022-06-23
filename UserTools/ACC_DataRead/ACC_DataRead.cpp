@@ -12,6 +12,7 @@ bool ACC_DataRead::Initialise(std::string configfile, DataModel &data){
 	m_log= m_data->Log;
 
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
+    if(!m_variables.Get("PrintLinesMax",PrintLinesMax)) PrintLinesMax=15000;
 
 	return true;
 }
@@ -47,6 +48,8 @@ bool ACC_DataRead::Execute(){
 	m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
 	m_data->acc->clearErrors();
 	tmpERR.clear();
+
+    if(m_verbose>1){SaveErrorLog();}
 	return true;
 }
 
@@ -55,4 +58,37 @@ bool ACC_DataRead::Finalise(){
 	delete m_data->acc;
     m_data->acc=0;
 	return true;
+}
+
+bool ACC_DataRead::SaveErrorLog()
+{
+    int numLines = 0;
+    std::string line;
+    std::ifstream file("./Errorlog.txt");    
+    while(getline(file, line)){numLines++;}
+    file.close();
+
+    if(numLines>PrintLinesMax){return false;}
+    if(m_data.psec.errorcodes.size()==1)
+    {
+        if(m_data.psec.errorcodes.at(0)==0x00000000)
+        {
+            return false;
+        }
+    }
+
+    //Create Debug file
+    std::fstream outfile("./Errorlog.txt", std::ios_base::out | std::ios_base::app);
+
+    //Print a timestamp
+    outfile << "Time: " << m_data->psec.Timestamp << endl;
+    for(int k1=0; k1<m_data.psec.errorcodes.size(); k1++)
+    {
+        outfile << m_data.psec.errorcodes.at(k1) << " ";
+    }
+    outfile << endl;
+
+    outfile.close();
+
+    return true;
 }
