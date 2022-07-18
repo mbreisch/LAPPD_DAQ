@@ -26,6 +26,7 @@ bool SC_Poll_RHT::Execute()
         vector<float> RHT = m_data->CB->GetTemp(); 
         m_data->SCMonitor.temperature_mon = RHT[0];
         m_data->SCMonitor.humidity_mon = RHT[1];
+        RHT.clear();
 
         //Realise Error check
         retchk = TEMPCHK();

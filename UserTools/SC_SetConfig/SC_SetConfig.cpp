@@ -170,7 +170,7 @@ bool SC_SetConfig::Setup(){
 					if(counter>=30){break;}
 					counter++;
 				}
-				if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
+				if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
 				{
 					if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
 					m_data->SCMonitor.errorcodes.push_back(0xCB03EE04);

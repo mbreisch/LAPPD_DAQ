@@ -29,6 +29,7 @@ bool SC_Poll_LV::Execute()
         m_data->SCMonitor.v33 = LVvoltage[0];
         m_data->SCMonitor.v25 = LVvoltage[1];
         m_data->SCMonitor.v12 = LVvoltage[2];
+        LVvoltage.clear();
     }else
     {
         m_data->SCMonitor.LV_mon = -1; 

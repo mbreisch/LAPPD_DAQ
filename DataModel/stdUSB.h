@@ -3,6 +3,7 @@
 
 #include <libusb-1.0/libusb.h> //represents the new version of the usb lib
 #include <vector>
+#include <unistd.h>
 
 using namespace std;
 
@@ -29,6 +30,8 @@ class stdUSB {
 
         bool isOpen(); //control function for open usb line
         bool reset(); //reset usb connection
+
+        void ReInitUSB();
 
     private:
         struct libusb_device* init(int device_count); //initilises the usb device for claiming handles

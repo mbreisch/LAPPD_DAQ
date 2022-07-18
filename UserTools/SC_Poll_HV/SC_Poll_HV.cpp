@@ -102,10 +102,6 @@ bool SC_Poll_HV::Finalise()
 	    outfile << m_data->CB->get_HV_volts;
 	    outfile.close();
     }
-	
-    while(retval!=0){retval = m_data->CB->SetRelay(1,false);} retval=-2;
-    while(retval!=0){retval = m_data->CB->SetRelay(2,false);} retval=-2;
-    while(retval!=0){retval = m_data->CB->SetRelay(3,false);} retval=-2;
 
     m_data->CB->Disconnect();
     delete m_data->CB;
@@ -195,7 +191,7 @@ bool SC_Poll_HV::HVCHK()
         }else
         {
             retval = m_data->CB->SetHV_ONOFF(false);
-                if(retval!=0 && retval!=1)
+            if(retval!=0 && retval!=1)
             {
                 //std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;
                 m_data->SCMonitor.errorcodes.push_back(0xCC00EE04);
