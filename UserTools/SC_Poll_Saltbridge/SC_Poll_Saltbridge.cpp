@@ -40,12 +40,6 @@ bool SC_Poll_Saltbridge::Execute()
         m_data->SCMonitor.errorcodes.push_back(0xCC02EE00);
     }
 
-    //Get Errorscodes
-    vector<unsigned int> tmpERR = m_data->CB->returnErrors(); 
-    m_data->SCMonitor.errorcodes.insert(std::end(m_data->SCMonitor.errorcodes), std::begin(tmpERR), std::end(tmpERR));
-    tmpERR.clear();
-    m_data->CB->clearErrors();
-
     return true;
 }
 

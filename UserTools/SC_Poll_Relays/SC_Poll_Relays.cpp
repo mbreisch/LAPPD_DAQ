@@ -24,12 +24,6 @@ bool SC_Poll_Relays::Execute()
     m_data->SCMonitor.relayCh2_mon = m_data->CB->GetRelayState(2); 
     m_data->SCMonitor.relayCh3_mon = m_data->CB->GetRelayState(3);
 
-    //Get Errorscodes
-    vector<unsigned int> tmpERR = m_data->CB->returnErrors(); 
-    m_data->SCMonitor.errorcodes.insert(std::end(m_data->SCMonitor.errorcodes), std::begin(tmpERR), std::end(tmpERR));
-    tmpERR.clear();
-    m_data->CB->clearErrors();
-
     return true;
 }
 

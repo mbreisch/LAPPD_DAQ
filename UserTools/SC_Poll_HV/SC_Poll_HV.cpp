@@ -44,11 +44,6 @@ bool SC_Poll_HV::Execute()
         m_data->SCMonitor.HV_return_mon = -1.0;
     }
 
-    //Get Errorscodes
-    vector<unsigned int> tmpERR = m_data->CB->returnErrors(); 
-    m_data->SCMonitor.errorcodes.insert(std::end(m_data->SCMonitor.errorcodes), std::begin(tmpERR), std::end(tmpERR));
-    tmpERR.clear();
-    m_data->CB->clearErrors();
 
     return true;
 }
