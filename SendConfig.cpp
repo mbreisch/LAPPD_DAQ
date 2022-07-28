@@ -3,7 +3,7 @@
 #include <zmq.hpp>
 #include <SlowControlMonitor.h>
 
-int setValues(hv_set,hv_v,lv_set,r1,r2,r3)
+int setValues(int hv_set, float hv_v, int lv_set, int r1, int r2, int r3)
 {
     //HV settings
     data.HV_state_set = hv_set;
