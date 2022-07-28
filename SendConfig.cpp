@@ -3,7 +3,7 @@
 #include <zmq.hpp>
 #include <SlowControlMonitor.h>
 
-void setValues(hv_set,hv_v,lv_set,r1,r2,r3)
+int setValues(hv_set,hv_v,lv_set,r1,r2,r3)
 {
     //HV settings
     data.HV_state_set = hv_set;
@@ -27,6 +27,8 @@ void setValues(hv_set,hv_v,lv_set,r1,r2,r3)
     data.relayCh1 = r1;
     data.relayCh2 = r2;
     data.relayCh3 = r2;
+
+    return 0;
 }
 
 int main(){
