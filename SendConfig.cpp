@@ -3,33 +3,6 @@
 #include <zmq.hpp>
 #include <SlowControlMonitor.h>
 
-int setValues(int hv_set, float hv_v, int lv_set, int r1, int r2, int r3)
-{
-    //HV settings
-    data.HV_state_set = hv_set;
-    data.HV_volts = hv_v;
-    //LV settings
-    data.LV_state_set = lv_set;
-    //Emergency limits 
-    data.LIMIT_temperature_low = 50;
-    data.LIMIT_temperature_high = 58;
-    data.LIMIT_humidity_low = 15;
-    data.LIMIT_humidity_high = 20;
-    data.LIMIT_Thermistor_temperature_low = 7000;
-    data.LIMIT_Thermistor_temperature_high = 5800;
-    data.LIMIT_saltbridge_low = 500000;
-    data.LIMIT_saltbridge_high = 400000;
-    //Triggerboard settings
-    data.Trig0_threshold = 1.223;
-    data.Trig1_threshold = 1.23;
-    data.TrigVref = 2.981;
-    //Relaysettings
-    data.relayCh1 = r1;
-    data.relayCh2 = r2;
-    data.relayCh3 = r2;
-
-    return 0;
-}
 
 int main(){
 
@@ -37,7 +10,6 @@ int main(){
 
     zmq::socket_t sock(context, ZMQ_DEALER);
     sock.connect("tcp://127.0.0.1:4444");
-
 
     SlowControlMonitor data;
 
@@ -62,23 +34,128 @@ int main(){
 
             if(mode==0)
             {
-                setValues(0,0,0,0,0,0);
+                //HV settings
+                data.HV_state_set = 0;
+                data.HV_volts = 0;
+                //LV settings
+                data.LV_state_set = 0;
+                //Emergency limits 
+                data.LIMIT_temperature_low = 50;
+                data.LIMIT_temperature_high = 58;
+                data.LIMIT_humidity_low = 15;
+                data.LIMIT_humidity_high = 20;
+                data.LIMIT_Thermistor_temperature_low = 7000;
+                data.LIMIT_Thermistor_temperature_high = 5800;
+                data.LIMIT_saltbridge_low = 500000;
+                data.LIMIT_saltbridge_high = 400000;
+                //Triggerboard settings
+                data.Trig0_threshold = 1.223;
+                data.Trig1_threshold = 1.23;
+                data.TrigVref = 2.981;
+                //Relaysettings
+                data.relayCh1 = 0;
+                data.relayCh2 = 0;
+                data.relayCh3 = 0;
                 break;
             }else if(mode==1)
             {
-                setValues(0,0,0,1,1,1);
+                //HV settings
+                data.HV_state_set = 0;
+                data.HV_volts = 0;
+                //LV settings
+                data.LV_state_set = 0;
+                //Emergency limits 
+                data.LIMIT_temperature_low = 50;
+                data.LIMIT_temperature_high = 58;
+                data.LIMIT_humidity_low = 15;
+                data.LIMIT_humidity_high = 20;
+                data.LIMIT_Thermistor_temperature_low = 7000;
+                data.LIMIT_Thermistor_temperature_high = 5800;
+                data.LIMIT_saltbridge_low = 500000;
+                data.LIMIT_saltbridge_high = 400000;
+                //Triggerboard settings
+                data.Trig0_threshold = 1.223;
+                data.Trig1_threshold = 1.23;
+                data.TrigVref = 2.981;
+                //Relaysettings
+                data.relayCh1 = 1;
+                data.relayCh2 = 1;
+                data.relayCh3 = 1;
                 break;
             }else if(mode==2)
             {
-                setValues(0,0,1,1,1,1);
+                //HV settings
+                data.HV_state_set = 0;
+                data.HV_volts = 0;
+                //LV settings
+                data.LV_state_set = 1;
+                //Emergency limits 
+                data.LIMIT_temperature_low = 50;
+                data.LIMIT_temperature_high = 58;
+                data.LIMIT_humidity_low = 15;
+                data.LIMIT_humidity_high = 20;
+                data.LIMIT_Thermistor_temperature_low = 7000;
+                data.LIMIT_Thermistor_temperature_high = 5800;
+                data.LIMIT_saltbridge_low = 500000;
+                data.LIMIT_saltbridge_high = 400000;
+                //Triggerboard settings
+                data.Trig0_threshold = 1.223;
+                data.Trig1_threshold = 1.23;
+                data.TrigVref = 2.981;
+                //Relaysettings
+                data.relayCh1 = 1;
+                data.relayCh2 = 1;
+                data.relayCh3 = 1;
                 break;
             }else if(mode==3)
             {
-                setValues(1,500,1,1,1,1);
+                //HV settings
+                data.HV_state_set = 1;
+                data.HV_volts = 500;
+                //LV settings
+                data.LV_state_set = 1;
+                //Emergency limits 
+                data.LIMIT_temperature_low = 50;
+                data.LIMIT_temperature_high = 58;
+                data.LIMIT_humidity_low = 15;
+                data.LIMIT_humidity_high = 20;
+                data.LIMIT_Thermistor_temperature_low = 7000;
+                data.LIMIT_Thermistor_temperature_high = 5800;
+                data.LIMIT_saltbridge_low = 500000;
+                data.LIMIT_saltbridge_high = 400000;
+                //Triggerboard settings
+                data.Trig0_threshold = 1.223;
+                data.Trig1_threshold = 1.23;
+                data.TrigVref = 2.981;
+                //Relaysettings
+                data.relayCh1 = 1;
+                data.relayCh2 = 1;
+                data.relayCh3 = 1;
                 break;
             }else if(mode==4)
             {
-                setValues(1,2350,1,1,1,1);
+                //HV settings
+                data.HV_state_set = 1;
+                data.HV_volts = 2350;
+                //LV settings
+                data.LV_state_set = 1;
+                //Emergency limits 
+                data.LIMIT_temperature_low = 50;
+                data.LIMIT_temperature_high = 58;
+                data.LIMIT_humidity_low = 15;
+                data.LIMIT_humidity_high = 20;
+                data.LIMIT_Thermistor_temperature_low = 7000;
+                data.LIMIT_Thermistor_temperature_high = 5800;
+                data.LIMIT_saltbridge_low = 500000;
+                data.LIMIT_saltbridge_high = 400000;
+                //Triggerboard settings
+                data.Trig0_threshold = 1.223;
+                data.Trig1_threshold = 1.23;
+                data.TrigVref = 2.981;
+                //Relaysettings
+                data.relayCh1 = 1;
+                data.relayCh2 = 1;
+                data.relayCh3 = 1;
                 break;
             }else
             {
