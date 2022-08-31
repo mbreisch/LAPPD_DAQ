@@ -34,6 +34,7 @@ class SlowControlMonitor : public SerialisableObject{
 
     //Version number
     unsigned int VersionNumber;
+    int RuntimeFlag;
 
     //LAPPD ID
     unsigned int LAPPD_ID;
@@ -108,6 +109,7 @@ class SlowControlMonitor : public SerialisableObject{
  
  template <class Archive> void serialize(Archive& ar, const unsigned int version){
     ar & VersionNumber;
+    ar & RuntimeFlag;
     ar & LAPPD_ID;
     ar & timeSinceEpochMilliseconds;
     ar & recieveFlag;

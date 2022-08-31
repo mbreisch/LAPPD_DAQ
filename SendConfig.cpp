@@ -13,6 +13,9 @@ int main(){
 
     SlowControlMonitor data;
 
+    std::cout<<"Please enter the LAPPD ID number: ";
+    std::cin>>data.LAPPD_ID;  
+
     int default_load = 0;
     std::cout<<"Do you want to load default settings (0: no |1: yes): ";
     std::cin>>default_load;
@@ -213,8 +216,40 @@ int main(){
         std::cout<<"Only enter 0 or 1! Quitting program!"<<std::endl;
         return 0;
     }
-  
-    std::cout<<endl<<endl<<data.Print()<<endl<<" Do you want to send the above settings? ";
+
+    std::cout<<"------------------------------"<<std::endl;
+    std::cout<<"Settings for LAPPD with ID: "<<data.LAPPD_ID<<std::endl;
+    std::cout<<endl;
+    //HV settings
+    std::cout<<"HV_state_set: "<<data.HV_state_set<<std::endl;
+    std::cout<<"HV_volts: "<<data.HV_volts<<std::endl;
+    std::cout<<endl;
+    //LV settings
+    std::cout<<"LV_state_set: "<<data.LV_state_set<<std::endl;
+    std::cout<<endl;
+    //Emergency limits 
+    std::cout<<"LIMIT_temperature_low (50): "<<data.LIMIT_temperature_low<<std::endl;
+    std::cout<<"LIMIT_temperature_high (58): "<<data.LIMIT_temperature_high<<std::endl;
+    std::cout<<"LIMIT_humidity_low (15): "<<data.LIMIT_humidity_low<<std::endl;
+    std::cout<<"LIMIT_humidity_high (20): "<<data.LIMIT_humidity_high<<std::endl;
+    std::cout<<endl;
+    std::cout<<"LIMIT_Thermistor_temperature_low (7000): "<<data.LIMIT_Thermistor_temperature_low<<std::endl;
+    std::cout<<"LIMIT_Thermistor_temperature_high (5800): "<<data.LIMIT_Thermistor_temperature_high<<std::endl;
+    std::cout<<endl;
+    std::cout<<"LIMIT_saltbridge_low (500000): "<<data.LIMIT_saltbridge_low<<std::endl;
+    std::cout<<"LIMIT_saltbridge_high (400000): "<<data.LIMIT_saltbridge_high<<std::endl;
+    std::cout<<endl;
+    //Trigger
+    std::cout<<"Trig0_threshold: "<<data.Trig0_threshold<<std::endl;
+    std::cout<<"Trig1_threshold: "<<data.Trig1_threshold<<std::endl;
+    std::cout<<"TrigVref: "<<data.TrigVref<<std::endl;
+    std::cout<<endl;
+    //Relays
+    std::cout<<"relayCh1: "<<data.relayCh1<<std::endl;
+    std::cout<<"relayCh2: "<<data.relayCh2<<std::endl;
+    std::cout<<"relayCh3: "<<data.relayCh3<<std::endl;
+
+    std::cout<<endl<<endl<<"Do you want to send the above settings? ";
     bool send=false;
     std::cin>>send;
     std::cout<<endl<<endl;

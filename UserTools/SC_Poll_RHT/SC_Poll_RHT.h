@@ -36,7 +36,8 @@ class SC_Poll_RHT: public Tool {
 
     private:
 
-
+        int HFlag;
+        int CheckDelay;
 };
 
 

@@ -12,6 +12,9 @@ bool SC_Poll_RHT::Initialise(std::string configfile, DataModel &data)
     m_log= m_data->Log;
 
     if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
+    if(!m_variables.Get("CheckDelay",CheckDelay)) CheckDelay=100;
+
+    HFlag = 0;
 
     return true;
 }
@@ -20,6 +23,14 @@ bool SC_Poll_RHT::Initialise(std::string configfile, DataModel &data)
 bool SC_Poll_RHT::Execute()
 {
     bool retchk;
+    if(m_data->SCMonitor.RuntimeFlag>=CheckDelay)
+    {
+        m_data->SCMonitor.RuntimeFlag = -1;
+    }else
+    {
+        m_data->SCMonitor.RuntimeFlag++;
+    }
+
     if(m_data->SCMonitor.SumRelays == true)
     {
         //Get Hum/Temp sensor data
@@ -93,6 +104,7 @@ bool SC_Poll_RHT::TEMPCHK(){
 
 bool SC_Poll_RHT::HUMIDITYCHK(){
     int retval=-2;
+
     if(m_data->SCMonitor.humidity_mon < m_data->SCMonitor.LIMIT_humidity_low)
     {
         m_data->SCMonitor.FLAG_humidity = 0;
@@ -106,6 +118,12 @@ bool SC_Poll_RHT::HUMIDITYCHK(){
     {
         bool ret;
         bool safety=true;
+
+        if(m_data->SCMonitor.RuntimeFlag>=0)
+        {
+            m_data->SCMonitor.FLAG_humidity = 1;
+            return safety;
+        }
 
         ret = HardShutdown(1,13);
         if(ret==false){safety=false;}
