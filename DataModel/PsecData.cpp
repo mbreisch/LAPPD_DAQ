@@ -3,7 +3,7 @@
 PsecData::PsecData()
 {
 	VersionNumber = 0x0003;
-	LAPPD_ID = 0;
+	LAPPD_ID = -1;
     SetDefaults();
 }
 
