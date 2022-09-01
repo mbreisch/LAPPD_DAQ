@@ -37,7 +37,7 @@ class SlowControlMonitor : public SerialisableObject{
     int RuntimeFlag;
 
     //LAPPD ID
-    unsigned int LAPPD_ID;
+    int LAPPD_ID;
 
     //Timestamp
     std::string timeSinceEpochMilliseconds;
