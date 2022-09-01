@@ -7,7 +7,7 @@ PsecData::PsecData()
     SetDefaults();
 }
 
-PsecData::PsecData(unsigned int id)
+PsecData::PsecData(int id)
 {
 	VersionNumber = 0x0003;
 	LAPPD_ID = id;
@@ -88,7 +88,7 @@ bool PsecData::Receive(zmq::socket_t* sock)
 
 	//ID
 	sock->recv(&msg);
-	LAPPD_ID=*(reinterpret_cast<unsigned int*>(msg.data())); 
+	LAPPD_ID=*(reinterpret_cast<int*>(msg.data())); 
 
 	//Timestamp
 	sock->recv(&msg);
