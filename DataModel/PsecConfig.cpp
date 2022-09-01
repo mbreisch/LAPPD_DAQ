@@ -3,14 +3,14 @@
 PsecConfig::PsecConfig()
 {
     VersionNumber = 0x0004;
-    LAPPD_ID = 0;
+    LAPPD_ID = -1;
     receiveFlag = 1;
     //LAPPDtoBoard1 = {0,1};
     //LAPPDtoBoard2 = {2,3};
     SetDefaults();
 }
 
-PsecConfig::PsecConfig(unsigned int id)
+PsecConfig::PsecConfig(int id)
 {
     VersionNumber = 0x0004;
     LAPPD_ID = id;
@@ -186,7 +186,7 @@ bool PsecConfig::Receive(zmq::socket_t* sock)
     if(TVersion!=VersionNumber){return false;}
 	
     sock->recv(&msg);
-    LAPPD_ID=*(reinterpret_cast<unsigned int*>(msg.data())); 
+    LAPPD_ID=*(reinterpret_cast<int*>(msg.data())); 
 
     //LAPPD to Boards 1
     /*
