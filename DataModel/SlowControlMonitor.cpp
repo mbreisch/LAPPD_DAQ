@@ -11,7 +11,7 @@ SlowControlMonitor::SlowControlMonitor()
 }
 
 
-SlowControlMonitor::SlowControlMonitor(unsigned int id)
+SlowControlMonitor::SlowControlMonitor(int id)
 {
     VersionNumber = 0x0008;
 	recieveFlag = 1;
@@ -344,7 +344,7 @@ bool SlowControlMonitor::Receive_Config(zmq::socket_t* sock){
 
     //LAPPD_ID
 	sock->recv(&msg);   
-	LAPPD_ID=*(reinterpret_cast<unsigned int*>(msg.data()));
+	LAPPD_ID=*(reinterpret_cast<int*>(msg.data()));
 
 	//HV
 	sock->recv(&msg);   
