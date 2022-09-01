@@ -19,7 +19,7 @@ class SlowControlMonitor : public SerialisableObject{
  public:
 
     SlowControlMonitor();
-    SlowControlMonitor(unsigned int id);
+    SlowControlMonitor(int id);
     ~SlowControlMonitor();
 
     //Comms
