@@ -17,7 +17,7 @@ class PsecConfig : public SerialisableObject{
  public:
 
   PsecConfig();
-  PsecConfig(unsigned int id);
+  PsecConfig(int id);
   ~PsecConfig();
   
   //Comms
@@ -26,7 +26,7 @@ class PsecConfig : public SerialisableObject{
  
     //Version number
   unsigned int VersionNumber;
-  unsigned int LAPPD_ID;
+  int LAPPD_ID;
   //vector<int> LAPPDtoBoard1;
   //vector<int> LAPPDtoBoard2;
   int RunControl;
