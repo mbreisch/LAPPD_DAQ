@@ -18,7 +18,7 @@ class PsecData{
  public:
 
     PsecData();
-    PsecData(unsigned int id);
+    PsecData(int id);
     ~PsecData();
 
     bool Send(zmq::socket_t* sock);
@@ -26,7 +26,7 @@ class PsecData{
 
     //General data
     unsigned int VersionNumber;
-    unsigned int LAPPD_ID;
+    int LAPPD_ID;
     string Timestamp;
 
     //Received data from the ACC class
