@@ -2,21 +2,21 @@
 
 PsecConfig::PsecConfig()
 {
-    VersionNumber = 0x0004;
+    VersionNumber = 0x0005;
     LAPPD_ID = -1;
     receiveFlag = 1;
-    //LAPPDtoBoard1 = {0,1};
-    //LAPPDtoBoard2 = {2,3};
+    LAPPDtoBoard1 = {0,1};
+    LAPPDtoBoard2 = {2,3};
     SetDefaults();
 }
 
 PsecConfig::PsecConfig(int id)
 {
-    VersionNumber = 0x0004;
+    VersionNumber = 0x0005;
     LAPPD_ID = id;
     receiveFlag = 1;
-    //LAPPDtoBoard1 = {0,1};
-    //LAPPDtoBoard2 = {2,3};
+    LAPPDtoBoard1 = {0,1};
+    LAPPDtoBoard2 = {2,3};
     SetDefaults();
 }
 
@@ -25,15 +25,15 @@ PsecConfig::~PsecConfig()
 
 bool PsecConfig::Send(zmq::socket_t* sock)
 {
-    //int S_LAPPDtoBoard1 = LAPPDtoBoard1.size();
-    //int S_LAPPDtoBoard2 = LAPPDtoBoard2.size();
+    int S_LAPPDtoBoard1 = LAPPDtoBoard1.size();
+    int S_LAPPDtoBoard2 = LAPPDtoBoard2.size();
 
     zmq::message_t msg0(sizeof VersionNumber);
     memcpy(msg0.data(), &VersionNumber, sizeof VersionNumber);
 
     zmq::message_t msgID(sizeof LAPPD_ID);
     memcpy(msgID.data(), &LAPPD_ID, sizeof LAPPD_ID);
-/*
+
     zmq::message_t msgSL1(sizeof S_LAPPDtoBoard1);
 	std::memcpy(msgSL1.data(), &S_LAPPDtoBoard1, sizeof S_LAPPDtoBoard1);
 	zmq::message_t msgL1(sizeof(int) * S_LAPPDtoBoard1);
@@ -43,7 +43,7 @@ bool PsecConfig::Send(zmq::socket_t* sock)
 	std::memcpy(msgSL2.data(), &S_LAPPDtoBoard2, sizeof S_LAPPDtoBoard2);
 	zmq::message_t msgL2(sizeof(int) * S_LAPPDtoBoard2);
 	std::memcpy(msgL2.data(), LAPPDtoBoard2.data(), sizeof(int) * S_LAPPDtoBoard2);
-*/
+
     zmq::message_t msg1(sizeof receiveFlag);
     memcpy(msg1.data(), &receiveFlag, sizeof receiveFlag);
 
@@ -136,10 +136,10 @@ bool PsecConfig::Send(zmq::socket_t* sock)
 
     sock->send(msg0,ZMQ_SNDMORE);
     sock->send(msgID,ZMQ_SNDMORE);
-    //sock->send(msgSL1,ZMQ_SNDMORE);
-    //if(S_LAPPDtoBoard1>0){sock->send(msgL1,ZMQ_SNDMORE);}
-    //sock->send(msgSL2,ZMQ_SNDMORE);
-    //if(S_LAPPDtoBoard2>0){sock->send(msgL2,ZMQ_SNDMORE);}
+    sock->send(msgSL1,ZMQ_SNDMORE);
+    if(S_LAPPDtoBoard1>0){sock->send(msgL1,ZMQ_SNDMORE);}
+    sock->send(msgSL2,ZMQ_SNDMORE);
+    if(S_LAPPDtoBoard2>0){sock->send(msgL2,ZMQ_SNDMORE);}
     sock->send(msg1,ZMQ_SNDMORE);
     sock->send(msgRC,ZMQ_SNDMORE);
     sock->send(msg2,ZMQ_SNDMORE);
@@ -189,7 +189,6 @@ bool PsecConfig::Receive(zmq::socket_t* sock)
     LAPPD_ID=*(reinterpret_cast<int*>(msg.data())); 
 
     //LAPPD to Boards 1
-    /*
 	sock->recv(&msg);
 	tmp_size=0;
 	tmp_size=*(reinterpret_cast<int*>(msg.data()));
@@ -209,7 +208,7 @@ bool PsecConfig::Receive(zmq::socket_t* sock)
 		sock->recv(&msg);
 		LAPPDtoBoard2.resize(msg.size()/sizeof(int));
 		std::memcpy(&LAPPDtoBoard2[0], msg.data(), msg.size());
-	}*/
+	}
 
     //flag
     sock->recv(&msg);
@@ -354,8 +353,8 @@ bool PsecConfig::SetDefaults()
 bool PsecConfig::Print(){
     std::cout << "------------------LAPPD to Board mappig-------------" << std::endl;
     printf("Will come soon\n");
-    //printf("LAPPD 1 is mapped to boards %i and %i\n",LAPPDtoBoard1[0],LAPPDtoBoard1[1]);
-    //printf("LAPPD 2 is mapped to boards %i and %i\n",LAPPDtoBoard2[0],LAPPDtoBoard2[1]);
+    printf("LAPPD 1 is mapped to boards %i and %i\n",LAPPDtoBoard1[0],LAPPDtoBoard1[1]);
+    printf("LAPPD 2 is mapped to boards %i and %i\n",LAPPDtoBoard2[0],LAPPDtoBoard2[1]);
     std::cout << "------------------General settings------------------" << std::endl;
     printf("Receive flag: %i\n", receiveFlag);
     printf("ACDC boardmask: 0x%02x\n",ACDC_mask);

@@ -172,8 +172,11 @@ bool ACC_SetupBoards::Setup(){
     m_data->acc->setTimeoutInMs(timeout);
 
     //Map boards to LAPPDs
-    //m_data->acc->setLAPPD1(m_data->conf.LAPPDtoBoard1);
-    //m_data->acc->setLAPPD2(m_data->conf.LAPPDtoBoard2);
+    m_data->acc->setLAPPD1(m_data->conf.LAPPDtoBoard1);
+    m_data->acc->setLAPPD2(m_data->conf.LAPPDtoBoard2);
+    m_data->psec.LAPPDtoBoard1 = m_data->conf.LAPPDtoBoard1;
+    m_data->psec.LAPPDtoBoard2 = m_data->conf.LAPPDtoBoard2;
+    m_data->psec.LAPPD_ID = m_data->conf.LAPPD_ID;
 
 	//polarity
 	m_data->acc->setSign(m_data->conf.ACC_Sign, 2);
@@ -239,6 +242,9 @@ bool ACC_SetupBoards::Setup(){
 	if(retval != 0)
 	{
 		m_data->psec.errorcodes.push_back(0xAA02EE01);
+        vector<unsigned int> tmpERR = m_data->acc->returnErrors();
+        m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
+        tmpERR.clear();
 		ret = false;
 	}else
 	{
@@ -249,10 +255,6 @@ bool ACC_SetupBoards::Setup(){
     m_data->conf.receiveFlag = 2;
 	m_data->acc->emptyUsbLine();
 	m_data->acc->dumpData(0xFF);
-
-    vector<unsigned int> tmpERR = m_data->acc->returnErrors();
-	m_data->psec.errorcodes.insert(std::end(m_data->psec.errorcodes), std::begin(tmpERR), std::end(tmpERR));
-	tmpERR.clear();
 
 	return ret;	
 }

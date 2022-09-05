@@ -2,15 +2,19 @@
 
 PsecData::PsecData()
 {
-	VersionNumber = 0x0003;
+	VersionNumber = 0x0005;
 	LAPPD_ID = -1;
+    LAPPDtoBoard1 = {0,1};
+    LAPPDtoBoard2 = {2,3};
     SetDefaults();
 }
 
 PsecData::PsecData(int id)
 {
-	VersionNumber = 0x0003;
+	VersionNumber = 0x0005;
 	LAPPD_ID = id;
+    LAPPDtoBoard1 = {0,1};
+    LAPPDtoBoard2 = {2,3};
     SetDefaults();
 }
 
@@ -23,12 +27,24 @@ bool PsecData::Send(zmq::socket_t* sock)
 	int S_AccInfoFrame = AccInfoFrame.size();
 	int S_errorcodes = errorcodes.size();
 	int S_BoardIndex = BoardIndex.size();
+    int S_LAPPDtoBoard1 = LAPPDtoBoard1.size();
+    int S_LAPPDtoBoard2 = LAPPDtoBoard2.size();
 
 	zmq::message_t msgV(sizeof VersionNumber);
 	std::memcpy(msgV.data(), &VersionNumber, sizeof VersionNumber);
 
 	zmq::message_t msgID(sizeof LAPPD_ID);
 	std::memcpy(msgID.data(), &LAPPD_ID, sizeof LAPPD_ID);
+
+    zmq::message_t msgSL1(sizeof S_LAPPDtoBoard1);
+	std::memcpy(msgSL1.data(), &S_LAPPDtoBoard1, sizeof S_LAPPDtoBoard1);
+	zmq::message_t msgL1(sizeof(int) * S_LAPPDtoBoard1);
+	std::memcpy(msgL1.data(), LAPPDtoBoard1.data(), sizeof(int) * S_LAPPDtoBoard1);
+
+    zmq::message_t msgSL2(sizeof S_LAPPDtoBoard2);
+	std::memcpy(msgSL2.data(), &S_LAPPDtoBoard2, sizeof S_LAPPDtoBoard2);
+	zmq::message_t msgL2(sizeof(int) * S_LAPPDtoBoard2);
+	std::memcpy(msgL2.data(), LAPPDtoBoard2.data(), sizeof(int) * S_LAPPDtoBoard2);
 
 	zmq::message_t msgTime(Timestamp.length()+1);
 	snprintf((char*) msgTime.data(), Timestamp.length()+1, "%s", Timestamp.c_str());	
@@ -58,6 +74,10 @@ bool PsecData::Send(zmq::socket_t* sock)
 
 	sock->send(msgV,ZMQ_SNDMORE);
 	sock->send(msgID,ZMQ_SNDMORE);
+    sock->send(msgSL1,ZMQ_SNDMORE);
+    if(S_LAPPDtoBoard1>0){sock->send(msgL1,ZMQ_SNDMORE);}
+    sock->send(msgSL2,ZMQ_SNDMORE);
+    if(S_LAPPDtoBoard2>0){sock->send(msgL2,ZMQ_SNDMORE);}
 	sock->send(msgTime,ZMQ_SNDMORE);
 	sock->send(msgSB,ZMQ_SNDMORE);
 	if(S_BoardIndex>0){sock->send(msgB,ZMQ_SNDMORE);}
@@ -89,6 +109,28 @@ bool PsecData::Receive(zmq::socket_t* sock)
 	//ID
 	sock->recv(&msg);
 	LAPPD_ID=*(reinterpret_cast<int*>(msg.data())); 
+
+    //LAPPD to Boards 1
+	sock->recv(&msg);
+	tmp_size=0;
+	tmp_size=*(reinterpret_cast<int*>(msg.data()));
+	if(tmp_size>0)
+	{
+		sock->recv(&msg);
+		LAPPDtoBoard1.resize(msg.size()/sizeof(int));
+		std::memcpy(&LAPPDtoBoard1[0], msg.data(), msg.size());
+	}
+
+    //LAPPD to Boards 2
+	sock->recv(&msg);
+	tmp_size=0;
+	tmp_size=*(reinterpret_cast<int*>(msg.data()));
+	if(tmp_size>0)
+	{
+		sock->recv(&msg);
+		LAPPDtoBoard2.resize(msg.size()/sizeof(int));
+		std::memcpy(&LAPPDtoBoard2[0], msg.data(), msg.size());
+	}
 
 	//Timestamp
 	sock->recv(&msg);

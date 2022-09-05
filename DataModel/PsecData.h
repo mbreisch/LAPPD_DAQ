@@ -26,7 +26,9 @@ class PsecData{
 
     //General data
     unsigned int VersionNumber;
-    int LAPPD_ID;
+    unsigned int LAPPD_ID;
+    vector<int> LAPPDtoBoard1;
+    vector<int> LAPPDtoBoard2;
     string Timestamp;
 
     //Received data from the ACC class
@@ -51,6 +53,8 @@ class PsecData{
 
     ar & VersionNumber;
     ar & LAPPD_ID;
+    ar & LAPPDtoBoard1;
+    ar & LAPPDtoBoard2;
     ar & Timestamp;
     ar & BoardIndex;
     ar & AccInfoFrame;
