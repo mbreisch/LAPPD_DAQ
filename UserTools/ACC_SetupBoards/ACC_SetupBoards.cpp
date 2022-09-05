@@ -176,7 +176,7 @@ bool ACC_SetupBoards::Setup(){
     m_data->acc->setLAPPD2(m_data->conf.LAPPDtoBoard2);
     m_data->psec.LAPPDtoBoard1 = m_data->conf.LAPPDtoBoard1;
     m_data->psec.LAPPDtoBoard2 = m_data->conf.LAPPDtoBoard2;
-    m_data->psec.LAPPD_ID = m_data->conf.LAPPD_ID;
+    m_data->psec.ACC_ID = m_data->conf.ACC_ID;
 
 	//polarity
 	m_data->acc->setSign(m_data->conf.ACC_Sign, 2);

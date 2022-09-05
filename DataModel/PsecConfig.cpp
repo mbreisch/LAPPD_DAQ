@@ -3,7 +3,7 @@
 PsecConfig::PsecConfig()
 {
     VersionNumber = 0x0005;
-    LAPPD_ID = -1;
+    ACC_ID = -1;
     receiveFlag = 1;
     LAPPDtoBoard1 = {0,1};
     LAPPDtoBoard2 = {2,3};
@@ -13,7 +13,7 @@ PsecConfig::PsecConfig()
 PsecConfig::PsecConfig(int id)
 {
     VersionNumber = 0x0005;
-    LAPPD_ID = id;
+    ACC_ID = id;
     receiveFlag = 1;
     LAPPDtoBoard1 = {0,1};
     LAPPDtoBoard2 = {2,3};
@@ -31,8 +31,8 @@ bool PsecConfig::Send(zmq::socket_t* sock)
     zmq::message_t msg0(sizeof VersionNumber);
     memcpy(msg0.data(), &VersionNumber, sizeof VersionNumber);
 
-    zmq::message_t msgID(sizeof LAPPD_ID);
-    memcpy(msgID.data(), &LAPPD_ID, sizeof LAPPD_ID);
+    zmq::message_t msgID(sizeof ACC_ID);
+    memcpy(msgID.data(), &ACC_ID, sizeof ACC_ID);
 
     zmq::message_t msgSL1(sizeof S_LAPPDtoBoard1);
 	std::memcpy(msgSL1.data(), &S_LAPPDtoBoard1, sizeof S_LAPPDtoBoard1);
@@ -186,7 +186,7 @@ bool PsecConfig::Receive(zmq::socket_t* sock)
     if(TVersion!=VersionNumber){return false;}
 	
     sock->recv(&msg);
-    LAPPD_ID=*(reinterpret_cast<int*>(msg.data())); 
+    ACC_ID=*(reinterpret_cast<int*>(msg.data())); 
 
     //LAPPD to Boards 1
 	sock->recv(&msg);

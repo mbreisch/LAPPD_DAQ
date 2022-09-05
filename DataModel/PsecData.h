@@ -26,7 +26,7 @@ class PsecData{
 
     //General data
     unsigned int VersionNumber;
-    unsigned int LAPPD_ID;
+    unsigned int ACC_ID;
     vector<int> LAPPDtoBoard1;
     vector<int> LAPPDtoBoard2;
     string Timestamp;
@@ -52,7 +52,7 @@ class PsecData{
  template <class Archive> void serialize(Archive& ar, const unsigned int version){
 
     ar & VersionNumber;
-    ar & LAPPD_ID;
+    ar & ACC_ID;
     ar & LAPPDtoBoard1;
     ar & LAPPDtoBoard2;
     ar & Timestamp;

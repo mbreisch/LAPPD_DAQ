@@ -3,7 +3,7 @@
 PsecData::PsecData()
 {
 	VersionNumber = 0x0005;
-	LAPPD_ID = -1;
+	ACC_ID = -1;
     LAPPDtoBoard1 = {0,1};
     LAPPDtoBoard2 = {2,3};
     SetDefaults();
@@ -12,7 +12,7 @@ PsecData::PsecData()
 PsecData::PsecData(int id)
 {
 	VersionNumber = 0x0005;
-	LAPPD_ID = id;
+	ACC_ID = id;
     LAPPDtoBoard1 = {0,1};
     LAPPDtoBoard2 = {2,3};
     SetDefaults();
@@ -33,8 +33,8 @@ bool PsecData::Send(zmq::socket_t* sock)
 	zmq::message_t msgV(sizeof VersionNumber);
 	std::memcpy(msgV.data(), &VersionNumber, sizeof VersionNumber);
 
-	zmq::message_t msgID(sizeof LAPPD_ID);
-	std::memcpy(msgID.data(), &LAPPD_ID, sizeof LAPPD_ID);
+	zmq::message_t msgID(sizeof ACC_ID);
+	std::memcpy(msgID.data(), &ACC_ID, sizeof ACC_ID);
 
     zmq::message_t msgSL1(sizeof S_LAPPDtoBoard1);
 	std::memcpy(msgSL1.data(), &S_LAPPDtoBoard1, sizeof S_LAPPDtoBoard1);
@@ -108,7 +108,7 @@ bool PsecData::Receive(zmq::socket_t* sock)
 
 	//ID
 	sock->recv(&msg);
-	LAPPD_ID=*(reinterpret_cast<int*>(msg.data())); 
+	ACC_ID=*(reinterpret_cast<int*>(msg.data())); 
 
     //LAPPD to Boards 1
 	sock->recv(&msg);
@@ -201,7 +201,7 @@ bool PsecData::SetDefaults()
 bool PsecData::Print(){
 	std::cout << "----------------------Sent data---------------------------" << std::endl;
 	printf("Version number: 0x%04x\n", VersionNumber);
-	printf("LAPPD ID: %i\n", LAPPD_ID);
+	printf("ACC ID: %i\n", ACC_ID);
 	for(int i=0; i<BoardIndex.size(); i++)
 	{
 		printf("Board number: %i\n", BoardIndex[i]);

@@ -26,7 +26,7 @@ class PsecConfig : public SerialisableObject{
  
     //Version number
   unsigned int VersionNumber;
-  unsigned int LAPPD_ID;
+  unsigned int ACC_ID;
   vector<int> LAPPDtoBoard1;
   vector<int> LAPPDtoBoard2;
   int RunControl;
@@ -90,7 +90,7 @@ class PsecConfig : public SerialisableObject{
  template <class Archive> void serialize(Archive& ar, const unsigned int version){
 
     ar & VersionNumber;   
-    ar & LAPPD_ID;
+    ar & ACC_ID;
     ar & LAPPDtoBoard1;
     ar & LAPPDtoBoard2;
     ar & receiveFlag;
