@@ -133,8 +133,8 @@ bool SlowControlMonitor::Send_Mon(zmq::socket_t* sock){
 	sock->send(msgSalt,ZMQ_SNDMORE);
 	sock->send(msgES,ZMQ_SNDMORE);
 	//sock->send(msgE);
-	
 	sock->send(msgE,ZMQ_SNDMORE);
+    
 	Send_Config(sock);
 	
   	return true;

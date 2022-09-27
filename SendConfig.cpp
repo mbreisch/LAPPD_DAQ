@@ -13,7 +13,7 @@ int main(){
 
     SlowControlMonitor data;
 
-    std::cout<<"Please enter the LAPPD ID number: ";
+    std::cout<<"Please enter the LAPPD ID number (Please check beforehand since the monitoring needs it!): ";
     std::cin>>data.LAPPD_ID;  
 
     int default_load = 0;

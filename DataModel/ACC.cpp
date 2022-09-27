@@ -407,7 +407,7 @@ void ACC::toggleCal(int onoff, unsigned int channelmask, unsigned int boardMask)
 /*------------------------------------------------------------------------------------*/
 /*---------------------------Read functions listening for data------------------------*/
 
-/*ID 14: Software read function
+/*ID 14: Software read function outdated
 int ACC::readAcdcBuffers()
 {
 	vector<int> boardsReadyForRead;
@@ -615,16 +615,16 @@ int ACC::listenForAcdcData(int trigMode)
 			}
 		}
 
-		//old trigger
+		/*old trigger
 		if(boardCheck==alignedAcdcIndices)
 		{
             boardsReadyForRead = boardCheck;
             boardCheck.clear();
 			map_accIF = lastAccBuffer;
 			break;
-		}
+		}*/
 
-		/*new trigger
+		//new trigger
         bool control = false;
         if(std::find(boardCheck.begin(),boardCheck.end(),LAPPD1[0])!=boardCheck.end() && std::find(boardCheck.begin(),boardCheck.end(),LAPPD1[1])!=boardCheck.end()) 
         {
@@ -644,7 +644,7 @@ int ACC::listenForAcdcData(int trigMode)
             map_accIF = lastAccBuffer;
             break;
         }
-        */
+        
 	}
 
     //check for mixed buffersizes

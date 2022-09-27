@@ -306,8 +306,8 @@ void ACC_SetupBoards::PrintSettings()
 
     outfile << "------------------LAPPD to Board mappig-------------" << std::endl;
     outfile << "Will come soon" << std::endl;
-    //outfile << "LAPPD 1 is mapped to boards " << m_data->conf.LAPPDtoBoard1[0] << " and " << m_data->conf.LAPPDtoBoard1[1] << std::endl;
-    //outfile << "LAPPD 2 is mapped to boards " << m_data->conf.LAPPDtoBoard2[0] << " and " << m_data->conf.LAPPDtoBoard2[1] << std::endl;
+    outfile << "LAPPD 1 is mapped to boards " << m_data->conf.LAPPDtoBoard1[0] << " and " << m_data->conf.LAPPDtoBoard1[1] << std::endl;
+    outfile << "LAPPD 2 is mapped to boards " << m_data->conf.LAPPDtoBoard2[0] << " and " << m_data->conf.LAPPDtoBoard2[1] << std::endl;
     outfile << "------------------General settings------------------" << std::endl;
     outfile << "Receive flag: " <<  m_data->conf.receiveFlag << std::endl;
     outfile << "ACDC boardmask: " <<  m_data->conf.ACDC_mask << std::endl;

@@ -112,7 +112,6 @@ bool SC_Poll_RHT::HUMIDITYCHK(){
     }else if(m_data->SCMonitor.humidity_mon >= m_data->SCMonitor.LIMIT_humidity_low && m_data->SCMonitor.humidity_mon < m_data->SCMonitor.LIMIT_humidity_high)
     {
         m_data->SCMonitor.FLAG_humidity = 1;
-
         return true;
     }else if(m_data->SCMonitor.humidity_mon >= m_data->SCMonitor.LIMIT_humidity_high)
     {

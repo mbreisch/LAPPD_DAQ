@@ -49,7 +49,7 @@ bool ACC_DataRead::Execute(){
 	m_data->acc->clearErrors();
 	tmpERR.clear();
 
-    if(m_verbose>1){SaveErrorLog();}
+    if(m_verbose>3){SaveErrorLog();}
 	return true;
 }
 
