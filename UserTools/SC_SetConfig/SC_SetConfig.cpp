@@ -33,7 +33,7 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 
 bool SC_SetConfig::Execute(){
 	//check LV/HV state_set 
-  	if(m_verbose>2){std::cout<<"in set config"<<std::endl;}
+  	if(m_verbose>2){std::cout<<"Start Setup"<<std::endl;}
   	if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
 	if(m_verbose>2){std::cout<<"d1"<<std::endl;}
   	if(m_data->SCMonitor.recieveFlag==1){Setup();} //Normal Setup condition

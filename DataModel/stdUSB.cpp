@@ -179,7 +179,7 @@ struct libusb_device* stdUSB::init(int device_count){
             return dev;
         }
     }
-    cout << "Could not find " << device_count << " usb devices with VID:PID " << USBFX2_VENDOR_ID << ":" << USBFX2_PRODUCT_ID << endl;
+    cout << "Could not find " << device_count << " usb devices with VID:PID " << std::hex << USBFX2_VENDOR_ID << ":" << USBFX2_PRODUCT_ID << std::dec << endl;
     cout << "Possibly adjust the number " << device_count << endl;
     return nullptr;
 }

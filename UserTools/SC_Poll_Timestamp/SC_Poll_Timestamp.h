@@ -6,12 +6,13 @@
 #include <chrono>
 #include <vector>
 #include <cmath>
+#include <ctime>
 
 #include "Tool.h"
 
 using namespace std;
 
-#define UTCCONV 18000000
+#define UTCCONV_base 3600000
 
 /**
  * \class Poll

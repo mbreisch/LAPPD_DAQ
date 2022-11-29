@@ -31,7 +31,7 @@ class SC_Poll_Thermistor: public Tool {
         bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
         bool THERMISTORCHK();
-        bool HardShutdown(int relay, int errortype);
+        bool HardShutdown(int errortype);
 
     private:
         int Tcount;

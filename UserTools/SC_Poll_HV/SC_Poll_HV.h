@@ -33,7 +33,7 @@ class SC_Poll_HV: public Tool {
         bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
         bool HVCHK();
-        bool HardShutdown(int relay, int errortype);
+        bool HardShutdown(int errortype);
 
     private:
         float timeout = 30; //10s timeout for sleep in s

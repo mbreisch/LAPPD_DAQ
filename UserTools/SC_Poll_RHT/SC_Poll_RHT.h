@@ -32,7 +32,7 @@ class SC_Poll_RHT: public Tool {
 
         bool TEMPCHK();
         bool HUMIDITYCHK();
-        bool HardShutdown(int relay, int errortype);
+        bool HardShutdown(float errortype);
 
     private:
 

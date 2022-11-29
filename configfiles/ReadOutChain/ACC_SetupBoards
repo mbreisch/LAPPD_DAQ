@@ -11,7 +11,7 @@ Port_BIND 6666
 
 #Timeout
 Timeout 500 #int in ms 
-TimeoutMax 300 #int defines the number of timeouts before an autimatic reset
+TimeoutMax 240 #int defines the number of timeouts before an autimatic reset
 
 #Debug
 PrintLinesMax 15000 #int defines the number of debug prints

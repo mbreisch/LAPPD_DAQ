@@ -31,7 +31,7 @@ class SC_Poll_Saltbridge: public Tool {
         bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
         bool SALTBRIDGECHK();
-        bool HardShutdown(int relay, int errortype);
+        bool HardShutdown(int errortype);
 
         int Scount;
     private:
