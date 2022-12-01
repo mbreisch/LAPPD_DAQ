@@ -228,7 +228,7 @@ bool SC_Poll_HV::HardShutdown(int errortype)
     }
 
     std::fstream errfile("./HardShutdownList.txt", std::ios_base::out | std::ios_base::app);
-    errfile << "System has shut down in emergency mode at" <<  m_data->SCMonitor.timeSinceEpochMilliseconds << " ms since epoch" << std::endl;
+    errfile << "System has shut down in emergency mode at " <<  m_data->SCMonitor.timeSinceEpochMilliseconds << " ms since epoch" << std::endl;
     errfile << "It shut down in the HV tool due to a read value of: " << m_data->SCMonitor.HV_return_mon << " with the limit being 200V +- set value of" << m_data->SCMonitor.HV_volts << std::endl;
     errfile << "Now printing all available values available. All values read after this tool will be from the last read cycle!" << std::endl;
     errfile << "LAPPD ID is " << m_data->SCMonitor.LAPPD_ID << std::endl;
@@ -244,9 +244,9 @@ bool SC_Poll_HV::HardShutdown(int errortype)
 	errfile << "Humidity warning flag is " << std::boolalpha << m_data->SCMonitor.FLAG_humidity << std::endl;
 	errfile << "Temperature 2 warning flag is " << std::boolalpha << m_data->SCMonitor.FLAG_temperature_Thermistor << std::endl;
 	errfile << "Saltbridge warning flag is " << std::boolalpha << m_data->SCMonitor.FLAG_saltbridge << std::endl;
-	errfile << "Relay 1 is after off" << std::boolalpha << m_data->SCMonitor.relayCh1_mon << std::endl;
-	errfile << "Relay 2 is after off" << std::boolalpha << m_data->SCMonitor.relayCh2_mon << std::endl;
-	errfile << "Relay 3 is after off" << std::boolalpha << m_data->SCMonitor.relayCh3_mon << std::endl;
+	errfile << "Relay 1 is after off " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << std::endl;
+	errfile << "Relay 2 is after off " << std::boolalpha << m_data->SCMonitor.relayCh2_mon << std::endl;
+	errfile << "Relay 3 is after off " << std::boolalpha << m_data->SCMonitor.relayCh3_mon << std::endl;
 	errfile << "Threshold for DAC 0 is " << m_data->SCMonitor.Trig0_mon << " V" << std::endl;
 	errfile << "Threshold for DAC 1 is " << m_data->SCMonitor.Trig1_mon << " V" << std::endl;
 	errfile << "Photodiode return is " << m_data->SCMonitor.light << std::endl;

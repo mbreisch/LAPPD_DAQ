@@ -89,7 +89,7 @@ bool SC_Poll_RHT::TEMPCHK(){
 
 bool SC_Poll_RHT::HUMIDITYCHK(){
     int retval=-2;
-    float tool_humidity_limit = 0.0;
+    tool_humidity_limit = 0.0;
 
     //Adjust humidity value based on state
     if(m_data->SCMonitor.temperature_mon<=25)
@@ -112,11 +112,11 @@ bool SC_Poll_RHT::HUMIDITYCHK(){
     {
         m_data->SCMonitor.FLAG_humidity = 0;
         return true;
-    }else if(m_data->SCMonitor.humidity_mon >= m_data->SCMonitor.LIMIT_humidity_low && m_data->SCMonitor.humidity_mon < m_data->SCMonitor.LIMIT_humidity_high)
+    }else if(m_data->SCMonitor.humidity_mon >= m_data->SCMonitor.LIMIT_humidity_low && m_data->SCMonitor.humidity_mon < tool_humidity_limit)
     {
         m_data->SCMonitor.FLAG_humidity = 1;
         return true;
-    }else if(m_data->SCMonitor.humidity_mon >= m_data->SCMonitor.LIMIT_humidity_high)
+    }else if(m_data->SCMonitor.humidity_mon >= tool_humidity_limit)
     {
         bool ret;
         bool safety=true;
@@ -162,13 +162,17 @@ bool SC_Poll_RHT::HardShutdown(float errortype)
     }
 
     std::fstream errfile("./HardShutdownList.txt", std::ios_base::out | std::ios_base::app);
-    errfile << "System has shut down in emergency mode at" <<  m_data->SCMonitor.timeSinceEpochMilliseconds << " ms since epoch" << std::endl;
+    errfile << "System has shut down in emergency mode at " <<  m_data->SCMonitor.timeSinceEpochMilliseconds << " ms since epoch" << std::endl;
     if(errortype==4.1)
     {
         errfile << "It shut down in the Temperature tool due to a read value of: " << m_data->SCMonitor.temperature_mon << " with the limit being >=" << m_data->SCMonitor.LIMIT_temperature_high << std::endl;
     }else if(errortype==4.2)
     {
-       errfile << "It shut down in the Humidity tool due to a read value of: " << m_data->SCMonitor.humidity_mon << " with the limit being >=" << m_data->SCMonitor.LIMIT_humidity_high << std::endl; 
+       errfile << "It shut down in the Humidity tool due to a read value of: " << m_data->SCMonitor.humidity_mon << " with the limit being >=" << tool_humidity_limit << std::endl; 
+    }else
+    {
+        errfile << "It shut down in the Temperature tool due to a read value of: " << m_data->SCMonitor.temperature_mon << " with the limit being >=" << m_data->SCMonitor.LIMIT_temperature_high << std::endl;
+        errfile << "It shut down in the Humidity tool due to a read value of: " << m_data->SCMonitor.humidity_mon << " with the limit being >=" << tool_humidity_limit << std::endl; 
     }
     errfile << "Now printing all available values available. All values read after this tool will be from the last read cycle!" << std::endl;
     errfile << "LAPPD ID is " << m_data->SCMonitor.LAPPD_ID << std::endl;
@@ -184,9 +188,9 @@ bool SC_Poll_RHT::HardShutdown(float errortype)
 	errfile << "Humidity warning flag is " << std::boolalpha << m_data->SCMonitor.FLAG_humidity << std::endl;
 	errfile << "Temperature 2 warning flag is " << std::boolalpha << m_data->SCMonitor.FLAG_temperature_Thermistor << std::endl;
 	errfile << "Saltbridge warning flag is " << std::boolalpha << m_data->SCMonitor.FLAG_saltbridge << std::endl;
-	errfile << "Relay 1 is after off" << std::boolalpha << m_data->SCMonitor.relayCh1_mon << std::endl;
-	errfile << "Relay 2 is after off" << std::boolalpha << m_data->SCMonitor.relayCh2_mon << std::endl;
-	errfile << "Relay 3 is after off" << std::boolalpha << m_data->SCMonitor.relayCh3_mon << std::endl;
+	errfile << "Relay 1 is after off " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << std::endl;
+	errfile << "Relay 2 is after off " << std::boolalpha << m_data->SCMonitor.relayCh2_mon << std::endl;
+	errfile << "Relay 3 is after off " << std::boolalpha << m_data->SCMonitor.relayCh3_mon << std::endl;
 	errfile << "Threshold for DAC 0 is " << m_data->SCMonitor.Trig0_mon << " V" << std::endl;
 	errfile << "Threshold for DAC 1 is " << m_data->SCMonitor.Trig1_mon << " V" << std::endl;
 	errfile << "Photodiode return is " << m_data->SCMonitor.light << std::endl;

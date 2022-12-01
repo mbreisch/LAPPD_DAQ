@@ -38,6 +38,7 @@ class SC_Poll_RHT: public Tool {
 
         int HFlag;
         int CheckDelay;
+        float tool_humidity_limit;
 };
 
 
