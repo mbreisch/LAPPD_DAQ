@@ -55,7 +55,7 @@ bool SC_LocalLog::Finalise()
 }
 
 
-void writeLogFile(string local_time, string savelocation)
+void SC_LocalLog::writeLogFile(string local_time, string savelocation)
 {
     std::fstream logfile(savelocation, std::ios_base::out | std::ios_base::trunc);
     logfile << "Time of log: " << local_time << std::endl;
