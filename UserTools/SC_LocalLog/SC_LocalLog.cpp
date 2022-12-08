@@ -86,9 +86,13 @@ void SC_LocalLog::writeLogFile(string local_time, string savelocation)
 	logfile << "Threshold for DAC 1 is " << m_data->SCMonitor.Trig1_mon << " V" << std::endl;
 	logfile << "Photodiode return is " << m_data->SCMonitor.light << std::endl;
 	logfile << "Saltbridge return is " << m_data->SCMonitor.saltbridge << std::endl;
-	if(m_data->SCMonitor.errorcodes.size()==1 && m_data->SCMonitor.errorcodes[0]==0x00000000)
+	if (m_data->SCMonitor.errorcodes.size()==0)
+    {
+        logfile << "No errorcodes found all good " << "0x00000000" << std::endl;
+    }
+    else if(m_data->SCMonitor.errorcodes.size()==1 && m_data->SCMonitor.errorcodes[0]==0x00000000)
 	{
-        logfile << "No errorcodes found all good" << "0x" << std::setfill('0') << std::setw(8) << std::hex << m_data->SCMonitor.errorcodes[0] << std::dec << std::endl;
+        logfile << "No errorcodes found all good " << "0x" << std::setfill('0') << std::setw(8) << std::hex << m_data->SCMonitor.errorcodes[0] << std::dec << std::endl;
 		//printf("No errorcodes found all good: 0x%08x\n", m_data->SCMonitor.errorcodes[0]);
 	}else
 	{
