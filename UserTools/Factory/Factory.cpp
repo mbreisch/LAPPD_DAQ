@@ -25,6 +25,6 @@ if (tool=="SC_Poll_Saltbridge") ret=new SC_Poll_Saltbridge;
 if (tool=="SC_Poll_Thermistor") ret=new SC_Poll_Thermistor;
 if (tool=="SC_Poll_Timestamp") ret=new SC_Poll_Timestamp;
 if (tool=="SC_Poll_Trigger") ret=new SC_Poll_Trigger;
-  
+if (tool=="SC_LocalLog") ret=new SC_LocalLog;
 return ret;
 }

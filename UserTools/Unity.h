@@ -19,3 +19,4 @@
 #include <SC_Poll_Thermistor.h>
 #include <SC_Poll_Timestamp.h>
 #include <SC_Poll_Trigger.h>
+#include "SC_LocalLog.h"
