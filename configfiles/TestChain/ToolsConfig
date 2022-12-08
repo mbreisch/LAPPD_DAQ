@@ -1,1 +1,2 @@
+SC_Poll_Timestamp SC_Poll_Timestamp configfiles/SlowControl/SC_Poll
 SC_LocalLog SC_LocalLog configfiles/SlowControl/SC_LocalLog

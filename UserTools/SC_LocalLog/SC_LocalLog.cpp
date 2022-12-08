@@ -23,6 +23,11 @@ bool SC_LocalLog::Initialise(std::string configfile, DataModel &data)
 
 bool SC_LocalLog::Execute()
 {
+    if(m_data->SCMonitor.timeSinceEpochMilliseconds=="")
+    {
+        return true;
+    }
+
     if(logrun>=10)
     {
         logrun = 0;
