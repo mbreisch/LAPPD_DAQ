@@ -59,7 +59,6 @@ void writeLogFile(string local_time, string savelocation)
 {
     std::fstream logfile(savelocation, std::ios_base::out | std::ios_base::trunc);
     logfile << "Time of log: " << local_time << std::endl;
-    logfile << "System has shut down in emergency mode at " <<  m_data->SCMonitor.timeSinceEpochMilliseconds << " ms since epoch" << std::endl;
     logfile << "Now printing all available values available. All values read after this tool will be from the last read cycle!" << std::endl;
     logfile << "System timestamp " <<  m_data->SCMonitor.timeSinceEpochMilliseconds << " ms since epoch" << std::endl;
     logfile << "LAPPD ID is " << m_data->SCMonitor.LAPPD_ID << std::endl;
