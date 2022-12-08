@@ -88,15 +88,18 @@ void SC_LocalLog::writeLogFile(string local_time, string savelocation)
 	logfile << "Saltbridge return is " << m_data->SCMonitor.saltbridge << std::endl;
 	if(m_data->SCMonitor.errorcodes.size()==1 && m_data->SCMonitor.errorcodes[0]==0x00000000)
 	{
-		printf("No errorcodes found all good: 0x%08x\n", m_data->SCMonitor.errorcodes[0]);
+        logfile << "No errorcodes found all good" << "0x" << std::setfill('0') << std::setw(8) << std::hex << m_data->SCMonitor.errorcodes[0] << std::dec << std::endl;
+		//printf("No errorcodes found all good: 0x%08x\n", m_data->SCMonitor.errorcodes[0]);
 	}else
 	{
-		printf("Errorcodes found: %li\n", m_data->SCMonitor.errorcodes.size());
+        logfile << "Errorcodes found, amount = " << m_data->SCMonitor.errorcodes.size() << std::endl;
+		//printf("Errorcodes found: %li\n", m_data->SCMonitor.errorcodes.size());
         if(m_data->SCMonitor.errorcodes.size()<100)
         {            
             for(unsigned int k: m_data->SCMonitor.errorcodes)
             {
-                printf("0x%08x\n",k);	
+                logfile << "0x" << std::setfill('0') << std::setw(8) << std::hex << k << std::dec << std::endl;
+                //printf("0x%08x\n",k);	
             }
         }
 	}
