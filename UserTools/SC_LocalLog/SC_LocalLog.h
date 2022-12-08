@@ -29,6 +29,8 @@ class SC_LocalLog: public Tool {
     bool Execute(); ///< Executre function used to perform Tool perpose. 
     bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
+    void writeLogFile(string local_time, string savelocation);
+
     int logrun;
 
  private:
