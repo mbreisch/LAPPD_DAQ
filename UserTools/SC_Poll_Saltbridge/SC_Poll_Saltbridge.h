@@ -32,6 +32,7 @@ class SC_Poll_Saltbridge: public Tool {
 
         bool SALTBRIDGECHK();
         bool HardShutdown(int errortype);
+        void LogKillCount(bool mode);
 
         int Scount;
         int KillCount;
