@@ -13,7 +13,7 @@ bool SC_Poll_Saltbridge::Initialise(std::string configfile, DataModel &data)
 
     if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
     if(!m_variables.Get("MaxKillCount",MaxKillCount)) MaxKillCount=3;
-    if(MaxKillCount>10){MaxKillCount=3}
+    if(MaxKillCount>10){MaxKillCount=3;}
     Scount = 0;
     KillCount = 0;
 
