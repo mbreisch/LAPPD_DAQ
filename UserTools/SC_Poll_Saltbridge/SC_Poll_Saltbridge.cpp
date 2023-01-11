@@ -12,7 +12,10 @@ bool SC_Poll_Saltbridge::Initialise(std::string configfile, DataModel &data)
     m_log= m_data->Log;
 
     if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
-    Scount=0;
+    if(!m_variables.Get("MaxKillCount",MaxKillCount)) MaxKillCount=3;
+    if(MaxKillCount>10){MaxKillCount=3}
+    Scount = 0;
+    KillCount = 0;
 
     return true;
 }
@@ -59,13 +62,21 @@ bool SC_Poll_Saltbridge::SALTBRIDGECHK(){
     }
     if(m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_low)
     {
+        KillCount = 0;
         m_data->SCMonitor.FLAG_saltbridge  = 0;
     }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_low && m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_high)
     {
+        KillCount = 0;
         m_data->SCMonitor.FLAG_saltbridge  = 1;
-    }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_high)
+    }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_high && KillCount<(MaxKillCount-1))
+    {
+        LogKillCount(false);
+        KillCount++;
+        m_data->SCMonitor.FLAG_saltbridge = 2;
+    }else if(m_data->SCMonitor.saltbridge <= m_data->SCMonitor.LIMIT_saltbridge_high && KillCount>=(MaxKillCount-1))
     {
         bool ret;
+        LogKillCount(true);
 
         ret = HardShutdown(5);
         if(ret==false){safety=false;}
@@ -149,4 +160,31 @@ bool SC_Poll_Saltbridge::HardShutdown(int errortype)
     errfile.close();
 
     return retbool;
+}
+
+
+void SC_Poll_Saltbridge::LogKillCount(bool mode)
+{
+    int numLines = 0;
+    std::string line;
+    std::ifstream file("./LocalLogs/LocalLog_Saltbridge.txt");    
+    while(getline(file, line)){numLines++;}
+    file.close();
+
+    if(numLines<=50000)
+    {
+        // get filelocation
+        std::string filelocation = "./LocalLogs/LocalLog_Saltbridge.txt";
+        std::fstream logfile(filelocation, std::ios_base::out | std::ios_base::trunc);
+        logfile << "System timestamp " <<  m_data->SCMonitor.timeSinceEpochMilliseconds << " : ";
+        if(mode==false)
+        {
+            logfile << "Killcount: " << KillCount << " -> " << KillCount+1 << endl;
+        }
+        else if(mode==true)
+        {
+            logfile << "Killcount: " << KillCount << " -> " << "Kill" << endl;
+        }
+        logfile.close();
+    }
 }

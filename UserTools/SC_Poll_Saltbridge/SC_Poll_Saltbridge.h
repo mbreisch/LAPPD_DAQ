@@ -34,6 +34,8 @@ class SC_Poll_Saltbridge: public Tool {
         bool HardShutdown(int errortype);
 
         int Scount;
+        int KillCount;
+        int MaxKillCount;
     private:
         
 
