@@ -12,8 +12,8 @@ bool SC_Poll_Saltbridge::Initialise(std::string configfile, DataModel &data)
     m_log= m_data->Log;
 
     if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
-    if(!m_variables.Get("MaxKillCount",MaxKillCount)) MaxKillCount=3;
-    if(MaxKillCount>10){MaxKillCount=3;}
+    if(!m_variables.Get("MaxKillCount",MaxKillCount)) MaxKillCount=10;
+    if(MaxKillCount>20){MaxKillCount=3;}
     Scount = 0;
     KillCount = 0;
 
@@ -175,7 +175,7 @@ void SC_Poll_Saltbridge::LogKillCount(bool mode)
     {
         // get filelocation
         std::string filelocation = "./LocalLogs/LocalLog_Saltbridge.txt";
-        std::fstream logfile(filelocation, std::ios_base::out | std::ios_base::trunc);
+        std::fstream logfile(filelocation, std::ios_base::out | std::ios_base::app);
         logfile << "System timestamp " <<  m_data->SCMonitor.timeSinceEpochMilliseconds << " : ";
         if(mode==false)
         {
