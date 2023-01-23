@@ -77,6 +77,7 @@ bool SC_Poll_Saltbridge::SALTBRIDGECHK(){
     {
         bool ret;
         LogKillCount(true);
+        KillCount = 0;
 
         ret = HardShutdown(5);
         if(ret==false){safety=false;}
