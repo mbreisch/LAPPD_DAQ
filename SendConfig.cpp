@@ -54,7 +54,7 @@ int main(){
                 data.LIMIT_Thermistor_temperature_low = 7000;
                 data.LIMIT_Thermistor_temperature_high = 5800;
                 data.LIMIT_saltbridge_low = 500000;
-                data.LIMIT_saltbridge_high = 400000;
+                data.LIMIT_saltbridge_high = 200000;
                 //Triggerboard settings
                 data.Trig0_threshold = 1.223;
                 data.Trig1_threshold = 1.23;
@@ -79,7 +79,7 @@ int main(){
                 data.LIMIT_Thermistor_temperature_low = 7000;
                 data.LIMIT_Thermistor_temperature_high = 5800;
                 data.LIMIT_saltbridge_low = 500000;
-                data.LIMIT_saltbridge_high = 400000;
+                data.LIMIT_saltbridge_high = 200000;
                 //Triggerboard settings
                 data.Trig0_threshold = 1.223;
                 data.Trig1_threshold = 1.23;
@@ -104,7 +104,7 @@ int main(){
                 data.LIMIT_Thermistor_temperature_low = 7000;
                 data.LIMIT_Thermistor_temperature_high = 5800;
                 data.LIMIT_saltbridge_low = 500000;
-                data.LIMIT_saltbridge_high = 400000;
+                data.LIMIT_saltbridge_high = 200000;
                 //Triggerboard settings
                 data.Trig0_threshold = 1.223;
                 data.Trig1_threshold = 1.23;
@@ -129,7 +129,7 @@ int main(){
                 data.LIMIT_Thermistor_temperature_low = 7000;
                 data.LIMIT_Thermistor_temperature_high = 5800;
                 data.LIMIT_saltbridge_low = 500000;
-                data.LIMIT_saltbridge_high = 400000;
+                data.LIMIT_saltbridge_high = 200000;
                 //Triggerboard settings
                 data.Trig0_threshold = 1.223;
                 data.Trig1_threshold = 1.23;
@@ -154,7 +154,7 @@ int main(){
                 data.LIMIT_Thermistor_temperature_low = 7000;
                 data.LIMIT_Thermistor_temperature_high = 5800;
                 data.LIMIT_saltbridge_low = 500000;
-                data.LIMIT_saltbridge_high = 400000;
+                data.LIMIT_saltbridge_high = 200000;
                 //Triggerboard settings
                 data.Trig0_threshold = 1.223;
                 data.Trig1_threshold = 1.23;
@@ -199,7 +199,7 @@ int main(){
 
         std::cout<<endl<<"LIMIT_saltbridge_low (500000): ";
         std::cin>>data.LIMIT_saltbridge_low;
-        std::cout<<endl<<"LIMIT_saltbridge_high (400000): ";
+        std::cout<<endl<<"LIMIT_saltbridge_high (200000/400000): ";
         std::cin>>data.LIMIT_saltbridge_high;
 
         std::cout<<endl<<"Trig0_threshold (1.223): ";
@@ -241,7 +241,7 @@ int main(){
     std::cout<<"LIMIT_Thermistor_temperature_high (5800): "<<data.LIMIT_Thermistor_temperature_high<<std::endl;
     std::cout<<endl;
     std::cout<<"LIMIT_saltbridge_low (500000): "<<data.LIMIT_saltbridge_low<<std::endl;
-    std::cout<<"LIMIT_saltbridge_high (400000): "<<data.LIMIT_saltbridge_high<<std::endl;
+    std::cout<<"LIMIT_saltbridge_high (200000/400000): "<<data.LIMIT_saltbridge_high<<std::endl;
     std::cout<<endl;
     //Trigger
     std::cout<<"Trig0_threshold: "<<data.Trig0_threshold<<std::endl;
