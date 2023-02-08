@@ -16,7 +16,7 @@ int main(){
     std::cout<<"NOTICE!!!!"<<std::endl;
     std::cout<<"Recent changes: "<<std::endl;
     std::cout<<"- Humidity is now a temperature dependent limit. You can keep 15 as lower limit and 20 as upper!"<<std::endl;
-    std::cout<<"-Saltbridge emergency limit is now 200000 in all presets!"<<std::endl;
+    std::cout<<"- Saltbridge emergency limit is now 200000 in all presets!"<<std::endl;
 
     //std::cout<<"Please enter the LAPPD ID number (Please check beforehand since the monitoring needs it!): ";
     //std::cin>>data.LAPPD_ID;  
