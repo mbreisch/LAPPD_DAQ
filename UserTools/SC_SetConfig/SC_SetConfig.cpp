@@ -27,6 +27,9 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 
+	m_variables.Get("LAPPD_ID",LAPPD_ID);
+	m_data->SCMonitor.LAPPD_ID = LAPPD_ID;
+	
 	return true;
 }
 
