@@ -34,7 +34,7 @@ class SC_SetConfig: public Tool {
 
  bool flag;
  int retval;
-
+ int LAPPD_ID;
 
 };
 
