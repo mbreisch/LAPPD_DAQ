@@ -18,8 +18,8 @@ int main(){
     std::cout<<"- Humidity is now a temperature dependent limit. You can keep 15 as lower limit and 20 as upper!"<<std::endl;
     std::cout<<"- Saltbridge emergency limit is now 200000 in all presets!"<<std::endl;
 
-    //std::cout<<"Please enter the LAPPD ID number (Please check beforehand since the monitoring needs it!): ";
-    //std::cin>>data.LAPPD_ID;  
+    std::cout<<"Please enter the LAPPD ID number (Please check beforehand since the monitoring needs it!): ";
+    std::cin>>data.LAPPD_ID;  
 
     int default_load = 0;
     std::cout<<"Do you want to load default settings (0: no |1: yes): ";
