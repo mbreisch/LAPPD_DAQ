@@ -35,6 +35,8 @@ bool SC_SetConfig::Initialise(std::string configfile, DataModel &data){
 
 
 bool SC_SetConfig::Execute(){
+	//Set the LAPPD_ID
+	m_data->SCMonitor.LAPPD_ID = LAPPD_ID;
 	//check LV/HV state_set 
   	if(m_verbose>2){std::cout<<"Start Setup"<<std::endl;}
   	if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
