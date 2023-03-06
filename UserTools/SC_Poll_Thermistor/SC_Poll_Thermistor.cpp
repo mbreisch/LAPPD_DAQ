@@ -54,7 +54,7 @@ bool SC_Poll_Thermistor::Finalise()
 
 bool SC_Poll_Thermistor::THERMISTORCHK(){
     int retval=-2;
-    if(m_data->SCMonitor.temperature_thermistor<0)
+    if(m_data->SCMonitor.temperature_thermistor==-222)
     {
         m_data->SCMonitor.errorcodes.push_back(0xCC03EE01);
         return true;
