@@ -56,9 +56,10 @@ bool SC_Poll_Saltbridge::Finalise()
 bool SC_Poll_Saltbridge::SALTBRIDGECHK(){
     int retval=-2;
     bool safety=true;
-    if(m_data->SCMonitor.saltbridge<0)
+    if(m_data->SCMonitor.saltbridge==-222)
     {
         m_data->SCMonitor.errorcodes.push_back(0xCC02EE01);
+	return safety;
     }
     if(m_data->SCMonitor.saltbridge > m_data->SCMonitor.LIMIT_saltbridge_low)
     {
