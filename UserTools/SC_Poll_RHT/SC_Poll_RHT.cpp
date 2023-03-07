@@ -100,9 +100,12 @@ bool SC_Poll_RHT::HUMIDITYCHK(){
         float lina = m_data->SCMonitor.LIMIT_humidity_high/10;
         float linb = 4.5*m_data->SCMonitor.LIMIT_humidity_high;
         tool_humidity_limit = lina*m_data->SCMonitor.temperature_mon+linb;
-    }else if(m_data->SCMonitor.temperature_mon>35)
+    }else if(m_data->SCMonitor.temperature_mon>35 && m_data->SCMonitor.temperature_mon<=45)
     {
         tool_humidity_limit = m_data->SCMonitor.LIMIT_humidity_high;
+    }else if(m_data->SCMonitor.temperature_mon>45)
+    {
+	tool_humidity_limit = 0.8*m_data->SCMonitor.LIMIT_humidity_high;
     }else
     {
         std::cout<<"Error! Input not possible"<<std::endl;
