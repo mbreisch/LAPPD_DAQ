@@ -97,8 +97,8 @@ bool SC_Poll_RHT::HUMIDITYCHK(){
         tool_humidity_limit = 2*m_data->SCMonitor.LIMIT_humidity_high;
     }else if(m_data->SCMonitor.temperature_mon>25 && m_data->SCMonitor.temperature_mon<=35)
     {
-        float lina = (m_data->SCMonitor.LIMIT_humidity_high-30)/10;
-        float linb = 30-lina*25;
+        float lina = m_data->SCMonitor.LIMIT_humidity_high/10;
+        float linb = 4.5*m_data->SCMonitor.LIMIT_humidity_high;
         tool_humidity_limit = lina*m_data->SCMonitor.temperature_mon+linb;
     }else if(m_data->SCMonitor.temperature_mon>35)
     {
