@@ -20,7 +20,7 @@ int main(){
     std::cout<<"- Humidity is now a temperature dependent limit. You can keep 15 as lower limit and 25 as upper!"<<std::endl;
     std::cout<<"- Saltbridge emergency limit is now 200000 in all presets!"<<std::endl;
 
-    std::cout<<"LAPPD ID is now set in Tool via configfile";
+    std::cout<<"LAPPD ID is now set in Tool via configfile"<<std::endl;
     //std::cin>>data.LAPPD_ID;  
 
     int default_load = 0;
@@ -58,6 +58,15 @@ int main(){
 
         while(true)
         {
+            std::cout<<"What do you want to load: "<<std::endl;
+            std::cout<<"(0) All off | No active senors, LV (ACDC) and HV (LAPPD)"<<std::endl;
+            std::cout<<"(1) Relays only | No LV (ACDC) and HV (LAPPD)"<<std::endl;
+            std::cout<<"(2) Relays + LV | No HV (LAPPD)"<<std::endl;
+            std::cout<<"(3) Full on | Test voltage: 500V"<<std::endl;
+            std::cout<<"(4) Operation | All on at 2350V"<<std::endl;
+            std::cout<<"(5) Check Emergency local and file Limits/Trigger settings"<<std::endl;
+            std::cout<<"(6) Save new Emergency Limits/Trigger settings"<<std::endl;
+            std::cout<<"(7) Load Emergency Limits/Trigger settings"<<std::endl;
             std::cout<<"Enter: ";
             std::cin>>mode;
 
@@ -160,7 +169,11 @@ int main(){
                 map<int,std::string> LoadMap; 
                 std::string line;
                 std::fstream infile("./configfiles/SlowControl/LocalSettings", std::ios_base::in);
-                if(!infile.is_open()){break;}
+                if(!infile.is_open())
+                {
+                    std::cout<<"No local file yet"<<std::endl;
+                    continue;
+                }
                 int lineNumber = 0;
                 while(getline(infile, line))
                 {
