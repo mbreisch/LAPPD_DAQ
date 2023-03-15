@@ -57,6 +57,7 @@ int main(){
             std::cout<<"(7) Load Emergency Limits/Trigger settings"<<std::endl;
             std::cout<<"Enter: ";
             std::cin>>mode;
+            std::cout<<endl;
 
             //Emergency limits 
             data.LIMIT_temperature_low = LIMIT_temperature_low;
@@ -141,18 +142,14 @@ int main(){
                 std::cout<<"LIMIT_temperature_high: "<<data.LIMIT_temperature_high<<std::endl;
                 std::cout<<"LIMIT_humidity_low: "<<data.LIMIT_humidity_low<<std::endl;
                 std::cout<<"LIMIT_humidity_high: "<<data.LIMIT_humidity_high<<std::endl;
-                std::cout<<endl;
                 std::cout<<"LIMIT_Thermistor_temperature_low: "<<data.LIMIT_Thermistor_temperature_low<<std::endl;
                 std::cout<<"LIMIT_Thermistor_temperature_high: "<<data.LIMIT_Thermistor_temperature_high<<std::endl;
-                std::cout<<endl;
                 std::cout<<"LIMIT_saltbridge_low: "<<data.LIMIT_saltbridge_low<<std::endl;
                 std::cout<<"LIMIT_saltbridge_high: "<<data.LIMIT_saltbridge_high<<std::endl;
-                std::cout<<endl;
                 //Trigger
                 std::cout<<"Trig0_threshold: "<<data.Trig0_threshold<<std::endl;
                 std::cout<<"Trig1_threshold: "<<data.Trig1_threshold<<std::endl;
                 std::cout<<"TrigVref: "<<data.TrigVref<<std::endl;
-                std::cout<<endl;
                 //File limits
                 map<int,std::string> LoadMap; 
                 std::string line;
@@ -174,14 +171,10 @@ int main(){
                 std::cout<<"LIMIT_temperature_high: "<<LoadMap[1]<<std::endl;
                 std::cout<<"LIMIT_humidity_low: "<<LoadMap[2]<<std::endl;
                 std::cout<<"LIMIT_humidity_high: "<<LoadMap[3]<<std::endl;
-                std::cout<<endl;
                 std::cout<<"LIMIT_Thermistor_temperature_low: "<<LoadMap[4]<<std::endl;
                 std::cout<<"LIMIT_Thermistor_temperature_high: "<<LoadMap[5]<<std::endl;
-                std::cout<<endl;
                 std::cout<<"LIMIT_saltbridge_low: "<<LoadMap[6]<<std::endl;
                 std::cout<<"LIMIT_saltbridge_high: "<<LoadMap[7]<<std::endl;
-                std::cout<<endl;
-                //Trigger
                 std::cout<<"Trig0_threshold: "<<LoadMap[8]<<std::endl;
                 std::cout<<"Trig1_threshold: "<<LoadMap[9]<<std::endl;
                 std::cout<<"TrigVref: "<<LoadMap[10]<<std::endl;
@@ -203,6 +196,19 @@ int main(){
                     }
                     infile.close();
                     SaveMap = LoadMap; 
+                }else
+                {
+                    LoadMap[0] = data.LIMIT_temperature_low;
+                    LoadMap[1] = data.LIMIT_temperature_high;
+                    LoadMap[2] = data.LIMIT_humidity_low;
+                    LoadMap[3] = data.LIMIT_humidity_high;
+                    LoadMap[4] = data.LIMIT_Thermistor_temperature_low;
+                    LoadMap[5] = data.LIMIT_Thermistor_temperature_high;
+                    LoadMap[6] = data.LIMIT_saltbridge_low;
+                    LoadMap[7] = data.LIMIT_saltbridge_high;
+                    LoadMap[8] = data.Trig0_threshold;
+                    LoadMap[9] = data.Trig1_threshold;
+                    LoadMap[10] = data.TrigVref;
                 }
                 while(true)
                 {
@@ -237,6 +243,7 @@ int main(){
                             outfile << it->second << std::endl;
                         }
                         outfile.close();
+                        std::cout << "SAVING!!!" << std::endl;
                         break;
                     }else if(mode6==12)
                     {
