@@ -375,6 +375,7 @@ int main(){
     }
 
     std::cout<<"------------------------------"<<std::endl;
+    std::cout<<"These settings will be sent"<<std::endl;
     //HV settings
     std::cout<<"HV_state_set: "<<data.HV_state_set<<std::endl;
     std::cout<<"HV_volts: "<<data.HV_volts<<std::endl;
@@ -383,16 +384,16 @@ int main(){
     std::cout<<"LV_state_set: "<<data.LV_state_set<<std::endl;
     std::cout<<endl;
     //Emergency limits 
-    std::cout<<"LIMIT_temperature_low (50): "<<data.LIMIT_temperature_low<<std::endl;
-    std::cout<<"LIMIT_temperature_high (58): "<<data.LIMIT_temperature_high<<std::endl;
-    std::cout<<"LIMIT_humidity_low (15): "<<data.LIMIT_humidity_low<<std::endl;
-    std::cout<<"LIMIT_humidity_high (20): "<<data.LIMIT_humidity_high<<std::endl;
+    std::cout<<"LIMIT_temperature_low: "<<data.LIMIT_temperature_low<<std::endl;
+    std::cout<<"LIMIT_temperature_high: "<<data.LIMIT_temperature_high<<std::endl;
+    std::cout<<"LIMIT_humidity_low: "<<data.LIMIT_humidity_low<<std::endl;
+    std::cout<<"LIMIT_humidity_high: "<<data.LIMIT_humidity_high<<std::endl;
     std::cout<<endl;
-    std::cout<<"LIMIT_Thermistor_temperature_low (7000): "<<data.LIMIT_Thermistor_temperature_low<<std::endl;
-    std::cout<<"LIMIT_Thermistor_temperature_high (5800): "<<data.LIMIT_Thermistor_temperature_high<<std::endl;
+    std::cout<<"LIMIT_Thermistor_temperature_low): "<<data.LIMIT_Thermistor_temperature_low<<std::endl;
+    std::cout<<"LIMIT_Thermistor_temperature_high: "<<data.LIMIT_Thermistor_temperature_high<<std::endl;
     std::cout<<endl;
-    std::cout<<"LIMIT_saltbridge_low (500000): "<<data.LIMIT_saltbridge_low<<std::endl;
-    std::cout<<"LIMIT_saltbridge_high (200000/400000): "<<data.LIMIT_saltbridge_high<<std::endl;
+    std::cout<<"LIMIT_saltbridge_low: "<<data.LIMIT_saltbridge_low<<std::endl;
+    std::cout<<"LIMIT_saltbridge_high: "<<data.LIMIT_saltbridge_high<<std::endl;
     std::cout<<endl;
     //Trigger
     std::cout<<"Trig0_threshold: "<<data.Trig0_threshold<<std::endl;
