@@ -17,10 +17,8 @@ int main(){
 
     std::cout<<"NOTICE!!!!"<<std::endl;
     std::cout<<"Recent changes: "<<std::endl;
-    std::cout<<"- Humidity is now a temperature dependent limit. You can keep 15 as lower limit and 25 as upper!"<<std::endl;
-    std::cout<<"- Saltbridge emergency limit is now 200000 in all presets!"<<std::endl;
-
-    std::cout<<"LAPPD ID is now set in Tool via configfile"<<std::endl;
+    std::cout<<"- Saltbridge emergency limit is now 100000 in all presets!"<<std::endl;
+    std::cout<<"- LAPPD ID is now set in Tool via configfile"<<std::endl;
     //std::cin>>data.LAPPD_ID;  
 
     int default_load = 0;
@@ -36,8 +34,8 @@ int main(){
         float LIMIT_humidity_high = 25;
         float LIMIT_Thermistor_temperature_low = 7000;
         float LIMIT_Thermistor_temperature_high = 5800;
-        float LIMIT_saltbridge_low = 500000;
-        float LIMIT_saltbridge_high = 200000;
+        float LIMIT_saltbridge_low = 400000;
+        float LIMIT_saltbridge_high = 100000;
 
         //Triggerboard settings
         float Trig0_threshold = 1.223;
@@ -46,16 +44,6 @@ int main(){
 
 
         int mode = -1;
-        std::cout<<"Do you want to load: "<<std::endl;
-        std::cout<<"(0) All off | No active senors, LV (ACDC) and HV (LAPPD)"<<std::endl;
-        std::cout<<"(1) Relays only | No LV (ACDC) and HV (LAPPD)"<<std::endl;
-        std::cout<<"(2) Relays + LV | No HV (LAPPD)"<<std::endl;
-        std::cout<<"(3) Full on | Test voltage: 500V"<<std::endl;
-        std::cout<<"(4) Operation | All on at 2350V"<<std::endl;
-        std::cout<<"(5) Check Emergency local and file Limits/Trigger settings"<<std::endl;
-        std::cout<<"(6) Save new Emergency Limits/Trigger settings"<<std::endl;
-        std::cout<<"(7) Load Emergency Limits/Trigger settings"<<std::endl;
-
         while(true)
         {
             std::cout<<"What do you want to load: "<<std::endl;
@@ -202,17 +190,20 @@ int main(){
             {
                 int mode6=-1;
                 map<int,std::string> LoadMap; 
+                map<int,std::string> SaveMap;
                 std::string line;
                 std::fstream infile("./configfiles/SlowControl/LocalSettings", std::ios_base::in);
-                if(!infile.is_open()){break;}
-                int lineNumber = 0;
-                while(getline(infile, line))
+                if(infile.is_open())
                 {
-                    LoadMap[lineNumber] = line;
-                    ++lineNumber;
+                    int lineNumber = 0;
+                    while(getline(infile, line))
+                    {
+                        LoadMap[lineNumber] = line;
+                        ++lineNumber;
+                    }
+                    infile.close();
+                    SaveMap = LoadMap; 
                 }
-                infile.close();
-                map<int,std::string> SaveMap = LoadMap; 
                 while(true)
                 {
                     std::cout<<"Which one do you want to change"<<std::endl;
@@ -258,7 +249,11 @@ int main(){
                 map<int,std::string> LoadMap; 
                 std::string line;
                 std::fstream infile("./configfiles/SlowControl/LocalSettings", std::ios_base::in);
-                if(!infile.is_open()){break;}
+                if(!infile.is_open())
+                {
+                    std::cout<<"No local file yet"<<std::endl;
+                    continue;
+                }
                 int lineNumber = 0;
                 while(getline(infile, line))
                 {
@@ -285,6 +280,9 @@ int main(){
             {
                 std::cout<<"No valid preset choosen! Try again or ctrl+c"<<std::endl;
             }
+            std::cout<<std::endl;
+            std::cout<<"---------------------"<<std::endl;
+            std::cout<<std::endl;
         }
     }else if(default_load==0)
     {
