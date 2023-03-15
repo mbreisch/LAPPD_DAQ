@@ -198,17 +198,17 @@ int main(){
                     SaveMap = LoadMap; 
                 }else
                 {
-                    LoadMap[0] = data.LIMIT_temperature_low;
-                    LoadMap[1] = data.LIMIT_temperature_high;
-                    LoadMap[2] = data.LIMIT_humidity_low;
-                    LoadMap[3] = data.LIMIT_humidity_high;
-                    LoadMap[4] = data.LIMIT_Thermistor_temperature_low;
-                    LoadMap[5] = data.LIMIT_Thermistor_temperature_high;
-                    LoadMap[6] = data.LIMIT_saltbridge_low;
-                    LoadMap[7] = data.LIMIT_saltbridge_high;
-                    LoadMap[8] = data.Trig0_threshold;
-                    LoadMap[9] = data.Trig1_threshold;
-                    LoadMap[10] = data.TrigVref;
+                    SaveMap[0] = data.LIMIT_temperature_low;
+                    SaveMap[1] = data.LIMIT_temperature_high;
+                    SaveMap[2] = data.LIMIT_humidity_low;
+                    SaveMap[3] = data.LIMIT_humidity_high;
+                    SaveMap[4] = data.LIMIT_Thermistor_temperature_low;
+                    SaveMap[5] = data.LIMIT_Thermistor_temperature_high;
+                    SaveMap[6] = data.LIMIT_saltbridge_low;
+                    SaveMap[7] = data.LIMIT_saltbridge_high;
+                    SaveMap[8] = data.Trig0_threshold;
+                    SaveMap[9] = data.Trig1_threshold;
+                    SaveMap[10] = data.TrigVref;
                 }
                 while(true)
                 {
