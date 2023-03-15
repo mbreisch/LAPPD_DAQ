@@ -42,6 +42,21 @@ int main(){
         float Trig1_threshold = 1.23;
         float TrigVref = 2.981;
 
+        //Emergency limits 
+        data.LIMIT_temperature_low = LIMIT_temperature_low;
+        data.LIMIT_temperature_high = LIMIT_temperature_high;
+        data.LIMIT_humidity_low = LIMIT_humidity_low;
+        data.LIMIT_humidity_high = LIMIT_humidity_high;
+        data.LIMIT_Thermistor_temperature_low = LIMIT_Thermistor_temperature_low;
+        data.LIMIT_Thermistor_temperature_high = LIMIT_Thermistor_temperature_high;
+        data.LIMIT_saltbridge_low = LIMIT_saltbridge_low;
+        data.LIMIT_saltbridge_high = LIMIT_saltbridge_high;
+
+        //Triggerboard settings
+        data.Trig0_threshold = Trig0_threshold;
+        data.Trig1_threshold = Trig1_threshold;
+        data.TrigVref = TrigVref;
+
 
         int mode = -1;
         while(true)
@@ -58,21 +73,6 @@ int main(){
             std::cout<<"Enter: ";
             std::cin>>mode;
             std::cout<<endl;
-
-            //Emergency limits 
-            data.LIMIT_temperature_low = LIMIT_temperature_low;
-            data.LIMIT_temperature_high = LIMIT_temperature_high;
-            data.LIMIT_humidity_low = LIMIT_humidity_low;
-            data.LIMIT_humidity_high = LIMIT_humidity_high;
-            data.LIMIT_Thermistor_temperature_low = LIMIT_Thermistor_temperature_low;
-            data.LIMIT_Thermistor_temperature_high = LIMIT_Thermistor_temperature_high;
-            data.LIMIT_saltbridge_low = LIMIT_saltbridge_low;
-            data.LIMIT_saltbridge_high = LIMIT_saltbridge_high;
-
-            //Triggerboard settings
-            data.Trig0_threshold = 1.223;
-            data.Trig1_threshold = 1.23;
-            data.TrigVref = 2.981;
 
             if(mode==0)
             {
@@ -213,17 +213,17 @@ int main(){
                 while(true)
                 {
                     std::cout<<"Which one do you want to change"<<std::endl;
-                    std::cout<<"(0) LIMIT_temperature_low, currently: "<<data.LIMIT_temperature_low<<std::endl;
-                    std::cout<<"(1) LIMIT_temperature_high, currently: "<<data.LIMIT_temperature_high<<std::endl;
-                    std::cout<<"(2) LIMIT_humidity_low, currently: "<<data.LIMIT_humidity_low<<std::endl;
-                    std::cout<<"(3) LIMIT_humidity_high, currently: "<<data.LIMIT_humidity_high<<std::endl;
-                    std::cout<<"(4) LIMIT_Thermistor_temperature_low, currently: "<<data.LIMIT_Thermistor_temperature_low<<std::endl;
-                    std::cout<<"(5) LIMIT_Thermistor_temperature_high, currently: "<<data.LIMIT_Thermistor_temperature_high<<std::endl;
-                    std::cout<<"(6) LIMIT_saltbridge_low, currently: "<<data.LIMIT_saltbridge_low<<std::endl;
-                    std::cout<<"(7) LIMIT_saltbridge_high, currently: "<<data.LIMIT_saltbridge_high<<std::endl;
-                    std::cout<<"(8) Trig0_threshold, currently: "<<data.Trig0_threshold<<std::endl;
-                    std::cout<<"(9) Trig1_threshold, currently: "<<data.Trig1_threshold<<std::endl;
-                    std::cout<<"(10) TrigVref, currently: "<<data.TrigVref<<std::endl;
+                    std::cout<<"(0) LIMIT_temperature_low, currently: "<<SaveMap[0]<<std::endl;
+                    std::cout<<"(1) LIMIT_temperature_high, currently: "<<SaveMap[1]<<std::endl;
+                    std::cout<<"(2) LIMIT_humidity_low, currently: "<<SaveMap[2]<<std::endl;
+                    std::cout<<"(3) LIMIT_humidity_high, currently: "<<SaveMap[3]<<std::endl;
+                    std::cout<<"(4) LIMIT_Thermistor_temperature_low, currently: "<<SaveMap[4]<<std::endl;
+                    std::cout<<"(5) LIMIT_Thermistor_temperature_high, currently: "<<SaveMap[5]<<std::endl;
+                    std::cout<<"(6) LIMIT_saltbridge_low, currently: "<<SaveMap[6]<<std::endl;
+                    std::cout<<"(7) LIMIT_saltbridge_high, currently: "<<SaveMap[7]<<std::endl;
+                    std::cout<<"(8) Trig0_threshold, currently: "<<SaveMap[8]<<std::endl;
+                    std::cout<<"(9) Trig1_threshold, currently: "<<SaveMap[9]<<std::endl;
+                    std::cout<<"(10) TrigVref, currently: "<<SaveMap[10]<<std::endl;
                     std::cout<<"(11) SAVE ALL"<<std::endl;
                     std::cout<<"(12) EXIT"<<std::endl;
                     std::cout<<"Enter: ";
@@ -283,6 +283,7 @@ int main(){
                 data.Trig0_threshold = std::stof(LoadMap[8]);
                 data.Trig1_threshold = std::stof(LoadMap[9]);
                 data.TrigVref = std::stof(LoadMap[10]);       
+                std::cout << "LOADING!!!" << std::endl;
             }else
             {
                 std::cout<<"No valid preset choosen! Try again or ctrl+c"<<std::endl;
@@ -344,8 +345,6 @@ int main(){
     }
 
     std::cout<<"------------------------------"<<std::endl;
-    std::cout<<"Settings for LAPPD with ID: "<<data.LAPPD_ID<<std::endl;
-    std::cout<<endl;
     //HV settings
     std::cout<<"HV_state_set: "<<data.HV_state_set<<std::endl;
     std::cout<<"HV_volts: "<<data.HV_volts<<std::endl;
