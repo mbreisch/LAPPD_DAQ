@@ -27,36 +27,71 @@ int main(){
 
     if(default_load==1)
     {   
-        //Emergency limits 
-        float LIMIT_temperature_low = 50;
-        float LIMIT_temperature_high = 58;
-        float LIMIT_humidity_low = 15;
-        float LIMIT_humidity_high = 25;
-        float LIMIT_Thermistor_temperature_low = 7000;
-        float LIMIT_Thermistor_temperature_high = 5800;
-        float LIMIT_saltbridge_low = 400000;
-        float LIMIT_saltbridge_high = 100000;
+        std::fstream infile("./configfiles/SlowControl/LocalSettings", std::ios_base::in);
+        if(!infile.is_open())
+        {
+            //Emergency limits 
+            float LIMIT_temperature_low = 50;
+            float LIMIT_temperature_high = 58;
+            float LIMIT_humidity_low = 15;
+            float LIMIT_humidity_high = 25;
+            float LIMIT_Thermistor_temperature_low = 7000;
+            float LIMIT_Thermistor_temperature_high = 5800;
+            float LIMIT_saltbridge_low = 400000;
+            float LIMIT_saltbridge_high = 100000;
 
-        //Triggerboard settings
-        float Trig0_threshold = 1.223;
-        float Trig1_threshold = 1.23;
-        float TrigVref = 2.981;
+            //Triggerboard settings
+            float Trig0_threshold = 1.223;
+            float Trig1_threshold = 1.23;
+            float TrigVref = 2.981;
 
-        //Emergency limits 
-        data.LIMIT_temperature_low = LIMIT_temperature_low;
-        data.LIMIT_temperature_high = LIMIT_temperature_high;
-        data.LIMIT_humidity_low = LIMIT_humidity_low;
-        data.LIMIT_humidity_high = LIMIT_humidity_high;
-        data.LIMIT_Thermistor_temperature_low = LIMIT_Thermistor_temperature_low;
-        data.LIMIT_Thermistor_temperature_high = LIMIT_Thermistor_temperature_high;
-        data.LIMIT_saltbridge_low = LIMIT_saltbridge_low;
-        data.LIMIT_saltbridge_high = LIMIT_saltbridge_high;
+            //Emergency limits 
+            data.LIMIT_temperature_low = LIMIT_temperature_low;
+            data.LIMIT_temperature_high = LIMIT_temperature_high;
+            data.LIMIT_humidity_low = LIMIT_humidity_low;
+            data.LIMIT_humidity_high = LIMIT_humidity_high;
+            data.LIMIT_Thermistor_temperature_low = LIMIT_Thermistor_temperature_low;
+            data.LIMIT_Thermistor_temperature_high = LIMIT_Thermistor_temperature_high;
+            data.LIMIT_saltbridge_low = LIMIT_saltbridge_low;
+            data.LIMIT_saltbridge_high = LIMIT_saltbridge_high;
 
-        //Triggerboard settings
-        data.Trig0_threshold = Trig0_threshold;
-        data.Trig1_threshold = Trig1_threshold;
-        data.TrigVref = TrigVref;
+            //Triggerboard settings
+            data.Trig0_threshold = Trig0_threshold;
+            data.Trig1_threshold = Trig1_threshold;
+            data.TrigVref = TrigVref;
+        }else
+        {
+            map<int,std::string> LoadMap; 
+            std::string line;
+            std::fstream infile("./configfiles/SlowControl/LocalSettings", std::ios_base::in);
+            if(!infile.is_open())
+            {
+                std::cout<<"No local file yet"<<std::endl;
+                continue;
+            }
+            int lineNumber = 0;
+            while(getline(infile, line))
+            {
+                LoadMap[lineNumber] = line;
+                ++lineNumber;
+            }
+            infile.close();
 
+            //Emergency limits 
+            data.LIMIT_temperature_low =  std::stof(LoadMap[0]);
+            data.LIMIT_temperature_high =  std::stof(LoadMap[1]);
+            data.LIMIT_humidity_low =  std::stof(LoadMap[2]);
+            data.LIMIT_humidity_high =  std::stof(LoadMap[3]);
+            data.LIMIT_Thermistor_temperature_low =  std::stof(LoadMap[4]);
+            data.LIMIT_Thermistor_temperature_high =  std::stof(LoadMap[5]);
+            data.LIMIT_saltbridge_low =  std::stof(LoadMap[6]);
+            data.LIMIT_saltbridge_high =  std::stof(LoadMap[7]);      
+
+            //Triggerboard settings
+            data.Trig0_threshold = std::stof(LoadMap[8]);
+            data.Trig1_threshold = std::stof(LoadMap[9]);
+            data.TrigVref = std::stof(LoadMap[10]);           
+        }
 
         int mode = -1;
         while(true)
@@ -243,6 +278,7 @@ int main(){
                             outfile << it->second << std::endl;
                         }
                         outfile.close();
+                        std::cout << std::endl;
                         std::cout << "SAVING!!!" << std::endl;
                         break;
                     }else if(mode6==12)
