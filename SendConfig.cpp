@@ -2,6 +2,7 @@
 #include <string>
 #include <zmq.hpp>
 #include <SlowControlMonitor.h>
+#include <map>
 
 
 int main(){
