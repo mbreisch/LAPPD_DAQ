@@ -35,6 +35,7 @@ class SC_Poll_Timestamp: public Tool {
 
     private:
 
+        std::string convertToCST(unsigned long long timestampInMs);
 
 };
 
