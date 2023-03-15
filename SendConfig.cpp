@@ -198,7 +198,7 @@ int main(){
                     LoadMap[lineNumber] = line;
                     ++lineNumber;
                 }
-                file.close();
+                infile.close();
                 map<int,std::string> SaveMap = LoadMap; 
                 while(true)
                 {
@@ -227,7 +227,7 @@ int main(){
                         SaveMap[mode6] = std::to_string(value);
                     }else if(mode6==11)
                     {
-                        std::fstream outfile("./configfiles/SlowControl/LocalSettings", std::ios_base::out || std::ios_base::trunc);  
+                        std::fstream outfile("./configfiles/SlowControl/LocalSettings", std::ios_base::out | std::ios_base::trunc);  
                         for(map<int,std::string>::iterator it = SaveMap.begin(); it != SaveMap.end(); ++it)
                         {
                             outfile << it->second << std::endl;
