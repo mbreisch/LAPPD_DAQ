@@ -254,19 +254,19 @@ int main(){
                 file.close();
 
                 //Emergency limits 
-                data.LIMIT_temperature_low =  LoadMap[0];
-                data.LIMIT_temperature_high =  LoadMap[1];
-                data.LIMIT_humidity_low =  LoadMap[2];
-                data.LIMIT_humidity_high =  LoadMap[3];
-                data.LIMIT_Thermistor_temperature_low =  LoadMap[4];
-                data.LIMIT_Thermistor_temperature_high =  LoadMap[5];
-                data.LIMIT_saltbridge_low =  LoadMap[6];
-                data.LIMIT_saltbridge_high =  LoadMap[7];      
+                data.LIMIT_temperature_low =  std::stof(LoadMap[0]);
+                data.LIMIT_temperature_high =  std::stof(LoadMap[1]);
+                data.LIMIT_humidity_low =  std::stof(LoadMap[2]);
+                data.LIMIT_humidity_high =  std::stof(LoadMap[3]);
+                data.LIMIT_Thermistor_temperature_low =  std::stof(LoadMap[4]);
+                data.LIMIT_Thermistor_temperature_high =  std::stof(LoadMap[5]);
+                data.LIMIT_saltbridge_low =  std::stof(LoadMap[6]);
+                data.LIMIT_saltbridge_high =  std::stof(LoadMap[7]);      
 
                 //Triggerboard settings
-                data.Trig0_threshold = LoadMap[8];
-                data.Trig1_threshold = LoadMap[9];
-                data.TrigVref = LoadMap[10];       
+                data.Trig0_threshold = std::stof(LoadMap[8]);
+                data.Trig1_threshold = std::stof(LoadMap[9]);
+                data.TrigVref = std::stof(LoadMap[10]);       
             }else
             {
                 std::cout<<"No valid preset choosen! Try again or ctrl+c"<<std::endl;
