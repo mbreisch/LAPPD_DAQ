@@ -63,12 +63,6 @@ int main(){
         {
             map<int,std::string> LoadMap; 
             std::string line;
-            std::fstream infile("./configfiles/SlowControl/LocalSettings", std::ios_base::in);
-            if(!infile.is_open())
-            {
-                std::cout<<"No local file yet"<<std::endl;
-                continue;
-            }
             int lineNumber = 0;
             while(getline(infile, line))
             {
