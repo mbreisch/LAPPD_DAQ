@@ -198,17 +198,17 @@ int main(){
                     SaveMap = LoadMap; 
                 }else
                 {
-                    SaveMap[0] = data.LIMIT_temperature_low;
-                    SaveMap[1] = data.LIMIT_temperature_high;
-                    SaveMap[2] = data.LIMIT_humidity_low;
-                    SaveMap[3] = data.LIMIT_humidity_high;
-                    SaveMap[4] = data.LIMIT_Thermistor_temperature_low;
-                    SaveMap[5] = data.LIMIT_Thermistor_temperature_high;
-                    SaveMap[6] = data.LIMIT_saltbridge_low;
-                    SaveMap[7] = data.LIMIT_saltbridge_high;
-                    SaveMap[8] = data.Trig0_threshold;
-                    SaveMap[9] = data.Trig1_threshold;
-                    SaveMap[10] = data.TrigVref;
+                    SaveMap[0] = std::to_string(data.LIMIT_temperature_low);
+                    SaveMap[1] = std::to_string(data.LIMIT_temperature_high);
+                    SaveMap[2] = std::to_string(data.LIMIT_humidity_low);
+                    SaveMap[3] = std::to_string(data.LIMIT_humidity_high);
+                    SaveMap[4] = std::to_string(data.LIMIT_Thermistor_temperature_low);
+                    SaveMap[5] = std::to_string(data.LIMIT_Thermistor_temperature_high);
+                    SaveMap[6] = std::to_string(data.LIMIT_saltbridge_low);
+                    SaveMap[7] = std::to_string(data.LIMIT_saltbridge_high);
+                    SaveMap[8] = std::to_string(data.Trig0_threshold);
+                    SaveMap[9] = std::to_string(data.Trig1_threshold);
+                    SaveMap[10] = std::to_string(data.TrigVref);
                 }
                 while(true)
                 {
