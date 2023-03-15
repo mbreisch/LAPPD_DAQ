@@ -3,6 +3,7 @@
 #include <zmq.hpp>
 #include <SlowControlMonitor.h>
 #include <map>
+#include <fstream>
 
 
 int main(){
@@ -166,7 +167,7 @@ int main(){
                     LoadMap[lineNumber] = line;
                     ++lineNumber;
                 }
-                file.close();
+                infile.close();
                 std::cout<<"---------File Limits-----------"<<std::endl;
                 std::cout<<"LIMIT_temperature_low: "<<LoadMap[0]<<std::endl;
                 std::cout<<"LIMIT_temperature_high: "<<LoadMap[1]<<std::endl;
@@ -226,7 +227,7 @@ int main(){
                         SaveMap[mode6] = std::to_string(value);
                     }else if(mode6==11)
                     {
-                        std::fstream outfile("./configfiles/SlowControl/LocalSettings", std::ios_base::out || std::ios::base::trunc);  
+                        std::fstream outfile("./configfiles/SlowControl/LocalSettings", std::ios_base::out || std::ios_base::trunc);  
                         for(map<int,std::string>::iterator it = SaveMap.begin(); it != SaveMap.end(); ++it)
                         {
                             outfile << it->second << std::endl;
@@ -251,7 +252,7 @@ int main(){
                     LoadMap[lineNumber] = line;
                     ++lineNumber;
                 }
-                file.close();
+                infile.close();
 
                 //Emergency limits 
                 data.LIMIT_temperature_low =  std::stof(LoadMap[0]);
