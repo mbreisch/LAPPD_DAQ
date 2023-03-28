@@ -17,11 +17,6 @@
 //SC classes
 #include <Canbus.h>
 #include <SlowControlMonitor.h>
-//ACC classes
-#include <ACC.h>
-#include <PsecData.h>
-#include <PsecConfig.h>
-#include <TempClassStore.h>
 
 /**
 * \class DataModel
@@ -57,12 +52,7 @@ class DataModel {
   //SC
   Canbus* CB;
   SlowControlMonitor SCMonitor;
-  //ACC
-  stdUSB* usb;
-  ACC* acc;
-  PsecData psec;
-  PsecConfig conf;
-  TempClassStore TCS;
+
 
  private:
 
