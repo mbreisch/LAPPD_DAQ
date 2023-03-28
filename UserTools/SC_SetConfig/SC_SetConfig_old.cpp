@@ -38,6 +38,7 @@ bool SC_SetConfig::Execute()
 	//Set the LAPPD_ID
 	m_data->SCMonitor.LAPPD_ID = LAPPD_ID;
 
+	//check LV/HV state_set 
   	if(m_verbose>2){std::cout<<"In tool, before skip of EndRun"<<std::endl;}
   	if(m_data->SCMonitor.recieveFlag==0){return true;} //EndRun catch
 
@@ -68,6 +69,7 @@ bool SC_SetConfig::Execute()
 
 	if(m_verbose>2){std::cout<<"End of tool execute"<<std::endl;}
 	return true;
+
 }
 
 
@@ -78,91 +80,92 @@ bool SC_SetConfig::Finalise()
 }
 
 
-bool SC_SetConfig::Update()
-{
-	//No relay switch
-
-	//HV 
-	m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-	if(m_data->SCMonitor.HV_mon==0 && m_data->SCMonitor.HV_state_set==1)
-	{
-		//------------------------------------HV Prep
-		retval = m_data->CB->SetLV(false);
-		if(retval!=0 && retval!=1)
-		{
-		    if(m_verbose>3){std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;}
-		    m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
-		}
-		
-		//Switch HV
-		Control_HV_State();
-
-		//Turn on voltage if it is non zero
-		if(m_data->SCMonitor.HV_volts!=0)
-		{
-			Control_HV_Volts();
-		}
-	}else if(m_data->SCMonitor.HV_mon==1 && m_data->SCMonitor.HV_state_set==1)
-	{
-		//Adjust voltage if set and new set don't match
-		Control_HV_Volts();
-	}else if(m_data->SCMonitor.HV_mon==1 && m_data->SCMonitor.HV_state_set==0)
-	{
-		if(m_data->SCMonitor.HV_volts!=0)
-		{
-			std::cout<<"Since relays will be powered down HV will be first set to 0"<<std::endl;
-			m_data->SCMonitor.HV_volts = 0;
-		}
-		Control_HV_Volts();
-
-		//Switch HV
-		Control_HV_State();
-	}
-
-	//------------------------------------LV Control
-	Control_LV_State();
-
-	//------------------------------------Triggerboard Control
-	Control_Trigger_DAC0();
-	Control_Trigger_DAC1();
-	
-	m_data->SCMonitor.recieveFlag=2;
-
-	return true;
-}
-
-
-bool SC_SetConfig::TurnOff()
+bool SC_SetConfig::TurnOn()
 {
 	int counter=0;
 
 	//Turn HV down
-	if(m_data->SCMonitor.HV_volts!=0)
+	if(m_data->SCMonitor.HV_volt!=0)
 	{
 		std::cout<<"Since relays will be powered down HV will be first set to 0"<<std::endl;
-		m_data->SCMonitor.HV_volts = 0;
+		m_data->SCMonitor.HV_volt = 0;
 	}
-	Control_HV_Volts();
+
+	m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
 	
+	if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
+	{
+		retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
+		if(retval==0)
+		{	
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+
+			counter = 0;
+			while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+			{
+				usleep(10000000);
+				m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+				m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+				if(counter>=30){break;}
+				counter++;
+			}
+			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+			{
+				if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
+				m_data->SCMonitor.errorcodes.push_back(0xCB03EE04);
+			}
+			m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
+			std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+			outfile << m_data->CB->get_HV_volts;
+			outfile.close();
+		}else
+		{
+			if(m_verbose>3){std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;}
+			m_data->SCMonitor.errorcodes.push_back(0xCB03EE03);
+		}
+	}
 	//Turn HV module off
 	if(m_data->SCMonitor.HV_state_set!=0)
 	{
 		std::cout<<"Since relays will be powered down HV module will be switched off"<<std::endl;
 		m_data->SCMonitor.HV_state_set = 0;
 	}
-	Control_HV_State();
-
+	retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
+	if(retval!=0 && retval!=1)
+	{
+		if(m_verbose>3){std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;}
+		m_data->SCMonitor.errorcodes.push_back(0xCB03EE01);
+	}
 	//Turn LV off
 	if(m_data->SCMonitor.LV_state_set!=0)
 	{
 		std::cout<<"Since relays will be powered down LV module will be switched off"<<std::endl;
 		m_data->SCMonitor.LV_state_set = 0;
 	}
-	Control_LV_State();
-
+	retval = m_data->CB->SetLV(m_data->SCMonitor.LV_state_set);
+	if(retval!=0 && retval!=1)
+	{
+		if(m_verbose>3){std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;}
+		m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
+	}
 	//Turn Relays off
-	Control_Relay();
+	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
+	{
+		if(m_verbose>3){std::cout << "Relay 1 is " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh1  << std::endl;}
+		retval = m_data->CB->SetRelay(1,m_data->SCMonitor.relayCh1);
+		if(retval!=0 && retval!=1)
+		{
+			if(m_verbose>3){std::cout << "There was an error (Relay 1) with retval: " << retval << std::endl;}
+			m_data->SCMonitor.errorcodes.push_back(0xCB01EE01);
+		}else
+		{
+			if(m_verbose>3){std::cout << "Very weird relay behavior! Got bool value other than 0/1!"<<stD::endl;}
+		}
+	}
+	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
+	m_data->SCMonitor.SumRelays = m_data->SCMonitor.relayCh1_mon;
 
 	m_data->SCMonitor.recieveFlag=2;
 
@@ -172,52 +175,93 @@ bool SC_SetConfig::TurnOff()
 
 bool SC_SetConfig::TurnOn()
 {
+	int counter=0;
    	//------------------------------------Relay Control
-	Control_Relay();
+	if(m_verbose>1){std::cout<<"Relay Control"<<std::endl;}
+	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)
+	{
+		if(m_verbose>3){std::cout << "Relay 1 is " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh1  << std::endl;}
+		retval = m_data->CB->SetRelay(1,m_data->SCMonitor.relayCh1);
+		if(retval!=0 && retval!=1)
+		{
+			if(m_verbose>3){std::cout << "There was an error (Relay 1) with retval: " << retval << std::endl;}
+			m_data->SCMonitor.errorcodes.push_back(0xCB01EE01);
+		}else
+		{
+			if(m_verbose>3){std::cout << "Very weird relay behavior! Got bool value other than 0/1!"<<stD::endl;}
+		}
+	}
+	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
+	m_data->SCMonitor.SumRelays = m_data->SCMonitor.relayCh1_mon;
 
 	//Wait to ensure power is there
 	usleep(10000000);
-
 	//------------------------------------HV Control
+	if(m_verbose>1){std::cout<<"HV control"<<std::endl;}
 	int current_HVstate = 0;
 	if(m_data->SCMonitor.HV_state_set!=0)
 	{
 		//------------------------------------HV Prep
+		if(m_verbose>1){std::cout<<"HV Prep"<<std::endl;}
 		retval = m_data->CB->SetLV(false);
 		if(retval!=0 && retval!=1)
 		{
 		    if(m_verbose>3){std::cout << " There was an error (Set LV) with retval: " << retval << std::endl;}
 		    m_data->SCMonitor.errorcodes.push_back(0xCB02EE01);
 		}
+		m_data->SCMonitor.HV_mon = current_HVstate;
 		
 		//Switch HV
-		Control_HV_State();
+		retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
+		if(retval!=0 && retval!=1)
+		{
+			if(m_verbose>3){std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;}
+			m_data->SCMonitor.errorcodes.push_back(0xCB03EE01);
+		}
 		
 		//Turn on voltage if it is non zero
-		if(m_data->SCMonitor.HV_volts!=0)
+		if(m_data->SCMonitor.HV_volt!=0)
 		{
-			Control_HV_Volts();
+			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
+		
+			if(m_data->SCMonitor.HV_volts!=m_data->SCMonitor.HV_return_mon)
+			{
+				retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
+				if(retval==0)
+				{	
+					m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+					m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+
+					counter = 0;
+					while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+					{
+						usleep(10000000);
+						m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
+						m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
+						if(counter>=30){break;}
+						counter++;
+					}
+					if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
+					{
+						if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
+						m_data->SCMonitor.errorcodes.push_back(0xCB03EE04);
+					}
+					m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
+					std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
+					outfile << m_data->CB->get_HV_volts;
+					outfile.close();
+				}else
+				{
+					if(m_verbose>3){std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;}
+					m_data->SCMonitor.errorcodes.push_back(0xCB03EE03);
+				}
+			}
 		}
 	}
 
 	//------------------------------------LV Control
-	Control_LV_State();
-
-	//------------------------------------Triggerboard Control
-	Control_Trigger_DAC0();
-	Control_Trigger_DAC1();
-
-	m_data->SCMonitor.recieveFlag=2;
-
-	return true;
-}
-
-
-void SC_SetConfig::Control_LV_State()
-{
-    //------------------------------------LV Control
 	if(m_verbose>1){std::cout<<"LV control"<<std::endl;}
-
 	int current_LVstate = m_data->CB->GetLV_ONOFF();
 	if(current_LVstate==0 || current_LVstate==1)
 	{
@@ -237,109 +281,10 @@ void SC_SetConfig::Control_LV_State()
 		}
 	}
 
-    current_LVstate = m_data->CB->GetLV_ONOFF();
-	if(current_LVstate==0 || current_LVstate==1)
-	{
-		m_data->SCMonitor.LV_mon = current_LVstate;
-	}else
-	{
-		m_data->SCMonitor.errorcodes.push_back(0xCB04EE00);
-	}
-}
-
-void SC_SetConfig::Control_HV_State()
-{
-    //------------------------------------HV Control
-	if(m_verbose>1){std::cout<<"HV control"<<std::endl;}
-
-    m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-
-    if(m_data->SCMonitor.HV_state_set!=m_data->SCMonitor.HV_mon)
-    {
-        retval = m_data->CB->SetHV_ONOFF(m_data->SCMonitor.HV_state_set);
-        if(retval!=0 && retval!=1)
-        {
-            if(m_verbose>3){std::cout << " There was an error (Set HV) with retval: " << retval << std::endl;}
-            m_data->SCMonitor.errorcodes.push_back(0xCB03EE01);
-        }
-    }
-
-    m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-}
-
-void SC_SetConfig::Control_HV_Volts()
-{
-    //------------------------------------HV Control Volts
-	if(m_verbose>1){std::cout<<"HV volts control"<<std::endl;}
-
-    int counter=0;
-    m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-	m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;
-	
-	if(fabs(m_data->SCMonitor.HV_volts-m_data->SCMonitor.HV_return_mon)>10)
-	{
-		retval = m_data->CB->SetHV_voltage(m_data->SCMonitor.HV_volts,m_data->SCMonitor.HV_return_mon,m_verbose);
-		if(retval==0)
-		{	
-			m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-			m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-
-			counter = 0;
-			while(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>50)
-			{
-				usleep(10000000);
-				m_data->SCMonitor.HV_mon = m_data->CB->GetHV_ONOFF();
-				m_data->SCMonitor.HV_return_mon = m_data->CB->ReturnedHvValue;	
-				if(counter>=30){break;}
-				counter++;
-			}
-			if(fabs(m_data->SCMonitor.HV_return_mon-m_data->SCMonitor.HV_volts)>10)
-			{
-				if(m_verbose>1){std::cout << "HV was: " << m_data->SCMonitor.HV_return_mon << std::endl;}
-				m_data->SCMonitor.errorcodes.push_back(0xCB03EE04);
-			}
-			m_data->CB->get_HV_volts = m_data->SCMonitor.HV_volts;
-			std::fstream outfile("./configfiles/SlowControl/LastHV.txt", std::ios_base::out | std::ios_base::trunc);
-			outfile << m_data->CB->get_HV_volts;
-			outfile.close();
-		}else
-		{
-			if(m_verbose>3){std::cout << " There was an error (HV V set) with retval: " << retval << std::endl;}
-			m_data->SCMonitor.errorcodes.push_back(0xCB03EE03);
-		}
-	}
-}
-
-void SC_SetConfig::Control_Relay()
-{
-   	//------------------------------------Relay Control
-	if(m_verbose>1){std::cout<<"Relay Control"<<std::endl;}
-
-    m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
-	if(m_data->SCMonitor.relayCh1!=m_data->SCMonitor.relayCh1_mon)//set=/=mon
-	{
-		if(m_verbose>3){std::cout << "Relay 1 is " << std::boolalpha << m_data->SCMonitor.relayCh1_mon << " and will be " << std::boolalpha << m_data->SCMonitor.relayCh1  << std::endl;}
-		retval = m_data->CB->SetRelay(1,m_data->SCMonitor.relayCh1);
-		if(retval!=0 && retval!=1)
-		{
-			if(m_verbose>3){std::cout << "There was an error (Relay 1) with retval: " << retval << std::endl;}
-			m_data->SCMonitor.errorcodes.push_back(0xCB01EE01);
-		}else
-		{
-			if(m_verbose>3){std::cout << "Very weird relay behavior! Got bool value other than 0/1!"<<stD::endl;}
-		}
-	}
-	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
-	m_data->SCMonitor.SumRelays = m_data->SCMonitor.relayCh1_mon;
-}
-
-void SC_SetConfig::Control_Trigger_DAC0()
-{
-    //------------------------------------Triggerboard Control
+	//------------------------------------Triggerboard Control
 	if(m_verbose>1){std::cout<<"Triggerboard Control"<<std::endl;}
-
-	float current_trigger_dac0 = m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref);
-	if(m_data->SCMonitor.Trig0_threshold!=current_trigger_dac0)
+	float current_trigger_daq0 = m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref);
+	if(m_data->SCMonitor.Trig0_threshold!=current_trigger_daq0)
 	{
 		retval = m_data->CB->SetTriggerDac0(m_data->SCMonitor.Trig0_threshold, m_data->SCMonitor.TrigVref);
 		if(retval!=0)
@@ -347,22 +292,19 @@ void SC_SetConfig::Control_Trigger_DAC0()
 			if(m_verbose>3){std::cout << " There was an error (DAC0) with retval: " << retval << std::endl;}
 			m_data->SCMonitor.errorcodes.push_back(0xCB05EE01);
 		}
-		current_trigger_dac0 = m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref);
-		if(fabs(current_trigger_dac0 - m_data->SCMonitor.Trig0_threshold)<0.001)
+		current_trigger_daq0 = m_data->CB->GetTriggerDac0(m_data->SCMonitor.TrigVref);
+		if(fabs(current_trigger_daq0 - m_data->SCMonitor.Trig0_threshold)<0.001)
 		{
-			m_data->SCMonitor.Trig0_mon = current_trigger_dac0;
+			m_data->SCMonitor.Trig0_mon = current_trigger_daq0;
 		}else
 		{
 			if(m_verbose>3){std::cout << " There was an error (DAC0) - 0xC0 hasn't been updated!" << std::endl;}
 			m_data->SCMonitor.errorcodes.push_back(0xCB05EE02);
 		}
 	}
-}
 
-void SC_SetConfig::Control_Trigger_DAC1()
-{
-    float current_trigger_dac1 = m_data->CB->GetTriggerDac1(m_data->SCMonitor.TrigVref);
-	if(m_data->SCMonitor.Trig1_threshold!=current_trigger_dac1)
+	float current_trigger_daq1 = m_data->CB->GetTriggerDac1(m_data->SCMonitor.TrigVref);
+	if(m_data->SCMonitor.Trig1_threshold!=current_trigger_daq1)
 	{
 		retval = m_data->CB->SetTriggerDac1(m_data->SCMonitor.Trig1_threshold, m_data->SCMonitor.TrigVref);
 		if(retval!=0)
@@ -370,20 +312,24 @@ void SC_SetConfig::Control_Trigger_DAC1()
 			if(m_verbose>3){std::cout << " There was an error (DAC1) with retval: " << retval << std::endl;}
 			m_data->SCMonitor.errorcodes.push_back(0xCB05EE03);
 		}
-		current_trigger_dac1 = m_data->CB->GetTriggerDac1(m_data->SCMonitor.TrigVref);
-		if(fabs(current_trigger_dac1 - m_data->SCMonitor.Trig1_threshold)<0.001)
+		current_trigger_daq1 = m_data->CB->GetTriggerDac1(m_data->SCMonitor.TrigVref);
+		if(fabs(current_trigger_daq1 - m_data->SCMonitor.Trig1_threshold)<0.001)
 		{
-			m_data->SCMonitor.Trig1_mon = current_trigger_dac1;
+			m_data->SCMonitor.Trig1_mon = current_trigger_daq1;
 		}else
 		{
 			if(m_verbose>3){std::cout << " There was an error (DAC1) - 0xC0 hasn't been updated!" << std::endl;}
 			m_data->SCMonitor.errorcodes.push_back(0xCB05EE04);
 		}
 	} 
+
+	m_data->SCMonitor.recieveFlag=2;
+
+	return true;
 }
 
 
-//SOON OUT OF  DATE
+
 bool SC_SetConfig::Setup(){
 
 	int counter=0;

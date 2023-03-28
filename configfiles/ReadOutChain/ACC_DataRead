@@ -1,5 +1,0 @@
-#Verbosity
-verbose 2
-
-#Debug
-PrintLinesMax 15000 #int defines the number of debug prints

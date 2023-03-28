@@ -19,8 +19,6 @@ bool SC_Emergency::Initialise(std::string configfile, DataModel &data)
 
 bool SC_Emergency::Execute()
 {
-    //if(m_data->SCMonitor.recieveFlag==0){return true;}
-  
     bool retchk;
     if(m_data->SCMonitor.SumRelays==true)
     {

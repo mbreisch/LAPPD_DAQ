@@ -22,19 +22,28 @@ class SC_SetConfig: public Tool {
 
  public:
 
-  SC_SetConfig(); ///< Simple constructor
-  bool Initialise(std::string configfile,DataModel &data); ///< Initialise Function for setting up Tool resorces. @param configfile The path and name of the dynamic configuration file to read in. @param data A reference to the transient data class used to pass information between Tools.
-  bool Execute(); ///< Executre function used to perform Tool perpose. 
-  bool Finalise(); ///< Finalise funciton used to clean up resorces.
+    SC_SetConfig(); ///< Simple constructor
+    bool Initialise(std::string configfile,DataModel &data); ///< Initialise Function for setting up Tool resorces. @param configfile The path and name of the dynamic configuration file to read in. @param data A reference to the transient data class used to pass information between Tools.
+    bool Execute(); ///< Executre function used to perform Tool perpose. 
+    bool Finalise(); ///< Finalise funciton used to clean up resorces.
 
-  bool Setup();
-  bool Update();
+    bool Setup();
+    bool TurnOn();
+    bool TurnOff();
+    bool Update();
+
+    void Control_Relay();
+    void Control_HV_Volts();
+    void Control_HV_State();
+    void Control_LV_State();
+    void Control_Trigger_DAC0();
+    void Control_Trigger_DAC1();
 
  private:
 
- bool flag;
- int retval;
- int LAPPD_ID;
+    bool flag;
+    int retval;
+    int LAPPD_ID;
 
 };
 
