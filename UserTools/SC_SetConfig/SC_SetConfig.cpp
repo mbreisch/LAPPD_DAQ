@@ -326,7 +326,7 @@ void SC_SetConfig::Control_Relay()
 			m_data->SCMonitor.errorcodes.push_back(0xCB01EE01);
 		}else
 		{
-			if(m_verbose>3){std::cout << "Very weird relay behavior! Got bool value other than 0/1!"<<stD::endl;}
+			if(m_verbose>3){std::cout << "Very weird relay behavior! Got bool value other than 0/1!"<<std::endl;}
 		}
 	}
 	m_data->SCMonitor.relayCh1_mon = m_data->CB->GetRelayState(1);
